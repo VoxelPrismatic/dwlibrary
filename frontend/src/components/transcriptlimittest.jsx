@@ -6,17 +6,14 @@ import axios from 'axios';
 const TranscriptCard = () => {
   const [transcript, setTranscript] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [expandedCardId, setExpandedCardId] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 100; // Number of items to display per page
+  const [limit, setLimit] = useState(50);
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:9000/api/posts');
-        // Sort the response data by episode before setting it in the state
-        const sortedTranscript = response.data.sort((a, b) => a.episode - b.episode);
-        setTranscript(sortedTranscript);
+        const response = await axios.get('http://localhost:9000/api/posts?limit={limit}');
+        setTranscript(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -27,13 +24,20 @@ const TranscriptCard = () => {
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
-    setCurrentPage(1); // Reset page to 1 whenever the search query changes
   };
 
   const highlightText = (text) => {
     const regex = new RegExp(searchQuery, 'gi');
     return text.replace(regex, (match) => `<span style="background-color: yellow">${match}</span>`);
   };
+
+  const handleLimitChange = (event) => {
+    const newLimit = parseInt(event.target.value);
+    setLimit(newLimit);
+  };
+  
+
+  const [expandedCardId, setExpandedCardId] = useState(null);
 
   const toggleCardExpansion = (cardId) => {
     if (cardId === expandedCardId) {
@@ -43,27 +47,27 @@ const TranscriptCard = () => {
     }
   };
 
-  const filteredTranscripts = transcript.filter((transcriptItem) =>
-    transcriptItem.transcript.includes(searchQuery)
-  );
+  const filteredTranscripts = transcript.slice(0, limit).filter((transcriptItem) =>
+  transcriptItem.transcript.includes(searchQuery)
+);
 
-  // Calculate the indexes of the items to display on the current page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredTranscripts.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(filteredTranscripts.length / itemsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
 
   return (
     <div>
       <Box display="flex" justifyContent="center" marginBottom={2}>
-        <TextField label="Search Transcript" value={searchQuery} onChange={handleSearchChange} />
+        <TextField
+          label="Result Limit"
+          type="number"
+          value={limit}
+          onChange={handleLimitChange}
+        />
+        <TextField
+          label="Search Transcript"
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
       </Box>
-      {currentItems.map((transcriptItem) => (
+      {filteredTranscripts.map((transcriptItem) => (
         <Card key={transcriptItem._id}>
           <CardContent>
             <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -89,14 +93,6 @@ const TranscriptCard = () => {
           </CardContent>
         </Card>
       ))}
-      {/* Page number selector */}
-      <Box display="flex" justifyContent="center" marginTop={2}>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
-          <button key={pageNumber} onClick={() => handlePageChange(pageNumber)}>
-            {pageNumber}
-          </button>
-        ))}
-      </Box>
     </div>
   );
 };
