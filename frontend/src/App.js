@@ -1,11 +1,12 @@
 import React from 'react'
 import Home from "./components/Home";
 import Transcript from "./components/transcript";
-import Cancelled from "./components/cancelled";
 import Books from "./components/books";
 import { Routes, Route} from 'react-router-dom'
 import Navbar from './components/navbar';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import CancelledList from './components/cancelled';
+import About from './components/about';
 
 
 // Create a custom theme
@@ -28,8 +29,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/transcript" element={<Transcript/>} />
-        <Route path="/cancelled" element={<Cancelled/>} />
+        <Route path="/cancelled" element={<CancelledList/>} />
         <Route path="/books" element={<Books/>} />
+        <Route path="/about" element={<About/>} />
       </Routes>
     </ThemeProvider>
     </>
