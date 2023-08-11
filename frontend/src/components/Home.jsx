@@ -35,17 +35,19 @@ const useStyles = makeStyles((theme) => ({
     wordWrap: 'break-word',
   },
   fullWidthImage: {
-    width: '100%', // Set the width to 100% to spread the image to the screen width
+    width: '70%', 
     height: 'auto',
     marginBottom: theme.spacing(1),
   },
-  // Styles for mobile view
   [`@media (max-width: ${theme.breakpoints.values.sm}px)`]: {
     box: {
-      width: '80%', // Reduce the width of the box for mobile view
+      width: '60%', 
+    },
+    fullWidthImage: {
+      width: '100%'
     },
     image: {
-      width: '60%', // Adjust the size of the image for mobile view
+      width: '60%', 
     },
   },
 }));
@@ -78,10 +80,7 @@ const Home = () => {
             </Typography>
           </Paper>
         </Grid>
-
-        {/*added spacing between grid items*/}
         <Grid item xs={12} style={{ marginBottom: '16px' }} />
-
         <Grid item xs={12} sm={6} md={6}>
           <Paper elevation={3} className={classes.box} component={Link} to="/about">
             <img src={Sbglogo} alt="Reason For Men To Cry" className={classes.image} />

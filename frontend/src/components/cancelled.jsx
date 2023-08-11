@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card, CardContent, Typography, Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles'; // Import useTheme
+import { useTheme } from '@mui/material/styles'; 
 
 const CancelledList = () => {
   const [cancelledData, setCancelledData] = useState([]);
 
   useEffect(() => {
-    // Fetch data from your MongoDB API
+
     axios
       .get('http://localhost:9000/api/cancelled')
       .then((response) => {
@@ -54,7 +54,7 @@ const ExpandableContent = ({ content }) => {
 };
 
 const CancelledCard = ({ item }) => {
-  const theme = useTheme(); // Access the theme object using useTheme
+  const theme = useTheme();
   return (
     <Card
       sx={{
@@ -63,7 +63,7 @@ const CancelledCard = ({ item }) => {
         backgroundColor: '#cccac4',
         boxShadow: '8',
         [theme.breakpoints.up('sm')]: {
-          width: '25%', // Set the width to 45% for small screens (e.g., smartphones)
+          width: '25%', // Width for Small screens 
         },
       }}
     >
@@ -81,3 +81,6 @@ const CancelledCard = ({ item }) => {
 };
 
 export default CancelledList;
+
+
+
