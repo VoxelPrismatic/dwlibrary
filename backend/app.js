@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 // Increase the limit of request payload size
-app.use(bodyParser.json({ limit: '20mb' })); // Adjust the limit value as needed
+app.use(bodyParser.json({ limit: '50mb' })); // Adjust the limit value as needed
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api', routes);

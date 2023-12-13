@@ -26,14 +26,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   image: {
-    width: '300px',
+    width: '350px',
     marginRight: '20px',
     marginTop: '15px',
   },
   navbarButton: {
     padding: theme.spacing(1, 2),
     '&:hover': {
-      backgroundColor: theme.palette.primary.light,
+      backgroundColor: theme.palette.primary.dark,
     },
   },
   selectedButton: {
@@ -44,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       display: 'block',
     },
+  },
+  appBar: {
+    backgroundColor: '#303030', // Set the background color of the AppBar
+    borderBottom: '4px solid #cb767d', // Add your existing borderBottom style here
   },
 }));
 
@@ -65,7 +69,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" color="primary">
+    <AppBar position="static" className={classes.appBar}>
       <Toolbar>
         <Link to="/">
           <img src={Logo} alt="Logo" className={classes.image}/>
