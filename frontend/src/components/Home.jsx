@@ -112,11 +112,11 @@ const Home = () => {
       
 
 
-      <Grid item xs={12} md={8} lg={6}>
+      {/* <Grid item xs={12} md={8} lg={6}>
         
           <Cry />
         
-      </Grid>
+      </Grid> */}
 
        
 
