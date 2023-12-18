@@ -103,10 +103,10 @@ const CancelledCard = () => {
     fetchMetadata();
   }, []);
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-    setCurrentPage(1);
-  };
+  // const handleSearchChange = (event) => {
+  //   setSearchQuery(event.target.value);
+  //   setCurrentPage(1);
+  // };
 
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
@@ -168,8 +168,8 @@ const CancelledCard = () => {
         <TextField
           margin=""
           label="Panda's shouldn't Exist"
-          value={searchQuery}
-          onChange={handleSearchChange}
+          //value={searchQuery}
+          //onChange={handleSearchChange}
         />
         <Select
           value={selectedCategory}
