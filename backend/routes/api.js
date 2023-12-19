@@ -4,7 +4,7 @@ const Post = require("../models/postModel");
 const Cancelled = require("../models/cancelledModel");
 const Transcript = require("../models/transcriptModel");
 
-const ITEMS_PER_PAGE = 50; // Adjust the number of items per page as needed
+const ITEMS_PER_PAGE = 100; // Adjust the number of items per page as needed
 
 router.get("/cancelled", async function (req, res, next) {
   try {

@@ -44,7 +44,7 @@ const CancelledCard = () => {
   const [expandedCardId, setExpandedCardId] = useState(null);
   const [currentEpisodeTitle, setCurrentEpisodeTitle] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 50;
+  const itemsPerPage = 100;
   const [totalItems, setTotalItems] = useState(1);
   const navigate = useNavigate(); // Add this line to get the navigate function
 
@@ -68,7 +68,6 @@ const CancelledCard = () => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   useEffect(() => {
-    // Fetch cancelled data for the current page
     const fetchData = async () => {
       try {
         const response = await axios.get(
@@ -83,8 +82,13 @@ const CancelledCard = () => {
       }
     };
 
+    // Clear the cancelled state only if it's the first page
+    if (currentPage === 1) {
+      setCancelled([]);
+    }
+
     fetchData();
-  }, [currentPage, navigate]);
+  }, [currentPage]);
 
   useEffect(() => {
     const fetchMetadata = async () => {
@@ -108,15 +112,15 @@ const CancelledCard = () => {
   //   setCurrentPage(1);
   // };
 
-  const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
-    setCurrentPage(1);
-  };
+  // const handleCategoryChange = (event) => {
+  //   setSelectedCategory(event.target.value);
+  //   setCurrentPage(1);
+  // };
 
-  const clearCategorySelection = () => {
-    setSelectedCategory("");
-    setCurrentPage(1);
-  };
+  // const clearCategorySelection = () => {
+  //   setSelectedCategory("");
+  //   setCurrentPage(1);
+  // };
 
   const highlightText = (text) => {
     const regex = new RegExp(searchQuery, "gi");
@@ -146,9 +150,9 @@ const CancelledCard = () => {
     }
   };
 
-  const categories = Array.from(
-    new Set(cancelled.map((item) => item.Category))
-  ); // Get unique categories
+  // const categories = Array.from(
+  //   new Set(cancelled.map((item) => item.Category))
+  // ); // Get unique categories
 
   const classes = useStyles();
   return (
@@ -164,7 +168,7 @@ const CancelledCard = () => {
           </button>
         ))}
       </Box>
-      <Box display="flex" justifyContent="center" marginBottom={2}>
+      {/* <Box display="flex" justifyContent="center" marginBottom={2}>
         <TextField
           margin=""
           label="Panda's shouldn't Exist"
@@ -191,7 +195,7 @@ const CancelledCard = () => {
             </MenuItem>
           )}
         </Select>
-      </Box>
+      </Box> */}
       <Grid container spacing={2}>
         {currentItems.map((cancelledItem) => (
           <Grid item xs={6} sm={6} md={3} lg={3} key={cancelledItem._id}>

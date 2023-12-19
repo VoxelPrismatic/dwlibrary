@@ -108,10 +108,7 @@ const TranscriptCard = () => {
       <Box display="flex" justifyContent="center" marginTop={2}>
         {Array.from({ length: totalPages }, (_, i) => i + 1).map(
           (pageNumber) => (
-            <button
-              key={pageNumber}
-              onClick={() => handlePageChange(pageNumber)}
-            >
+            <button key={pageNumber} onClick={() => setCurrentPage(pageNumber)}>
               {pageNumber}
             </button>
           )
