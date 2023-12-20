@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -9,46 +9,46 @@ import {
   makeStyles,
   IconButton,
   Menu,
-  MenuItem,
-} from '@material-ui/core';
-import { Link, useLocation } from 'react-router-dom';
-import MenuIcon from '@material-ui/icons/Menu';
+  MenuItem
+} from "@material-ui/core";
+import { Link, useLocation } from "react-router-dom";
+import MenuIcon from "@material-ui/icons/Menu";
 import Logo from "../media/sweetbabylogo.png";
 
 const useStyles = makeStyles((theme) => ({
   navbarContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    borderRadius: '50px', // Adjust the value to make the oval shape smoother or sharper
-    overflow: 'hidden',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
+    display: "flex",
+    alignItems: "center",
+    borderRadius: "50px", // Adjust the value to make the oval shape smoother or sharper
+    overflow: "hidden",
+    [theme.breakpoints.down("sm")]: {
+      display: "none"
+    }
   },
   image: {
-    width: '350px',
-    marginRight: '20px',
-    marginTop: '15px',
+    width: "350px",
+    marginRight: "20px",
+    marginTop: "15px"
   },
   navbarButton: {
     padding: theme.spacing(1, 2),
-    '&:hover': {
-      backgroundColor: theme.palette.primary.dark,
-    },
+    "&:hover": {
+      backgroundColor: theme.palette.primary.dark
+    }
   },
   selectedButton: {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.light
   },
   menuButton: {
-    display: 'none',
-    [theme.breakpoints.down('sm')]: {
-      display: 'block',
-    },
+    display: "none",
+    [theme.breakpoints.down("sm")]: {
+      display: "block"
+    }
   },
   appBar: {
-    backgroundColor: '#303030', // Set the background color of the AppBar
-    borderBottom: '4px solid #cb767d', // Add your existing borderBottom style here
-  },
+    backgroundColor: "#303030", // Set the background color of the AppBar
+    borderBottom: "4px solid #cb767d" // Add your existing borderBottom style here
+  }
 }));
 
 const Navbar = () => {
@@ -57,7 +57,7 @@ const Navbar = () => {
   const [mobileMenuAnchor, setMobileMenuAnchor] = useState(null);
 
   const isActive = (path) => {
-    return location.pathname === path ? classes.selectedButton : '';
+    return location.pathname === path ? classes.selectedButton : "";
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -72,41 +72,53 @@ const Navbar = () => {
     <AppBar position="static" className={classes.appBar}>
       <Toolbar>
         <Link to="/">
-          <img src={Logo} alt="Logo" className={classes.image}/>
+          <img src={Logo} alt="Logo" className={classes.image} />
         </Link>
         <Box className={classes.navbarContainer}>
           <Button
             component={Link}
             to="/transcript"
             color="secondary"
-            className={`${classes.navbarButton} ${isActive('/transcript')}`}
+            className={`${classes.navbarButton} ${isActive("/transcript")}`}
           >
             <Typography variant="h6">Transcripts</Typography>
           </Button>
-          <Divider orientation="vertical" flexItem style={{ backgroundColor: '#cb767d' }} />
+          <Divider
+            orientation="vertical"
+            flexItem
+            style={{ backgroundColor: "#cb767d" }}
+          />
           <Button
             component={Link}
             to="/cancelled"
             color="secondary"
-            className={`${classes.navbarButton} ${isActive('/cancelled')}`}
+            className={`${classes.navbarButton} ${isActive("/cancelled")}`}
           >
             <Typography variant="h6">Daily Cancellation</Typography>
           </Button>
-          <Divider orientation="vertical" flexItem style={{ backgroundColor: '#cb767d' }} />
+          <Divider
+            orientation="vertical"
+            flexItem
+            style={{ backgroundColor: "#cb767d" }}
+          />
           <Button
             component={Link}
             to="/books"
             color="secondary"
-            className={`${classes.navbarButton} ${isActive('/books')}`}
+            className={`${classes.navbarButton} ${isActive("/books")}`}
           >
             <Typography variant="h6">Books</Typography>
           </Button>
-          <Divider orientation="vertical" flexItem style={{ backgroundColor: '#cb767d' }} />
+          <Divider
+            orientation="vertical"
+            flexItem
+            style={{ backgroundColor: "#cb767d" }}
+          />
           <Button
             component={Link}
             to="/about"
             color="secondary"
-            className={`${classes.navbarButton} ${isActive('/about')}`}
+            className={`${classes.navbarButton} ${isActive("/about")}`}
           >
             <Typography variant="h6">About</Typography>
           </Button>
@@ -130,7 +142,7 @@ const Navbar = () => {
             component={Link}
             to="/transcript"
             onClick={handleMobileMenuClose}
-            className={isActive('/transcript')}
+            className={isActive("/transcript")}
           >
             Transcripts
           </MenuItem>
@@ -138,7 +150,7 @@ const Navbar = () => {
             component={Link}
             to="/cancelled"
             onClick={handleMobileMenuClose}
-            className={isActive('/cancelled')}
+            className={isActive("/cancelled")}
           >
             Daily Cancellation
           </MenuItem>
@@ -146,7 +158,7 @@ const Navbar = () => {
             component={Link}
             to="/books"
             onClick={handleMobileMenuClose}
-            className={isActive('/books')}
+            className={isActive("/books")}
           >
             Books
           </MenuItem>
@@ -154,7 +166,7 @@ const Navbar = () => {
             component={Link}
             to="/about"
             onClick={handleMobileMenuClose}
-            className={isActive('/about')}
+            className={isActive("/about")}
           >
             About
           </MenuItem>
