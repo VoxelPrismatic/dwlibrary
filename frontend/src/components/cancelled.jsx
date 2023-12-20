@@ -71,7 +71,8 @@ const CancelledCard = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/cancelled?page=${currentPage}`
+          `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?page=${currentPage}`
+          //`http://localhost:9000/api/cancelled?page=${currentPage}`
         );
         const sortedCancelled = response.data.sort(
           (a, b) => a.episode - b.episode
@@ -95,7 +96,8 @@ const CancelledCard = () => {
       try {
         // Fetch metadata
         const metaResponse = await axios.get(
-          "http://localhost:9000/api/cancelled/meta"
+          "https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/meta"
+          //"http://localhost:9000/api/cancelled/meta"
         );
         const totalCount = metaResponse.data.totalCount;
         setTotalItems(totalCount);
