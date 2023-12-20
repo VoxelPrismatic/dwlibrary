@@ -61,13 +61,18 @@ const CancelledCard = () => {
           .includes(searchQuery.toLowerCase())) &&
       (selectedCategory === "" || cancelledItem.Category === selectedCategory)
   );
-  const currentItems = filteredCancelleds.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   useEffect(() => {
+    // Check if the 'page' parameter is missing in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageParam = urlParams.get("page");
+
+    if (!pageParam) {
+      // If 'page' parameter is missing, navigate to the default page
+      navigate(`/cancelled?page=1`);
+    }
+
     const fetchData = async () => {
       try {
         const response = await axios.get(
@@ -77,7 +82,8 @@ const CancelledCard = () => {
         const sortedCancelled = response.data.sort(
           (a, b) => a.episode - b.episode
         );
-        setCancelled((prevCancelled) => [...prevCancelled, ...sortedCancelled]);
+        setCancelled(sortedCancelled);
+        //setCancelled((prevCancelled) => [...prevCancelled, ...sortedCancelled]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -108,6 +114,11 @@ const CancelledCard = () => {
 
     fetchMetadata();
   }, []);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    navigate(`/cancelled?page=${pageNumber}`);
+  };
 
   // const handleSearchChange = (event) => {
   //   setSearchQuery(event.target.value);
@@ -163,7 +174,7 @@ const CancelledCard = () => {
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i + 1}
-            onClick={() => setCurrentPage(i + 1)}
+            onClick={() => handlePageChange(i + 1)}
             disabled={currentPage === i + 1}
           >
             {i + 1}
@@ -199,7 +210,7 @@ const CancelledCard = () => {
         </Select>
       </Box> */}
       <Grid container spacing={2}>
-        {currentItems.map((cancelledItem) => (
+        {filteredCancelleds.map((cancelledItem) => (
           <Grid item xs={6} sm={6} md={3} lg={3} key={cancelledItem._id}>
             <Card>
               <CardContent>
