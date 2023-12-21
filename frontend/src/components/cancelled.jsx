@@ -133,7 +133,7 @@ const CancelledCard = () => {
     try {
       const endpoint = searchInput
         ? `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/${newCategory}?query=${searchInput}`
-        : `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/${newCategory}?page=${currentPage}`;
+        : `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/${newCategory}`;
 
       const response = await axios.get(endpoint);
       const sortedCancelled = response.data.sort(
