@@ -49,6 +49,7 @@ const CancelledCard = () => {
   const navigate = useNavigate(); // Add this line to get the navigate function
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const [searchInput, setSearchInput] = useState("");
+  const [typingSearchInput, setTypingSearchInput] = useState("");
 
   const filteredCancelleds = cancelled.filter(
     (cancelledItem) =>
@@ -99,17 +100,21 @@ const CancelledCard = () => {
     fetchMetadata();
   }, []);
 
-  const handleSearch = async () => {
+  const handleSearchSubmit = async () => {
+    setSearchInput(typingSearchInput); // Set the final search input
     try {
       const response = await axios.get(
-        `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/search?query=${searchInput}`
-        // Add appropriate backend search endpoint
+        `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?query=${typingSearchInput}`
       );
       const searchResults = response.data;
       setCancelled(searchResults);
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
+  };
+
+  const handleTypingSearch = (e) => {
+    setTypingSearchInput(e.target.value);
   };
 
   const handlePageChange = (pageNumber) => {
@@ -178,10 +183,15 @@ const CancelledCard = () => {
           <TextField
             label="Search"
             variant="outlined"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            value={typingSearchInput}
+            onChange={handleTypingSearch}
           />
-          <Button onClick={handleSearch} variant="contained" color="primary">
+          {/* Use handleSearchSubmit for the button click */}
+          <Button
+            onClick={handleSearchSubmit}
+            variant="contained"
+            color="primary"
+          >
             Search
           </Button>
         </Box>
