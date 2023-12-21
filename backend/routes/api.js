@@ -9,20 +9,50 @@ const ITEMS_PER_PAGE = 100; // Adjust the number of items per page as needed
 router.get("/cancelled", async function (req, res, next) {
   try {
     const page = parseInt(req.query.page) || 1;
-    const searchQuery = req.query.query || ""; // Get the search query from the request
+    const searchQuery = req.query.query || "";
 
-    let query = {}; // Default to an empty query
+    let query = {};
+
+    if (searchQuery) {
+      const searchRegex = new RegExp(searchQuery, "i");
+      query = {
+        $or: [
+          { context: { $regex: searchRegex } },
+          { cancelled: { $regex: searchRegex } },
+          { Category: { $regex: searchRegex } } // Add Category filter
+        ]
+      };
+    } else {
+      query = { Category: { $exists: true } }; // Only return items with Category
+    }
+
+    const cancel = await Cancelled.find(query)
+      .sort({ episode: 1 })
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE);
+
+    res.send(cancel);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/cancelled/:category", async function (req, res, next) {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const searchQuery = req.query.query || ""; // Get the search query from the request
+    const category = req.params.category || ""; // Get the category parameter from the URL
+
+    let query = { Category: category }; // Default to the specified category
 
     if (searchQuery) {
       // If there's a search query, create a case-insensitive regular expression
       const searchRegex = new RegExp(searchQuery, "i");
       // Apply the search criteria to the query
-      query = {
-        $or: [
-          { context: { $regex: searchRegex } },
-          { cancelled: { $regex: searchRegex } }
-        ]
-      };
+      query.$or = [
+        { context: { $regex: searchRegex } },
+        { cancelled: { $regex: searchRegex } }
+      ];
     }
 
     const cancel = await Cancelled.find(query)
@@ -38,20 +68,21 @@ router.get("/cancelled", async function (req, res, next) {
 
 router.get("/cancelled/meta", async function (req, res, next) {
   try {
-    const searchQuery = req.query.query || ""; // Get the search query from the request
+    const searchQuery = req.query.query || "";
 
-    let query = {}; // Default to an empty query
+    let query = {};
 
     if (searchQuery) {
-      // If there's a search query, create a case-insensitive regular expression
       const searchRegex = new RegExp(searchQuery, "i");
-      // Apply the search criteria to the query
       query = {
         $or: [
           { context: { $regex: searchRegex } },
-          { cancelled: { $regex: searchRegex } }
+          { cancelled: { $regex: searchRegex } },
+          { Category: { $regex: searchRegex } } // Add Category filter
         ]
       };
+    } else {
+      query = { Category: { $exists: true } }; // Only return items with Category
     }
 
     const totalCount = await Cancelled.countDocuments(query);
