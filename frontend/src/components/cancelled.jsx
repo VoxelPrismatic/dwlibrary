@@ -47,9 +47,8 @@ const CancelledCard = () => {
   const itemsPerPage = 100;
   const [totalItems, setTotalItems] = useState(1);
   const navigate = useNavigate(); // Add this line to get the navigate function
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const [searchInput, setSearchInput] = useState("");
 
   const filteredCancelleds = cancelled.filter(
     (cancelledItem) =>
@@ -61,41 +60,26 @@ const CancelledCard = () => {
           .includes(searchQuery.toLowerCase())) &&
       (selectedCategory === "" || cancelledItem.Category === selectedCategory)
   );
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   useEffect(() => {
-    // Check if the 'page' parameter is missing in the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const pageParam = urlParams.get("page");
-
-    if (!pageParam) {
-      // If 'page' parameter is missing, navigate to the default page
-      navigate(`/cancelled?page=1`);
-    }
-
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?page=${currentPage}`
-          //`http://localhost:9000/api/cancelled?page=${currentPage}`
-        );
+        const endpoint = searchInput
+          ? `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?query=${searchInput}`
+          : `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?page=${currentPage}`;
+
+        const response = await axios.get(endpoint);
         const sortedCancelled = response.data.sort(
           (a, b) => a.episode - b.episode
         );
         setCancelled(sortedCancelled);
-        //setCancelled((prevCancelled) => [...prevCancelled, ...sortedCancelled]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    // Clear the cancelled state only if it's the first page
-    if (currentPage === 1) {
-      setCancelled([]);
-    }
-
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, searchInput]);
 
   useEffect(() => {
     const fetchMetadata = async () => {
@@ -115,25 +99,33 @@ const CancelledCard = () => {
     fetchMetadata();
   }, []);
 
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(
+        `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/search?query=${searchInput}`
+        // Add appropriate backend search endpoint
+      );
+      const searchResults = response.data;
+      setCancelled(searchResults);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+  };
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     navigate(`/cancelled?page=${pageNumber}`);
   };
 
-  // const handleSearchChange = (event) => {
-  //   setSearchQuery(event.target.value);
-  //   setCurrentPage(1);
-  // };
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    setCurrentPage(1);
+  };
 
-  // const handleCategoryChange = (event) => {
-  //   setSelectedCategory(event.target.value);
-  //   setCurrentPage(1);
-  // };
-
-  // const clearCategorySelection = () => {
-  //   setSelectedCategory("");
-  //   setCurrentPage(1);
-  // };
+  const clearCategorySelection = () => {
+    setSelectedCategory("");
+    setCurrentPage(1);
+  };
 
   const highlightText = (text) => {
     const regex = new RegExp(searchQuery, "gi");
@@ -163,9 +155,9 @@ const CancelledCard = () => {
     }
   };
 
-  // const categories = Array.from(
-  //   new Set(cancelled.map((item) => item.Category))
-  // ); // Get unique categories
+  const categories = Array.from(
+    new Set(cancelled.map((item) => item.Category))
+  ); // Get unique categories
 
   const classes = useStyles();
   return (
@@ -181,13 +173,19 @@ const CancelledCard = () => {
           </button>
         ))}
       </Box>
-      {/* <Box display="flex" justifyContent="center" marginBottom={2}>
-        <TextField
-          margin=""
-          label="Panda's shouldn't Exist"
-          //value={searchQuery}
-          //onChange={handleSearchChange}
-        />
+      <Box display="flex" justifyContent="center" marginBottom={2}>
+        <Box display="flex" justifyContent="center" marginBottom={2}>
+          <TextField
+            label="Search"
+            variant="outlined"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+          <Button onClick={handleSearch} variant="contained" color="primary">
+            Search
+          </Button>
+        </Box>
+
         <Select
           value={selectedCategory}
           onChange={handleCategoryChange}
@@ -208,7 +206,7 @@ const CancelledCard = () => {
             </MenuItem>
           )}
         </Select>
-      </Box> */}
+      </Box>
       <Grid container spacing={2}>
         {filteredCancelleds.map((cancelledItem) => (
           <Grid item xs={6} sm={6} md={3} lg={3} key={cancelledItem._id}>
@@ -278,12 +276,7 @@ const CancelledCard = () => {
         <DialogTitle>{currentEpisodeTitle}</DialogTitle>
         <DialogContent>
           <Typography variant="body2" component="p">
-            <span
-              dangerouslySetInnerHTML={{
-                __html: highlightText(expandedCancelled)
-              }}
-              className={classes.highlightedText}
-            />
+            {expandedCancelled}
           </Typography>
         </DialogContent>
         <DialogActions>

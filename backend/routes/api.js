@@ -9,8 +9,23 @@ const ITEMS_PER_PAGE = 100; // Adjust the number of items per page as needed
 router.get("/cancelled", async function (req, res, next) {
   try {
     const page = parseInt(req.query.page) || 1;
+    const searchQuery = req.query.query || ""; // Get the search query from the request
 
-    const cancel = await Cancelled.find({})
+    let query = {}; // Default to an empty query
+
+    if (searchQuery) {
+      // If there's a search query, create a case-insensitive regular expression
+      const searchRegex = new RegExp(searchQuery, "i");
+      // Apply the search criteria to the query
+      query = {
+        $or: [
+          { context: { $regex: searchRegex } },
+          { cancelled: { $regex: searchRegex } }
+        ]
+      };
+    }
+
+    const cancel = await Cancelled.find(query)
       .sort({ episode: 1 }) // Sort by the "episode" field in ascending order
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
@@ -23,7 +38,23 @@ router.get("/cancelled", async function (req, res, next) {
 
 router.get("/cancelled/meta", async function (req, res, next) {
   try {
-    const totalCount = await Cancelled.countDocuments({});
+    const searchQuery = req.query.query || ""; // Get the search query from the request
+
+    let query = {}; // Default to an empty query
+
+    if (searchQuery) {
+      // If there's a search query, create a case-insensitive regular expression
+      const searchRegex = new RegExp(searchQuery, "i");
+      // Apply the search criteria to the query
+      query = {
+        $or: [
+          { context: { $regex: searchRegex } },
+          { cancelled: { $regex: searchRegex } }
+        ]
+      };
+    }
+
+    const totalCount = await Cancelled.countDocuments(query);
     res.json({ totalCount });
   } catch (error) {
     next(error);
