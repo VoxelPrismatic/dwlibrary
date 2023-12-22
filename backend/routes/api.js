@@ -9,29 +9,61 @@ const ITEMS_PER_PAGE = 100; // Adjust the number of items per page as needed
 router.get("/cancelled", async function (req, res, next) {
   try {
     const page = parseInt(req.query.page) || 1;
-    const searchQuery = req.query.query || "";
+    const searchQuery = req.query.query || ""; // Get the search query from the request
 
-    let query = {};
+    let query = {}; // Default to an empty query
 
     if (searchQuery) {
+      // If there's a search query, create a case-insensitive regular expression
       const searchRegex = new RegExp(searchQuery, "i");
+      // Apply the search criteria to the query
       query = {
         $or: [
           { context: { $regex: searchRegex } },
           { cancelled: { $regex: searchRegex } },
-          { Category: { $regex: searchRegex } } // Add Category filter
+          { Category: { $regex: searchRegex } } // Include Category in the search
         ]
       };
     } else {
-      query = { Category: { $exists: true } }; // Only return items with Category
+      // If there's no search query, just include Category in the query
+      query = { Category: { $exists: true } };
     }
 
     const cancel = await Cancelled.find(query)
-      .sort({ episode: 1 })
+      .sort({ episode: 1 }) // Sort by the "episode" field in ascending order
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
     res.send(cancel);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/cancelled/meta", async function (req, res, next) {
+  try {
+    const searchQuery = req.query.query || ""; // Get the search query from the request
+
+    let query = {}; // Default to an empty query
+
+    if (searchQuery) {
+      // If there's a search query, create a case-insensitive regular expression
+      const searchRegex = new RegExp(searchQuery, "i");
+      // Apply the search criteria to the query
+      query = {
+        $or: [
+          { context: { $regex: searchRegex } },
+          { cancelled: { $regex: searchRegex } },
+          { Category: { $regex: searchRegex } } // Include Category in the search
+        ]
+      };
+    } else {
+      // If there's no search query, just include Category in the query
+      query = { Category: { $exists: true } };
+    }
+
+    const totalCount = await Cancelled.countDocuments(query);
+    res.json({ totalCount });
   } catch (error) {
     next(error);
   }
@@ -61,32 +93,6 @@ router.get("/cancelled/:category", async function (req, res, next) {
       .limit(ITEMS_PER_PAGE);
 
     res.send(cancel);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get("/cancelled/meta", async function (req, res, next) {
-  try {
-    const searchQuery = req.query.query || "";
-
-    let query = {};
-
-    if (searchQuery) {
-      const searchRegex = new RegExp(searchQuery, "i");
-      query = {
-        $or: [
-          { context: { $regex: searchRegex } },
-          { cancelled: { $regex: searchRegex } },
-          { Category: { $regex: searchRegex } } // Add Category filter
-        ]
-      };
-    } else {
-      query = { Category: { $exists: true } }; // Only return items with Category
-    }
-
-    const totalCount = await Cancelled.countDocuments(query);
-    res.json({ totalCount });
   } catch (error) {
     next(error);
   }

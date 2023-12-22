@@ -51,7 +51,6 @@ const CancelledCard = () => {
   const [searchInput, setSearchInput] = useState("");
   const [typingSearchInput, setTypingSearchInput] = useState("");
   const [categoryFilterActive, setCategoryFilterActive] = useState(false);
-  const [totalPagesByCategory, setTotalPagesByCategory] = useState({});
 
   const filteredCancelleds = cancelled.filter(
     (cancelledItem) =>
@@ -64,32 +63,41 @@ const CancelledCard = () => {
       (selectedCategory === "" || cancelledItem.Category === selectedCategory)
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const endpoint = searchInput
-          ? `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?query=${searchInput}`
-          : `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?page=${currentPage}`;
+  const fetchData = async () => {
+    try {
+      let endpoint;
 
-        const response = await axios.get(endpoint);
-        const sortedCancelled = response.data.sort(
-          (a, b) => a.episode - b.episode
-        );
-        setCancelled(sortedCancelled);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      // Encode the selected category before including it in the endpoint
+      const encodedCategory = encodeURIComponent(selectedCategory);
+
+      if (encodedCategory) {
+        endpoint = `http://localhost:9000/api/cancelled/${encodedCategory}?page=${currentPage}`;
+      } else {
+        endpoint = searchInput
+          ? `http://localhost:9000/api/cancelled?query=${searchInput}&page=${currentPage}`
+          : `http://localhost:9000/api/cancelled?page=${currentPage}`;
       }
-    };
 
+      const response = await axios.get(endpoint);
+      const sortedCancelled = response.data.sort(
+        (a, b) => a.episode - b.episode
+      );
+      setCancelled(sortedCancelled);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
-  }, [currentPage, searchInput]);
+  }, [currentPage, selectedCategory, searchInput]);
 
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
         // Fetch metadata
         const metaResponse = await axios.get(
-          "https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/meta"
+          "http://localhost:9000/api/cancelled/meta"
           //"http://localhost:9000/api/cancelled/meta"
         );
         const totalCount = metaResponse.data.totalCount;
@@ -106,13 +114,19 @@ const CancelledCard = () => {
     setSearchInput(typingSearchInput); // Set the final search input
     try {
       const response = await axios.get(
-        `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?query=${typingSearchInput}`
+        `http://localhost:9000/api/cancelled?query=${typingSearchInput}`
       );
       const searchResults = response.data;
       setCancelled(searchResults);
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
+  };
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    setCurrentPage(1);
+    setCategoryFilterActive(true);
   };
 
   const handleTypingSearch = (e) => {
@@ -124,47 +138,15 @@ const CancelledCard = () => {
     navigate(`/cancelled?page=${pageNumber}`);
   };
 
-  const handleCategoryChange = async (event) => {
-    const newCategory = event.target.value;
-    setSelectedCategory(newCategory);
-    setCurrentPage(1);
-    setCategoryFilterActive(true);
-
-    try {
-      const endpoint = searchInput
-        ? `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/${newCategory}?query=${searchInput}`
-        : `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/${newCategory}`;
-
-      const response = await axios.get(endpoint);
-      const sortedCancelled = response.data.sort(
-        (a, b) => a.episode - b.episode
-      );
-      setCancelled(sortedCancelled);
-
-      const metaResponse = await axios.get(
-        `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/meta/${newCategory}?query=${searchInput}`
-      );
-      const totalCount = metaResponse.data.totalCount;
-
-      setTotalItems(totalCount);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   const clearCategorySelection = () => {
     setSelectedCategory("");
     setCategoryFilterActive(false);
+
+    // Reset the current page to 1
     setCurrentPage(1);
 
     // Update the URL
     navigate("/cancelled?page=1");
-
-    // Reset totalPages based on the selected category
-    const totalPagesForAllCategories = Object.values(
-      totalPagesByCategory
-    ).reduce((total, pages) => total + pages, 0);
-    setTotalItems(totalPagesForAllCategories * itemsPerPage);
   };
 
   const highlightText = (text) => {
@@ -208,20 +190,16 @@ const CancelledCard = () => {
         marginTop={2}
         marginBottom={2}
       >
-        {Array.from(
-          { length: totalPagesByCategory[selectedCategory] || totalPages },
-          (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => handlePageChange(i + 1)}
-              disabled={currentPage === i + 1}
-            >
-              {i + 1}
-            </button>
-          )
-        )}
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => handlePageChange(i + 1)}
+            disabled={currentPage === i + 1}
+          >
+            {i + 1}
+          </button>
+        ))}
       </Box>
-
       <Box display="flex" justifyContent="center" marginBottom={2}>
         <Box display="flex" justifyContent="center" marginBottom={2}>
           <TextField
