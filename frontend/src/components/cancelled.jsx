@@ -71,11 +71,11 @@ const CancelledCard = () => {
       const encodedCategory = encodeURIComponent(selectedCategory);
 
       if (encodedCategory) {
-        endpoint = `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/${encodedCategory}?page=${currentPage}`;
+        endpoint = `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled/${encodedCategory}?page=${currentPage}`;
       } else {
         endpoint = searchInput
-          ? `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?query=${searchInput}&page=${currentPage}`
-          : `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?page=${currentPage}`;
+          ? `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled?query=${searchInput}&page=${currentPage}`
+          : `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled?page=${currentPage}`;
       }
 
       const response = await axios.get(endpoint);
@@ -97,8 +97,8 @@ const CancelledCard = () => {
       try {
         // Fetch metadata
         const metaResponse = await axios.get(
-          "https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/meta"
-          //"https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled/meta"
+          "https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled/meta"
+          //"https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled/meta"
         );
         const totalCount = metaResponse.data.totalCount;
         setTotalItems(totalCount);
@@ -114,7 +114,7 @@ const CancelledCard = () => {
     setSearchInput(typingSearchInput); // Set the final search input
     try {
       const response = await axios.get(
-        `https://the-sweet-baby-gang-backend-tyler-sowers-projects.vercel.app/api/cancelled?query=${typingSearchInput}`
+        `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled?query=${typingSearchInput}`
       );
       const searchResults = response.data;
       setCancelled(searchResults);
