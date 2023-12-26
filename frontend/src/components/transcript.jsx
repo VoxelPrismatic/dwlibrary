@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
   Typography,
   TextField,
   Box,
+  Chip,
   Grid,
   Button,
   IconButton
@@ -29,52 +31,161 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TranscriptCard = () => {
   const [transcript, setTranscript] = useState([]);
+  const [title, setTitles] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [expandedDialogCardId, setExpandedDialogCardId] = useState(null);
   const [expandedTranscript, setExpandedTranscript] = useState("");
   const [expandedCardId, setExpandedCardId] = useState(null);
   const [currentEpisodeTitle, setCurrentEpisodeTitle] = useState("");
-
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 50;
+  const itemsPerPage = 100;
+  const [totalItems, setTotalItems] = useState(1);
+  const navigate = useNavigate(); // Add this line to get the navigate function
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  console.log(totalItems);
 
+  const [searchInput, setSearchInput] = useState("");
+  const [typingSearchInput, setTypingSearchInput] = useState("");
+  const [isSearchActive, setIsSearchActive] = useState(false);
+
+  const filteredTitle = title.filter((titleItem) =>
+    titleItem.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const fetchData = async () => {
+    try {
+      // Fetch titles and episodes
+      const titlesResponse = await axios.get(
+        `http://localhost:9000/api/titles?page=${currentPage}`
+      );
+      setTitles(titlesResponse.data);
+
+      const endpoint = isSearchActive
+        ? `http://localhost:9000/api/posts?query=${searchInput}&page=${currentPage}`
+        : `http://localhost:9000/api/posts?page=${currentPage}`;
+
+      const response = await axios.get(endpoint);
+      const sortedTranscript = response.data.sort(
+        (a, b) => a.episode - b.episode
+      );
+
+      setTranscript(sortedTranscript);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:9000/api/posts");
-        const sortedTranscript = response.data.sort(
-          (a, b) => a.episode - b.episode
-        );
-        setTranscript(sortedTranscript);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchData();
+  }, [currentPage, searchInput]);
+
+  const fetchMetadata = async () => {
+    try {
+      // Fetch metadata
+      const metaResponse = await axios.get(
+        "http://localhost:9000/api/posts/meta"
+        //"http://localhost:9000/api/cancelled/meta"
+      );
+      const totalCount = metaResponse.data.totalCount;
+      setTotalItems(totalCount);
+    } catch (error) {
+      console.error("Error fetching metadata:", error);
+    }
+  };
+  useEffect(() => {
+    fetchMetadata();
   }, []);
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-    setCurrentPage(1);
+  const fetchTranscript = async (episodeNumber) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9000/api/posts/${episodeNumber}`
+      );
+      const transcriptItem = response.data;
+
+      // Open the dialog with the full transcript
+      setExpandedTranscript(transcriptItem.transcript);
+      setExpandedDialogCardId(transcriptItem._id);
+      setCurrentEpisodeTitle(
+        `Transcript for Episode ${transcriptItem.episode}`
+      );
+      setIsDialogOpen(true);
+    } catch (error) {
+      console.error("Error fetching transcript:", error);
+    }
+  };
+
+  const handleSearchSubmit = async () => {
+    setSearchInput(typingSearchInput);
+    setIsSearchActive(true);
+
+    try {
+      // Fetch search results from the /posts API
+      const response = await axios.get(
+        `http://localhost:9000/api/posts?query=${typingSearchInput}`
+      );
+      const searchResults = response.data;
+
+      // Use the length of searchResults as the total count
+      setTotalItems(searchResults.length);
+
+      // Set the search results to the transcript state
+      setTranscript(searchResults);
+      setTitles(searchResults);
+
+      // Log the search results and the updated transcript state
+      console.log("Search Results:", searchResults);
+      console.log("Updated Transcript State:", transcript);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+  };
+  useEffect(() => {
+    console.log("Updated Transcript State:", transcript);
+  }, [transcript]);
+
+  const clearSearch = () => {
+    setSearchInput("");
+    setTypingSearchInput("");
+    setIsSearchActive(false);
+    fetchData();
+    fetchMetadata(); // Fetch data again to reset results
+  };
+
+  const handleTypingSearch = (e) => {
+    setTypingSearchInput(e.target.value);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    navigate(`/transcript?page=${pageNumber}`);
   };
 
   const highlightText = (text) => {
-    const regex = new RegExp(searchQuery, "gi");
+    const regex = new RegExp(typingSearchInput, "gi");
     return text.replace(
       regex,
       (match) => `<span style="background-color: yellow">${match}</span>`
     );
   };
 
-  const openTranscriptDialog = (cardId) => {
-    const transcriptItem = transcript.find((item) => item._id === cardId);
+  const openTranscriptDialog = (episodeNumber) => {
+    // Check if the transcript for this episode is already loaded
+    const transcriptItem = transcript.find(
+      (item) => item.episode === episodeNumber
+    );
+
     if (transcriptItem) {
+      // If already loaded, open the dialog with the available data
       setExpandedTranscript(transcriptItem.transcript);
-      setExpandedDialogCardId(cardId);
-      setCurrentEpisodeTitle(`Transcript: Episode ${transcriptItem.episode}`);
+      setExpandedDialogCardId(transcriptItem._id);
+      setCurrentEpisodeTitle(
+        `Transcript for Episode ${transcriptItem.episode}`
+      );
       setIsDialogOpen(true);
+    } else {
+      // If not loaded, make a specific API call to fetch the transcript
+      fetchTranscript(episodeNumber);
     }
   };
 
@@ -85,45 +196,57 @@ const TranscriptCard = () => {
       setExpandedCardId(cardId);
     }
   };
-
-  const filteredTranscripts = transcript.filter((transcriptItem) =>
-    transcriptItem.transcript.includes(searchQuery)
-  );
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredTranscripts.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
-  const totalPages = Math.ceil(filteredTranscripts.length / itemsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
+  console.log("total pages", totalPages);
+  console.log("transcripts", transcript);
   const classes = useStyles();
   return (
     <div>
-      <Box display="flex" justifyContent="center" marginTop={2}>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-          (pageNumber) => (
-            <button key={pageNumber} onClick={() => setCurrentPage(pageNumber)}>
-              {pageNumber}
-            </button>
-          )
-        )}
+      <Box
+        display="flex"
+        justifyContent="center"
+        marginTop={2}
+        marginBottom={2}
+      >
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => handlePageChange(i + 1)}
+            disabled={currentPage === i + 1}
+          >
+            {i + 1}
+          </button>
+        ))}
       </Box>
       <Box display="flex" justifyContent="center" marginBottom={2}>
-        <TextField
-          label="Search Transcript"
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
+        <Box display="flex" justifyContent="center" marginBottom={2}>
+          <TextField
+            label="Search"
+            variant="outlined"
+            value={typingSearchInput}
+            onChange={handleTypingSearch}
+          />
+          <Button
+            onClick={handleSearchSubmit}
+            variant="contained"
+            color="primary"
+          >
+            Search
+          </Button>
+
+          {isSearchActive && (
+            <Chip
+              label="Clear Search"
+              size="small"
+              onDelete={clearSearch}
+              variant="outlined"
+              style={{ marginLeft: 8 }}
+            />
+          )}
+        </Box>
       </Box>
       <Grid container spacing={2}>
-        {currentItems.map((transcriptItem) => (
-          <Grid item xs={12} sm={6} key={transcriptItem._id}>
+        {filteredTitle.map((titleItem) => (
+          <Grid item xs={12} sm={6} key={titleItem._id}>
             <Card>
               <CardContent>
                 <Box
@@ -132,36 +255,18 @@ const TranscriptCard = () => {
                   justifyContent="space-between"
                 >
                   <Typography variant="h5" component="h2">
-                    {transcriptItem.title}
+                    {titleItem.title}
                   </Typography>
                   <Button
-                    onClick={() => openTranscriptDialog(transcriptItem._id)}
+                    onClick={() => openTranscriptDialog(titleItem.episode)}
                   >
                     Popout
                   </Button>
-                  <IconButton
-                    onClick={() => toggleCardExpansion(transcriptItem._id)}
-                  >
-                    {expandedCardId === transcriptItem._id ? (
-                      <ExpandLessIcon />
-                    ) : (
-                      <ExpandMoreIcon />
-                    )}
-                  </IconButton>
                 </Box>
                 <Typography color="textSecondary" gutterBottom>
                   <span className={classes.episodeText}>Episode:</span>{" "}
-                  {transcriptItem.episode}
+                  {titleItem.episode}
                 </Typography>
-                {expandedCardId === transcriptItem._id && (
-                  <Typography
-                    variant="body2"
-                    component="p"
-                    dangerouslySetInnerHTML={{
-                      __html: highlightText(transcriptItem.transcript)
-                    }}
-                  />
-                )}
               </CardContent>
             </Card>
           </Grid>
@@ -175,14 +280,13 @@ const TranscriptCard = () => {
       >
         <DialogTitle>{currentEpisodeTitle}</DialogTitle>
         <DialogContent>
-          <Typography variant="body2" component="p">
-            <span
-              dangerouslySetInnerHTML={{
-                __html: highlightText(expandedTranscript)
-              }}
-              className={classes.highlightedText}
-            />
-          </Typography>
+          <Typography
+            variant="body2"
+            component="p"
+            dangerouslySetInnerHTML={{
+              __html: highlightText(expandedTranscript)
+            }}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsDialogOpen(false)} color="primary">
@@ -190,6 +294,7 @@ const TranscriptCard = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
       <Box display="flex" justifyContent="center" marginTop={2}>
         {Array.from({ length: totalPages }, (_, i) => i + 1).map(
           (pageNumber) => (

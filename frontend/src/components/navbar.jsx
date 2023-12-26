@@ -101,7 +101,7 @@ const Navbar = () => {
             flexItem
             style={{ backgroundColor: "#cb767d" }}
           />
-          <Button
+          {/* <Button
             component={Link}
             to="/books"
             color="secondary"
@@ -121,7 +121,7 @@ const Navbar = () => {
             className={`${classes.navbarButton} ${isActive("/about")}`}
           >
             <Typography variant="h6">About</Typography>
-          </Button>
+          </Button>*/}
         </Box>
         <IconButton
           edge="start"
@@ -154,7 +154,7 @@ const Navbar = () => {
           >
             Daily Cancellation
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             component={Link}
             to="/books"
             onClick={handleMobileMenuClose}
@@ -169,7 +169,7 @@ const Navbar = () => {
             className={isActive("/about")}
           >
             About
-          </MenuItem>
+          </MenuItem> */}
         </Menu>
       </Toolbar>
     </AppBar>
