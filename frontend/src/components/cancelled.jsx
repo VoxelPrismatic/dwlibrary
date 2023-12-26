@@ -59,11 +59,11 @@ const CancelledCard = () => {
       const encodedCategory = encodeURIComponent(selectedCategory);
 
       if (encodedCategory) {
-        endpoint = `http://localhost:9000/api/cancelled/${encodedCategory}?page=${currentPage}`;
+        endpoint = `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled/${encodedCategory}?page=${currentPage}`;
       } else {
         endpoint = searchInput
-          ? `http://localhost:9000/api/cancelled?query=${searchInput}&page=${currentPage}`
-          : `http://localhost:9000/api/cancelled?page=${currentPage}`;
+          ? `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled?query=${searchInput}&page=${currentPage}`
+          : `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled?page=${currentPage}`;
       }
 
       const response = await axios.get(endpoint);
@@ -87,8 +87,8 @@ const CancelledCard = () => {
     try {
       // Fetch metadata
       const metaResponse = await axios.get(
-        "http://localhost:9000/api/cancelled/meta"
-        //"http://localhost:9000/api/cancelled/meta"
+        "https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled/meta"
+        //"https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled/meta"
       );
       const totalCount = metaResponse.data.totalCount;
       setTotalItems(totalCount);
@@ -105,7 +105,7 @@ const CancelledCard = () => {
     setIsSearchActive(true);
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/cancelled?query=${typingSearchInput}`
+        `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/cancelled?query=${typingSearchInput}`
       );
       const searchResults = response.data;
       setTotalItems(searchResults.length);
