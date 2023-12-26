@@ -57,13 +57,13 @@ const TranscriptCard = () => {
     try {
       // Fetch titles and episodes
       const titlesResponse = await axios.get(
-        `http://localhost:9000/api/titles?page=${currentPage}`
+        `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/titles?page=${currentPage}`
       );
       setTitles(titlesResponse.data);
 
       const endpoint = isSearchActive
-        ? `http://localhost:9000/api/posts?query=${searchInput}&page=${currentPage}`
-        : `http://localhost:9000/api/posts?page=${currentPage}`;
+        ? `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?query=${searchInput}&page=${currentPage}`
+        : `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?page=${currentPage}`;
 
       const response = await axios.get(endpoint);
       const sortedTranscript = response.data.sort(
@@ -83,7 +83,7 @@ const TranscriptCard = () => {
     try {
       // Fetch metadata
       const metaResponse = await axios.get(
-        "http://localhost:9000/api/posts/meta"
+        "https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/meta"
         //"http://localhost:9000/api/cancelled/meta"
       );
       const totalCount = metaResponse.data.totalCount;
@@ -99,7 +99,7 @@ const TranscriptCard = () => {
   const fetchTranscript = async (episodeNumber) => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/posts/${episodeNumber}`
+        `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/${episodeNumber}`
       );
       const transcriptItem = response.data;
 
@@ -122,7 +122,7 @@ const TranscriptCard = () => {
     try {
       // Fetch search results from the /posts API
       const response = await axios.get(
-        `http://localhost:9000/api/posts?query=${typingSearchInput}`
+        `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?query=${typingSearchInput}`
       );
       const searchResults = response.data;
 
