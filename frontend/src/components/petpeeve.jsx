@@ -1,21 +1,21 @@
-import React from 'react';
-import { List, ListItem, ListItemText, Typography, Box } from '@mui/material';
-import Dailywire from '../media/socials/dw.png';
-import X from '../media/socials/x.png';
-import Facebook from '../media/socials/facebook.png';
-import Instagram from '../media/socials/instagram.png';
-import Youtube from '../media/socials/youtube.png';
-import Rumble from '../media/socials/rumble.png';
+import React from "react";
+import { List, ListItem, ListItemText, Typography, Box } from "@mui/material";
+import Dailywire from "../media/socials/dw.png";
+import X from "../media/socials/x.png";
+import Facebook from "../media/socials/facebook.png";
+import Instagram from "../media/socials/instagram.png";
+import Youtube from "../media/socials/youtube.png";
+import Rumble from "../media/socials/rumble.png";
 
 const Petpeeve = () => {
   const listItemStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '8px', // Add padding to the list items
+    display: "flex",
+    alignItems: "center",
+    padding: "8px" // Add padding to the list items
   };
 
   const imageStyle = {
-    marginRight: '8px', // Add margin to the right of the images
+    marginRight: "8px" // Add margin to the right of the images
   };
 
   return (
@@ -31,7 +31,13 @@ const Petpeeve = () => {
           rel="noopener noreferrer"
           style={listItemStyle}
         >
-          <img src={Dailywire} alt="Dailywire+" width="24" height="24" style={imageStyle} />
+          <img
+            src={Dailywire}
+            alt="Dailywire+"
+            width="24"
+            height="24"
+            style={imageStyle}
+          />
           <ListItemText primary="Dailywire+" />
         </ListItem>
         <ListItem
@@ -51,7 +57,13 @@ const Petpeeve = () => {
           rel="noopener noreferrer"
           style={listItemStyle}
         >
-          <img src={Facebook} alt="Facebook" width="24" height="24" style={imageStyle} />
+          <img
+            src={Facebook}
+            alt="Facebook"
+            width="24"
+            height="24"
+            style={imageStyle}
+          />
           <ListItemText primary="Facebook" />
         </ListItem>
         <ListItem
@@ -61,7 +73,13 @@ const Petpeeve = () => {
           rel="noopener noreferrer"
           style={listItemStyle}
         >
-          <img src={Instagram} alt="Instagram" width="24" height="24" style={imageStyle} />
+          <img
+            src={Instagram}
+            alt="Instagram"
+            width="24"
+            height="24"
+            style={imageStyle}
+          />
           <ListItemText primary="Instagram" />
         </ListItem>
         <ListItem
@@ -71,7 +89,13 @@ const Petpeeve = () => {
           rel="noopener noreferrer"
           style={listItemStyle}
         >
-          <img src={Youtube} alt="Youtube" width="24" height="24" style={imageStyle} />
+          <img
+            src={Youtube}
+            alt="Youtube"
+            width="24"
+            height="24"
+            style={imageStyle}
+          />
           <ListItemText primary="Youtube" />
         </ListItem>
         <ListItem
@@ -81,8 +105,24 @@ const Petpeeve = () => {
           rel="noopener noreferrer"
           style={listItemStyle}
         >
-          <img src={Rumble} alt="Rumble" width="24" height="24" style={imageStyle} />
+          <img
+            src={Rumble}
+            alt="Rumble"
+            width="24"
+            height="24"
+            style={imageStyle}
+          />
           <ListItemText primary="Rumble" />
+        </ListItem>
+        <ListItem
+          component="a"
+          href="https://twitter.com/SBGHistorian"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={listItemStyle}
+        >
+          <img src={X} alt="X" width="24" height="24" style={imageStyle} />
+          <ListItemText primary="Follow SBGHistorian for Updates" />
         </ListItem>
       </List>
     </Box>
