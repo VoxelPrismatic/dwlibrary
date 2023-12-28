@@ -36,7 +36,7 @@ const WebsiteHeadBanner = () => {
           Gang. I believe this website breaks that rule. Matt Walsh has many
           titles just to name a few, he is the best selling children's LGBTQ
           author, Transphobe of the year, philanthropist and a Virginian at
-          heart. Most Importantly Matt Walsh is the Theorcratic Fascist Dictator
+          heart. Most Importantly Matt Walsh is the Theocratic Fascist Dictator
           of The Sweet Baby Gang. This Website currently tracks and has
           transcripts from every show as well as tracking the daily
           cancellations which debuted on episode 431. All of this is searchable,
