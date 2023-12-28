@@ -102,7 +102,7 @@ const Home = () => {
               <ListItemIcon>
                 <img src={Cancelled} alt="Link 2" className={classes.image} />
               </ListItemIcon>
-              <ListItemText primary="Click here to discover everyone that's been cancelled by our humble Theorcratic Fascist Dictator" />
+              <ListItemText primary="Click here to discover everyone that's been cancelled by our humble Theocratic Fascist Dictator" />
             </ListItem>
             <ListItem
               component="a"
