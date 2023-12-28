@@ -96,11 +96,11 @@ const Navbar = () => {
           >
             <Typography variant="h6">Daily Cancellation</Typography>
           </Button>
-          <Divider
+          {/* <Divider
             orientation="vertical"
             flexItem
             style={{ backgroundColor: "#cb767d" }}
-          />
+          /> */}
           {/* <Button
             component={Link}
             to="/books"
