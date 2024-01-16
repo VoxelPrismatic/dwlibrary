@@ -20,6 +20,7 @@ import Sbglogo from "../media/sbgblackwhite.png";
 import Johnny from "../media/johnny.jpg";
 import TranscriptIcon from "../media/transcripticon.png";
 import WebsiteHeadBanner from "./header";
+import LibraryIcon from "../media/libraryicon.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -103,6 +104,17 @@ const Home = () => {
                 <img src={Cancelled} alt="Link 2" className={classes.image} />
               </ListItemIcon>
               <ListItemText primary="Click here to discover everyone that's been cancelled by our humble Theocratic Fascist Dictator" />
+            </ListItem>
+            <ListItem
+              component={Link}
+              to="/library"
+              button
+              className={classes.listItem}
+            >
+              <ListItemIcon>
+                <img src={LibraryIcon} alt="Link 2" className={classes.image} />
+              </ListItemIcon>
+              <ListItemText primary="Click here browse The Sweet Baby Library" />
             </ListItem>
             <ListItem
               component="a"
