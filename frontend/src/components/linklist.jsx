@@ -7,7 +7,7 @@ import Instagram from "../media/socials/instagram.png";
 import Youtube from "../media/socials/youtube.png";
 import Rumble from "../media/socials/rumble.png";
 
-const Petpeeve = () => {
+const LinkList = () => {
   const listItemStyle = {
     display: "flex",
     alignItems: "center",
@@ -129,4 +129,4 @@ const Petpeeve = () => {
   );
 };
 
-export default Petpeeve;
+export default LinkList;

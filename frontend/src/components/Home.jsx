@@ -9,7 +9,7 @@ import {
   ListItemText,
   ListItemIcon
 } from "@material-ui/core";
-import Petpeeve from "./petpeeve";
+import LinkList from "./linklist";
 import Matt from "../media/homeimage.png";
 import Matt1 from "../media/homeimage1.png";
 import Cry from "./cry";
@@ -68,7 +68,7 @@ const Home = () => {
       {/* socials box */}
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <Paper className={classes.paper} style={{ height: "100%" }}>
-          <Petpeeve />
+          <LinkList />
         </Paper>
       </Grid>
 

@@ -96,19 +96,6 @@ const Navbar = () => {
           >
             <Typography variant="h6">Daily Cancellation</Typography>
           </Button>
-          {/* <Divider
-            orientation="vertical"
-            flexItem
-            style={{ backgroundColor: "#cb767d" }}
-          /> */}
-          {/* <Button
-            component={Link}
-            to="/books"
-            color="secondary"
-            className={`${classes.navbarButton} ${isActive("/books")}`}
-          >
-            <Typography variant="h6">Books</Typography>
-          </Button>
           <Divider
             orientation="vertical"
             flexItem
@@ -116,12 +103,12 @@ const Navbar = () => {
           />
           <Button
             component={Link}
-            to="/about"
+            to="/library"
             color="secondary"
-            className={`${classes.navbarButton} ${isActive("/about")}`}
+            className={`${classes.navbarButton} ${isActive("/library")}`}
           >
-            <Typography variant="h6">About</Typography>
-          </Button>*/}
+            <Typography variant="h6">The Sweet Baby Library</Typography>
+          </Button>
         </Box>
         <IconButton
           edge="start"
@@ -154,22 +141,22 @@ const Navbar = () => {
           >
             Daily Cancellation
           </MenuItem>
-          {/* <MenuItem
-            component={Link}
-            to="/books"
-            onClick={handleMobileMenuClose}
-            className={isActive("/books")}
-          >
-            Books
-          </MenuItem>
           <MenuItem
+            component={Link}
+            to="/library"
+            onClick={handleMobileMenuClose}
+            className={isActive("/library")}
+          >
+            The Sweet Baby Library
+          </MenuItem>
+          {/* <MenuItem
             component={Link}
             to="/about"
             onClick={handleMobileMenuClose}
             className={isActive("/about")}
           >
             About
-          </MenuItem> */}
+          </MenuItem>  */}
         </Menu>
       </Toolbar>
     </AppBar>

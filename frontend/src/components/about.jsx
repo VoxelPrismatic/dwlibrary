@@ -1,17 +1,16 @@
-import React from 'react';
-import { Container, Typography, Paper } from '@mui/material';
-import Cry from './cry';
-import PetPeeve from './petpeeve'
-import WebsiteHeadBanner from './header'
+import React from "react";
+import { Container, Typography, Paper } from "@mui/material";
+import Cry from "./cry";
+import WebsiteHeadBanner from "./header";
+import BooksList from "./books";
 
 function About() {
   return (
     <div>
-    {<WebsiteHeadBanner/>}
-    {<Cry/>}
-    {<PetPeeve/>}
- \
-  </div>
+      {<BooksList />}
+      {/* {<WebsiteHeadBanner />}
+      {<Cry />}\ */}
+    </div>
   );
 }
 

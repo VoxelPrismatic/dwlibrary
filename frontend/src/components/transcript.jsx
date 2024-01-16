@@ -11,10 +11,6 @@ import {
   Button,
   IconButton
 } from "@material-ui/core";
-import {
-  ExpandMore as ExpandMoreIcon,
-  ExpandLess as ExpandLessIcon
-} from "@material-ui/icons";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -58,19 +54,23 @@ const TranscriptCard = () => {
       // Fetch titles and episodes
       const titlesResponse = await axios.get(
         `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/titles?page=${currentPage}`
+        //`http://localhost:9000/api/titles?page=${currentPage}`
       );
       setTitles(titlesResponse.data);
 
+      const encodedSearchInput = encodeURIComponent(searchInput);
       const endpoint = isSearchActive
-        ? `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?query=${searchInput}&page=${currentPage}`
+        ? `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?query=${encodedSearchInput}&page=${currentPage}`
         : `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?page=${currentPage}`;
+      //`http://localhost:9000/api/posts?query=${encodedSearchInput}&page=${currentPage}`
+      //`http://localhost:9000/api/posts?page=${currentPage}`;
 
       const response = await axios.get(endpoint);
       const sortedTranscript = response.data.sort(
         (a, b) => a.episode - b.episode
       );
 
-      setTranscript(sortedTranscript);
+      //setTranscript(sortedTranscript);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -84,7 +84,7 @@ const TranscriptCard = () => {
       // Fetch metadata
       const metaResponse = await axios.get(
         "https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/meta"
-        //"http://localhost:9000/api/cancelled/meta"
+        //"http://localhost:9000/api/posts/meta"
       );
       const totalCount = metaResponse.data.totalCount;
       setTotalItems(totalCount);
@@ -100,6 +100,7 @@ const TranscriptCard = () => {
     try {
       const response = await axios.get(
         `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/${episodeNumber}`
+        //`http://localhost:9000/api/posts/${episodeNumber}`
       );
       const transcriptItem = response.data;
 
@@ -122,8 +123,15 @@ const TranscriptCard = () => {
     try {
       // Fetch search results from the /posts API
       const response = await axios.get(
-        `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?query=${typingSearchInput}`
+        "https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts",
+        //"http://localhost:9000/api/posts",
+        {
+          params: {
+            query: typingSearchInput
+          }
+        }
       );
+
       const searchResults = response.data;
 
       // Use the length of searchResults as the total count
@@ -140,9 +148,9 @@ const TranscriptCard = () => {
       console.error("Error fetching search results:", error);
     }
   };
-  useEffect(() => {
-    console.log("Updated Transcript State:", transcript);
-  }, [transcript]);
+  // useEffect(() => {
+  //   console.log("Updated Transcript State:", transcript);
+  // }, [transcript]);
 
   const clearSearch = () => {
     setSearchInput("");
@@ -220,7 +228,7 @@ const TranscriptCard = () => {
       <Box display="flex" justifyContent="center" marginBottom={2}>
         <Box display="flex" justifyContent="center" marginBottom={2}>
           <TextField
-            label="Search"
+            label="Pandas shouldn't exist"
             variant="outlined"
             value={typingSearchInput}
             onChange={handleTypingSearch}

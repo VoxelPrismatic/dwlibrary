@@ -4,6 +4,7 @@ const Post = require("../models/postModel");
 const Cancelled = require("../models/cancelledModel");
 const Transcript = require("../models/transcriptModel");
 const Title = require("../models/titleModel");
+const Book = require("../models/bookModel");
 
 const ITEMS_PER_PAGE = 100; // Adjust the number of items per page as needed
 
@@ -180,6 +181,7 @@ router.get("/posts/meta", async function (req, res, next) {
 
     const totalCount = await Post.countDocuments(query);
     res.json({ totalCount });
+    console.log(totalCount);
   } catch (error) {
     next(error);
   }
@@ -201,6 +203,15 @@ router.get("/posts/:episodeNumber", async function (req, res, next) {
   }
 });
 
+router.get("/books", async function (req, res, next) {
+  try {
+    const books = await Book.find().sort({ episode: -1 }); // Sort by author in ascending order
+    res.send(books);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/cancelled", async function (req, res, next) {
   try {
     const cancel = await Cancelled.create(req.body);
@@ -214,6 +225,15 @@ router.post("/posts", async function (req, res, next) {
   try {
     const posts = await Post.create(req.body);
     res.send(posts);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/books", async function (req, res, next) {
+  try {
+    const books = await Book.create(req.body);
+    res.send(books);
   } catch (error) {
     next(error);
   }

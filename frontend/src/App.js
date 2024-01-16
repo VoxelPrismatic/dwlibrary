@@ -7,7 +7,7 @@ import Navbar from "./components/navbar";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import CancelledList from "./components/cancelled";
 import About from "./components/about";
-
+import Library from "./components/library";
 // Create a custom theme
 const theme = createTheme({
   palette: {
@@ -31,6 +31,7 @@ const App = () => {
           <Route path="/cancelled/:page?" element={<CancelledList />} />
           <Route path="/books" element={<Books />} />
           <Route path="/about" element={<About />} />
+          <Route path="/library" element={<Library />} />
         </Routes>
       </ThemeProvider>
     </>
