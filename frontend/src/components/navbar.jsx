@@ -47,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     backgroundColor: "#303030", // Set the background color of the AppBar
-    borderBottom: "4px solid #cb767d" // Add your existing borderBottom style here
+    borderBottom: "4px solid #cb767d",
+    width: "100%"
   }
 }));
 

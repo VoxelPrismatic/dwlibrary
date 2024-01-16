@@ -267,7 +267,7 @@ const SweetBabyLibrary = () => {
           The intention of this section of the site is to catelog all of the
           books recommended on The Matt Walsh Show.
           <br />
-          Thus The Sweet Baby Library is born!
+          Thus The Sweet Baby Gang Library is born!
           <br />
           <br />
           If you have any books not on the list mentioned on the show email
