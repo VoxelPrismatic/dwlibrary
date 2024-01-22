@@ -83,8 +83,8 @@ const TranscriptCard = () => {
     try {
       // Fetch metadata
       const metaResponse = await axios.get(
-        //"https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/meta"
-        "http://localhost:9000/api/posts/meta"
+        "https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/meta"
+        //"http://localhost:9000/api/posts/meta"
       );
       const totalCount = metaResponse.data.totalCount;
       setTotalItems(totalCount);
@@ -99,8 +99,8 @@ const TranscriptCard = () => {
   const fetchTranscript = async (episodeNumber) => {
     try {
       const response = await axios.get(
-        //`https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/${episodeNumber}`
-        `http://localhost:9000/api/posts/${episodeNumber}`
+        `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/${episodeNumber}`
+        //`http://localhost:9000/api/posts/${episodeNumber}`
       );
       const transcriptItem = response.data;
 
@@ -123,8 +123,8 @@ const TranscriptCard = () => {
     try {
       // Fetch search results from the /posts API
       const response = await axios.get(
-        //"https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts",
-        "http://localhost:9000/api/posts",
+        "https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts",
+        //"http://localhost:9000/api/posts",
         {
           params: {
             query: typingSearchInput
