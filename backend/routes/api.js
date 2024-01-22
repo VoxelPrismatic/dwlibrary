@@ -28,7 +28,7 @@ router.get("/titles", async function (req, res, next) {
     }
 
     const titles = await Title.find(query)
-      .sort({ episode: 1 })
+      .sort({ episode: -1 })
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 

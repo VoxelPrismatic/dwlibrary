@@ -36,16 +36,16 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: "100%", // Adjust the height as needed
-    borderRadius: theme.spacing(1) // Optional: add border-radius for a rounded look
+    height: "100%",
+    borderRadius: theme.spacing(1)
   },
   coverImage: {
     objectFit: "cover",
-    width: "50%" // Ensure the image takes the full width of the container
+    width: "50%"
   },
   libraryBooksIcon: {
-    marginRight: theme.spacing(1), // Adjust the margin as needed
-    fontSize: "1.5rem" // Adjust the font size as needed
+    marginRight: theme.spacing(1),
+    fontSize: "1.5rem" //
   }
 }));
 
