@@ -67,11 +67,7 @@ const CancelledCard = () => {
       }
 
       const response = await axios.get(endpoint);
-      console.log(encodedCategory);
-      const sortedCancelled = response.data.sort(
-        (a, b) => a.episode - b.episode
-      );
-      setCancelled(sortedCancelled);
+      setCancelled(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

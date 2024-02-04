@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     width: "350px",
-    marginRight: "20px",
     marginTop: "15px"
   },
   navbarButton: {
@@ -48,7 +47,10 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: "#303030", // Set the background color of the AppBar
     borderBottom: "4px solid #cb767d",
-    width: "100%"
+    width: "auto",
+    marginBottom: "15px",
+    position: "static",
+    zIndex: theme.zIndex.drawer + 1
   }
 }));
 
@@ -70,7 +72,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" className={classes.appBar}>
+    <AppBar className={classes.appBar}>
       <Toolbar>
         <Link to="/">
           <img src={Logo} alt="Logo" className={classes.image} />

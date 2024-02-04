@@ -53,7 +53,8 @@ router.get("/cancelled", async function (req, res, next) {
         $or: [
           { context: { $regex: searchRegex } },
           { cancelled: { $regex: searchRegex } },
-          { Category: { $regex: searchRegex } } // Include Category in the search
+          { Category: { $regex: searchRegex } },
+          { episode: { $regex: searchRegex } }
         ]
       };
     } else {
@@ -62,7 +63,7 @@ router.get("/cancelled", async function (req, res, next) {
     }
 
     const cancel = await Cancelled.find(query)
-      .sort({ episode: 1 }) // Sort by the "episode" field in ascending order
+      .sort({ episode: -1 }) // Sort by the "episode" field in ascending order
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
@@ -115,12 +116,13 @@ router.get("/cancelled/:category", async function (req, res, next) {
       // Apply the search criteria to the query
       query.$or = [
         { context: { $regex: searchRegex } },
-        { cancelled: { $regex: searchRegex } }
+        { cancelled: { $regex: searchRegex } },
+        { episode: { $regex: searchRegex } }
       ];
     }
 
     const cancel = await Cancelled.find(query)
-      .sort({ episode: 1 }) // Sort by the "episode" field in ascending order
+      .sort({ episode: -1 }) // Sort by the "episode" field in ascending order
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
