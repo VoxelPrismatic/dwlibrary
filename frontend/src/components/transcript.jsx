@@ -228,7 +228,7 @@ const TranscriptCard = () => {
       <Box display="flex" justifyContent="center" marginBottom={2}>
         <Box display="flex" justifyContent="center" marginBottom={2}>
           <TextField
-            label="Pandas shouldn't exist"
+            label="Pandas"
             variant="outlined"
             value={typingSearchInput}
             onChange={handleTypingSearch}
