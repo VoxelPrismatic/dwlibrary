@@ -181,7 +181,7 @@ const CancelledCard = () => {
           </button>
         ))}
       </Box>
-      <Box display="flex" justifyContent="center" marginBottom={2}>
+      {/* <Box display="flex" justifyContent="center" marginBottom={2}>
         <Box display="flex" justifyContent="center" marginBottom={2}>
           <TextField
             label="Search"
@@ -210,7 +210,7 @@ const CancelledCard = () => {
             />
           )}
         </Box>
-      </Box>
+      </Box> */}
       <Box display="flex" justifyContent="center" marginBottom={2}>
         <Select
           value={selectedCategory}

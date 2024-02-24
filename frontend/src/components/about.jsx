@@ -5,13 +5,7 @@ import WebsiteHeadBanner from "./header";
 import BooksList from "./books";
 
 function About() {
-  return (
-    <div>
-      {<BooksList />}
-      {/* {<WebsiteHeadBanner />}
-      {<Cry />}\ */}
-    </div>
-  );
+  return <div>{<Cry />}</div>;
 }
 
 export default About;
