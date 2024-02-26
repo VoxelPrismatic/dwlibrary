@@ -22,7 +22,7 @@ const WebsiteHeadBanner = () => {
               variant="h4"
               style={{ fontFamily: "Apple Color Emoji" }}
             >
-              Welcome to The Sweet Baby Gang
+              Upcoming Changes to the site!
             </Typography>
           </Grid>
           <Grid item>
@@ -32,19 +32,13 @@ const WebsiteHeadBanner = () => {
       </AccordionSummary>
       <AccordionDetails style={{ justifyContent: "center" }}>
         <Typography>
-          The #1 rule of the Sweet Baby Gang is to not talk about the Sweet Baby
-          Gang. I believe this website breaks that rule. Matt Walsh has many
-          titles just to name a few, he is the best selling children's LGBTQ
-          author, Transphobe of the year, philanthropist and a Virginian at
-          heart. Most Importantly Matt Walsh is the Theocratic Fascist Dictator
-          of The Sweet Baby Gang. This Website currently tracks and has
-          transcripts from every show as well as tracking the daily
-          cancellations which debuted on episode 431. All of this is searchable,
-          future additions to the site will track fan favorite topics such as
-          books/documentaries Matt suggested we read/watch and of course a full
-          blown alien section. Maybe I can start with a proper "about" page but
-          until then for any corrections or future suggestions email:
-          SBGHistorian@gmail.com
+          I don't own the domain thesweetbabygang.com anymore. All I will say is
+          don't worry it's in good hands. I've always wanted this project to
+          grow and expand into other hosts and that's my plan for the future of
+          this site. I will have it split into separate sections and I still
+          plan to have a full blown section dedicated to the SBG. The only
+          natural and fastest growing cult at the Daily Wire. Stay Tuned
+          everyone!
         </Typography>
       </AccordionDetails>
     </Accordion>
