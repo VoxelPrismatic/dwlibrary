@@ -4,7 +4,7 @@ import Cry from "./cry";
 import WebsiteHeadBanner from "./header";
 import BooksList from "./books";
 import ShowCards from "./showcards";
-import SCB from "../media/scb.png";
+import SCB from "../media/scb.jpg";
 
 function KnowlesTranscript() {
   return (
