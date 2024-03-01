@@ -8,6 +8,7 @@ import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import CancelledList from "./components/cancelled";
 import About from "./components/about";
 import Library from "./components/library";
+import KnowlesTranscript from "./components/knowlesTranscript";
 // Create a custom theme
 const theme = createTheme({
   palette: {
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/books" element={<Books />} />
           <Route path="/about" element={<About />} />
           <Route path="/library" element={<Library />} />
+          <Route path="/knowles/transcript" element={<KnowlesTranscript />} />
         </Routes>
       </ThemeProvider>
     </>
