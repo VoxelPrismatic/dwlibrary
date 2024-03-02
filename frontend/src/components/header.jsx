@@ -38,7 +38,7 @@ const WebsiteHeadBanner = () => {
           this site. I will have it split into separate sections and I still
           plan to have a full blown section dedicated to the SBG. The only
           natural and fastest growing cult at the Daily Wire. Stay Tuned
-          everyone!
+          everyone
         </Typography>
       </AccordionDetails>
     </Accordion>
