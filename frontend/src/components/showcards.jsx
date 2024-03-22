@@ -87,7 +87,7 @@ const App = () => {
 
   const image2Links = [
     {
-      text: "Transcripts for The Michael Knowles Show Coming Soon!",
+      text: "Transcripts for The Michael Knowles Show",
       url: "/mktranscripts"
     }
   ];
