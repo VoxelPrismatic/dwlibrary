@@ -35,7 +35,7 @@ const MKTranscriptCard = () => {
   const [expandedCardId, setExpandedCardId] = useState(null);
   const [currentEpisodeTitle, setCurrentEpisodeTitle] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 100;
+  const itemsPerPage = 200;
   const [totalItems, setTotalItems] = useState(1);
   const navigate = useNavigate(); // Add this line to get the navigate function
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -53,7 +53,7 @@ const MKTranscriptCard = () => {
     try {
       // Fetch titles and episodes
       const titlesResponse = await axios.get(
-        `http://localhost:9000/api/mktitles?page=${currentPage}`
+        `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/mktitles?page=${currentPage}`
       );
       setTitles(titlesResponse.data);
 
@@ -224,7 +224,7 @@ const MKTranscriptCard = () => {
       <Box display="flex" justifyContent="center" marginBottom={2}>
         <Box display="flex" justifyContent="center" marginBottom={2}>
           <TextField
-            label="Pandas"
+            label="Pasta"
             variant="outlined"
             value={typingSearchInput}
             onChange={handleTypingSearch}

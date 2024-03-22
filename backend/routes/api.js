@@ -8,7 +8,7 @@ const Book = require("../models/bookModel");
 const MKTitle = require("../models/mktitles");
 const MKTranscript = require("../models/mktranscripts");
 
-const ITEMS_PER_PAGE = 100; // Adjust the number of items per page as needed
+const ITEMS_PER_PAGE = 200; // Adjust the number of items per page as needed
 
 router.get("/titles", async function (req, res, next) {
   try {
