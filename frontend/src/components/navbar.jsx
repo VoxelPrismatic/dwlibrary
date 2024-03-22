@@ -171,9 +171,9 @@ const Navbar = () => {
             </MenuItem>
             <MenuItem
               component={Link}
-              to="/knowles/transcript"
+              to="/mktranscripts"
               onClick={handleMobileMenuClose}
-              className={isActive("/knowles/transcript")}
+              className={isActive("/mktranscripts")}
             >
               Michael Knowles Transcripts
             </MenuItem>
@@ -243,9 +243,9 @@ const Navbar = () => {
           <Box>
             <MenuItem
               component={Link}
-              to="/knowles/transcript"
+              to="/mktranscripts"
               onClick={handleKnowlesMenuClose}
-              className={isActive("/knowles/transcript")}
+              className={isActive("/mktranscripts")}
             >
               Michael Knowles Transcripts
             </MenuItem>

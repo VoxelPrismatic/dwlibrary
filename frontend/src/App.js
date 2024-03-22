@@ -33,7 +33,7 @@ const App = () => {
           <Route path="/books" element={<Books />} />
           <Route path="/about" element={<About />} />
           <Route path="/library" element={<Library />} />
-          <Route path="/knowles/transcript" element={<KnowlesTranscript />} />
+          <Route path="/mktranscripts" element={<KnowlesTranscript />} />
         </Routes>
       </ThemeProvider>
     </>
