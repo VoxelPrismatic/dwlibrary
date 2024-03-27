@@ -255,29 +255,6 @@ const SweetBabyLibrary = () => {
         </Paper>
       </Grid>
 
-      <Paper
-        elevation={3}
-        style={{ padding: 20, width: "100%", marginTop: "20px" }}
-      >
-        <Typography
-          marginBottom={"20px"}
-          fontFamily={"sans-serif"}
-          marginRight={"10px"}
-        >
-          The intention of this section of the site is to catelog all of the
-          books recommended on The Matt Walsh Show.
-          <br />
-          Thus The Sweet Baby Gang Library is born!
-          <br />
-          <br />
-          If you have any books not on the list mentioned on the show email
-          SBGHistorian@gmail.com with the book title and the episode you found
-          where he mentioned it.
-          <br />
-          <br />
-          Shoutout to TerribleQualityMemes for the amazing picture.
-        </Typography>
-      </Paper>
       {/* recommended */}
       <Grid item xs={showBooksList ? 12 : 6} marginLeft={"5px"}>
         {showBooksList ? (

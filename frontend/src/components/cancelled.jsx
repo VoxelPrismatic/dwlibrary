@@ -38,7 +38,7 @@ const CancelledCard = () => {
   const [expandedCardId, setExpandedCardId] = useState(null);
   const [currentEpisodeTitle, setCurrentEpisodeTitle] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 100;
+  const itemsPerPage = 200;
   const [totalItems, setTotalItems] = useState(1);
   const navigate = useNavigate(); // Add this line to get the navigate function
   const totalPages = Math.ceil(totalItems / itemsPerPage);
