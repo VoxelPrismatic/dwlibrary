@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router"; // Correct import
 import Navbar from "./components/navbar";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import CancelledList from "./components/cancelled";
-import About from "./components/about";
+import MW from "./components/mw";
 import Library from "./components/library";
 import KnowlesTranscript from "./components/knowlesTranscript";
 // Create a custom theme
@@ -31,7 +31,7 @@ const App = () => {
           <Route path="/transcript" element={<Transcript />} />
           <Route path="/cancelled/:page?" element={<CancelledList />} />
           <Route path="/books" element={<Books />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/mw" element={<MW />} />
           <Route path="/library" element={<Library />} />
           <Route path="/mktranscripts" element={<KnowlesTranscript />} />
         </Routes>

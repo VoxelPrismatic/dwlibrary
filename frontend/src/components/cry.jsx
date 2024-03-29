@@ -109,7 +109,9 @@ export default function MenCryingList() {
               aria-controls={`panel1d-content`}
               id={`panel1d-header`}
             >
-              <Typography>Reason #1: Loved one dies</Typography>
+              <Typography>
+                <b>Reason #1:</b> Loved one dies
+              </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.accordionDetails}>
               <Typography variant="body1">
@@ -136,7 +138,9 @@ export default function MenCryingList() {
               aria-controls={`panel2d-content`}
               id={`panel2d-header`}
             >
-              <Typography>Reason #2: Child born</Typography>
+              <Typography>
+                <b>Reason #2:</b> Child born
+              </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.accordionDetails}>
               <Typography variant="body1">
@@ -162,7 +166,9 @@ export default function MenCryingList() {
               aria-controls={`panel3d-content`}
               id={`panel3d-header`}
             >
-              <Typography>Reason # 3: Bride is walking down aisle</Typography>
+              <Typography>
+                <b>Reason #3:</b> Bride is walking down aisle
+              </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.accordionDetails}>
               <Typography variant="body1">
@@ -179,142 +185,148 @@ export default function MenCryingList() {
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === `panel3`}
-            onChange={handleChange(`panel3`)}
+            expanded={expanded === `panel4`}
+            onChange={handleChange(`panel4`)}
             className={classes.accordion}
           >
             <AccordionSummary
               className={classes.accordionSummary}
-              aria-controls={`panel3d-content`}
-              id={`panel3d-header`}
+              aria-controls={`panel4d-content`}
+              id={`panel4d-header`}
             >
               <Typography>
-                Reason # 4: Saying goodbye to a family member before a 3 year
-                voyage to Mars
+                <b>Reason #4:</b> Saying goodbye to a family member before a 3
+                year voyage to Mars
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.accordionDetails}>
               <Typography variant="body1">
                 <b>
-                  A dignified tear or two may be acceptable but please don't
-                  turn the faucet on okay there's no reason to go overboard
-                  don't try to prove a point
-                </b>{" "}
+                  {" "}
+                  The first 5 list items came from episode 763 while cancelling
+                  crying politicians. A true epidemic in our country <br />{" "}
+                </b>
                 <br />
-                <br /> The exceptions are pretty obvious a loved one dies your
-                child is born your bride is walking down the aisle at your
-                wedding
+                Other exceptions can be imagined we've talked about some of them
+                before perhaps for example you're saying goodbye to your family
+                before embarking on a three-year voyage to mars
               </Typography>
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === `panel3`}
-            onChange={handleChange(`panel3`)}
+            expanded={expanded === `panel5`}
+            onChange={handleChange(`panel5`)}
             className={classes.accordion}
           >
             <AccordionSummary
               className={classes.accordionSummary}
-              aria-controls={`panel3d-content`}
-              id={`panel3d-header`}
+              aria-controls={`panel5d-content`}
+              id={`panel5d-header`}
             >
               <Typography>
-                Reason # 5: Watching the end of the movie Rudy
+                <b>Reason #5:</b> Watching the end of the movie Rudy
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.accordionDetails}>
               <Typography variant="body1">
                 <b>
-                  A dignified tear or two may be acceptable but please don't
-                  turn the faucet on okay there's no reason to go overboard
-                  don't try to prove a point
+                  {" "}
+                  The first 5 list items came from episode 763 while cancelling
+                  crying politicians. A true epidemic in our country{" "}
                 </b>{" "}
                 <br />
-                <br /> The exceptions are pretty obvious a loved one dies your
-                child is born your bride is walking down the aisle at your
-                wedding
+                <br /> Other exceptions can be imagined we've talked about some
+                of them before perhaps for example you're saying goodbye to your
+                family before embarking on a three-year voyage to mars maybe
+                you're watching the end of the movie rudy
               </Typography>
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === `panel3`}
-            onChange={handleChange(`panel3`)}
+            expanded={expanded === `panel6`}
+            onChange={handleChange(`panel6`)}
             className={classes.accordion}
           >
             <AccordionSummary
               className={classes.accordionSummary}
-              aria-controls={`panel3d-content`}
-              id={`panel3d-header`}
+              aria-controls={`panel6d-content`}
+              id={`panel6d-header`}
             >
               <Typography>
-                Reason # 6: Moved to tears of joy and inspiration by anything
-                Matt says
+                <b>Reason #6:</b> Moved to tears of joy and inspiration by
+                anything Matt says
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.accordionDetails}>
               <Typography variant="body1">
-                <b>
-                  A dignified tear or two may be acceptable but please don't
-                  turn the faucet on okay there's no reason to go overboard
-                  don't try to prove a point
-                </b>{" "}
-                <br />
-                <br /> The exceptions are pretty obvious a loved one dies your
-                child is born your bride is walking down the aisle at your
-                wedding
+                <b> During the comments section </b> <br />
+                <br /> Joshua says matt's comments on what it means to truly be
+                a man were so beautiful that it made me cry well there you go
+                there is another exception that certainly i think we can all
+                agree is an exception uh if you were moved to town and i will
+                say this in fact it's important to say this right now if you're
+                a man listening to this show um and you're moved to tears of of
+                of joy and inspiration by anything that i say that is perfectly
+                okay i know that my words are that powerful and i would never
+                judge you for it you absolute pansy
               </Typography>
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === `panel3`}
-            onChange={handleChange(`panel3`)}
+            expanded={expanded === `panel7`}
+            onChange={handleChange(`panel7`)}
             className={classes.accordion}
           >
             <AccordionSummary
               className={classes.accordionSummary}
-              aria-controls={`panel3d-content`}
-              id={`panel3d-header`}
-            >
-              <Typography>Reason # 7: True Patriotism</Typography>
-            </AccordionSummary>
-            <AccordionDetails className={classes.accordionDetails}>
-              <Typography variant="body1">
-                <b>
-                  A dignified tear or two may be acceptable but please don't
-                  turn the faucet on okay there's no reason to go overboard
-                  don't try to prove a point
-                </b>{" "}
-                <br />
-                <br /> The exceptions are pretty obvious a loved one dies your
-                child is born your bride is walking down the aisle at your
-                wedding
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            expanded={expanded === `panel3`}
-            onChange={handleChange(`panel3`)}
-            className={classes.accordion}
-          >
-            <AccordionSummary
-              className={classes.accordionSummary}
-              aria-controls={`panel3d-content`}
-              id={`panel3d-header`}
+              aria-controls={`panel7d-content`}
+              id={`panel7d-header`}
             >
               <Typography>
-                Reason # 8: Child comes home healthy after NICU
+                <b>Reason #7:</b> True Patriotism
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.accordionDetails}>
               <Typography variant="body1">
                 <b>
-                  A dignified tear or two may be acceptable but please don't
-                  turn the faucet on okay there's no reason to go overboard
-                  don't try to prove a point
+                  {" "}
+                  During the comments section. This was in reference to Tamyra
+                  Mensah-Stock and her display of Patriotism while winning the
+                  gold medal at the Tokyo Olympics on August 3, 2021{" "}
                 </b>{" "}
                 <br />
-                <br /> The exceptions are pretty obvious a loved one dies your
-                child is born your bride is walking down the aisle at your
-                wedding
+                <br /> Cool Papa J Magic says i know i'm not supposed to cry as
+                a man but i teared up just a little bit to see that woman so
+                happy to represent our beautiful country and i will allow that
+                that i will allow will previously i said i think there are six
+                reasons acceptable reasons for a man to cry i'll add number
+                seven i'll give you that you're welcome
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === `panel8`}
+            onChange={handleChange(`panel8`)}
+            className={classes.accordion}
+          >
+            <AccordionSummary
+              className={classes.accordionSummary}
+              aria-controls={`panel8d-content`}
+              id={`panel8d-header`}
+            >
+              <Typography>
+                <b>Reason #8:</b> Child comes home healthy after NICU
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordionDetails}>
+              <Typography variant="body1">
+                <b> During the comments section </b> <br />
+                <br /> Graham says matt i agree with you about men crying but i
+                have one acceptable addition to the list after an 18-day stay in
+                nicu in which he almost passed we brought my now healthy son
+                home to God be the glory well graham that certainly would be an
+                exception for crying and uh congratulations to to you and to
+                your son and to your family
               </Typography>
             </AccordionDetails>
           </Accordion>

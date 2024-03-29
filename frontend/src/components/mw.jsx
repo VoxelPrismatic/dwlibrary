@@ -5,8 +5,8 @@ import WebsiteHeadBanner from "./header";
 import BooksList from "./books";
 import ShowCards from "./showcards";
 
-function About() {
-  return <div>{<ShowCards />}</div>;
+function mw() {
+  return <div>{<Cry />}</div>;
 }
 
-export default About;
+export default mw;

@@ -82,7 +82,8 @@ const App = () => {
   const image1Links = [
     { text: "Transcripts for The Matt Walsh Show", url: "/transcript" },
     { text: "Daily Cancellations for The Matt Walsh Show", url: "/cancelled" },
-    { text: "The Sweet Baby Library", url: "/library" }
+    { text: "The Sweet Baby Library", url: "/library" },
+    { text: "8 Reasons Men Can Cry", url: "/mw" }
   ];
 
   const image2Links = [
