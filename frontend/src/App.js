@@ -9,6 +9,7 @@ import CancelledList from "./components/cancelled";
 import MW from "./components/mw";
 import Library from "./components/library";
 import KnowlesTranscript from "./components/knowlesTranscript";
+import MKPotlist from "./components/MK/mkpotlist";
 // Create a custom theme
 const theme = createTheme({
   palette: {
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/books" element={<Books />} />
           <Route path="/mw" element={<MW />} />
           <Route path="/library" element={<Library />} />
+          <Route path="/sinspinach" element={<MKPotlist />} />
           <Route path="/mktranscripts" element={<KnowlesTranscript />} />
         </Routes>
       </ThemeProvider>

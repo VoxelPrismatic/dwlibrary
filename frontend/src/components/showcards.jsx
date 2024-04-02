@@ -65,7 +65,20 @@ const ImageCard = ({ imageUrl, title, description, links }) => {
       <div className={classes.buttonGroup}>
         <List component="nav" aria-label="secondary mailbox folders">
           {links.map((link, index) => (
-            <ListItem key={index} button component={Link} to={link.url}>
+            <ListItem
+              key={index}
+              button
+              component="a" // Change component to 'a'
+              href={link.url} // Add href attribute
+              target={
+                link.url === "https://mayflowercigars.com/" ? "_blank" : "_self"
+              } // Conditionally apply target attribute
+              rel={
+                link.url === "https://mayflowercigars.com/"
+                  ? "noopener noreferrer"
+                  : ""
+              } // Conditionally apply rel attribute
+            >
               <ListItemText primary={link.text} />
             </ListItem>
           ))}
@@ -90,6 +103,10 @@ const App = () => {
     {
       text: "Transcripts for The Michael Knowles Show",
       url: "/mktranscripts"
+    },
+    {
+      text: "Michael Knowles' Dank Names for Sin Spinach",
+      url: "/sinspinach"
     }
   ];
 

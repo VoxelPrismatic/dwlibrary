@@ -15,7 +15,7 @@ import Dailywire from "../media/socials/dw.png";
 import { Link } from "react-router-dom";
 import Cancelled from "../media/cancelled.jpg";
 import TranscriptIcon from "../media/transcripticon.png";
-import WebsiteHeadBanner from "./header";
+import WebsiteHeadBanner from "../header";
 import LibraryIcon from "../media/libraryicon.png";
 
 const useStyles = makeStyles((theme) => ({
