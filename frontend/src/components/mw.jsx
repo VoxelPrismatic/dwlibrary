@@ -7,12 +7,7 @@ import ShowCards from "./showcards";
 import MKPot from "./MK/mkpotlist";
 
 function mw() {
-  return (
-    <div>
-      {<Cry />}
-      {<MKPot />}
-    </div>
-  );
+  return <div>{<Cry />}</div>;
 }
 
 export default mw;
