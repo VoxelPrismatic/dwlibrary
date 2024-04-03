@@ -330,9 +330,136 @@ export default function MenCryingList() {
               </Typography>
             </AccordionDetails>
           </Accordion>
+          <Accordion
+            expanded={expanded === `panel9`}
+            onChange={handleChange(`panel9`)}
+            className={classes.accordion}
+          >
+            <AccordionSummary
+              className={classes.accordionSummary}
+              aria-controls={`panel9d-content`}
+              id={`panel9d-header`}
+            >
+              <Typography>
+                <b>Reason #9:</b> Intense Spiritual Experience
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordionDetails}>
+              <Typography variant="body1">
+                <b>
+                  {" "}
+                  Source Video on DailyWire+ YT Channel: 7 times it's Ok For Men
+                  To Cry{" "}
+                </b>{" "}
+                <br />
+                <br />{" "}
+                https://www.youtube.com/watch?v=YE4sryOimTU&list=WL&index=39
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === `panel10`}
+            onChange={handleChange(`panel10`)}
+            className={classes.accordion}
+          >
+            <AccordionSummary
+              className={classes.accordionSummary}
+              aria-controls={`panel10d-content`}
+              id={`panel10d-header`}
+            >
+              <Typography>
+                <b>Reason #10:</b> Kicked in the Shins by a Horse
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordionDetails}>
+              <Typography variant="body1">
+                <b>
+                  {" "}
+                  Source Video on DailyWire+ YT Channel: 7 times it's Ok For Men
+                  To Cry{" "}
+                </b>{" "}
+                <br />
+                <br />{" "}
+                https://www.youtube.com/watch?v=YE4sryOimTU&list=WL&index=39
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === `panel11`}
+            onChange={handleChange(`panel11`)}
+            className={classes.accordion}
+          >
+            <AccordionSummary
+              className={classes.accordionSummary}
+              aria-controls={`panel11d-content`}
+              id={`panel11d-header`}
+            >
+              <Typography>
+                <b>Reason #11:</b> His Wife's Lasagna
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordionDetails}>
+              <Typography variant="body1">
+                <b>
+                  {" "}
+                  Source Video on DailyWire+ YT Channel: 7 times it's Ok For Men
+                  To Cry{" "}
+                </b>{" "}
+                <br />
+                <br />{" "}
+                https://www.youtube.com/watch?v=YE4sryOimTU&list=WL&index=39
+                <br /> <br /> "If your if your wife makes you a lasagna that is
+                just so good that it brings you to tears that's acceptable." -
+                Matt Walsh
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === `panel12`}
+            onChange={handleChange(`panel12`)}
+            className={classes.accordion}
+          >
+            <AccordionSummary
+              className={classes.accordionSummary}
+              aria-controls={`panel12d-content`}
+              id={`panel12d-header`}
+            >
+              <Typography>
+                <b>Reason #12:</b> Being Served Chili with Ground Turkey & Black
+                Beans
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordionDetails}>
+              <Typography variant="body1">
+                <b>
+                  {" "}
+                  Source Video on DailyWire+ YT Channel: 7 times it's Ok For Men
+                  To Cry{" "}
+                </b>{" "}
+                <br />
+                <br />{" "}
+                https://www.youtube.com/watch?v=YE4sryOimTU&list=WL&index=39
+                <br /> <br /> Throw the bowl of chili go to somebody's house and
+                this has happened to me before you go to somebody's house and
+                they say oh we're having chili and you say oh wow this makes my
+                day and then they serve you the bowl of chili but then you
+                discover that the chili is made with ground turkey and black
+                beans then it's it's acceptable actually to throw the the hot
+                bowl of chili at the person who served it to you and cry and
+                that's acceptable not only morally and ethically but also
+                legally I believe that's the the law stipulates that I pretty
+                sure in most states anyway those are the seven times
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
           {/* Repeat the above Accordion components for the remaining reasons */}
         </Paper>
       </div>
     </div>
   );
 }
+
+// intense spiritual experience
+// kicked in the shins by a horse
+// Your wife makes you a lasana that's so good it just brings you to tears
+// If you go to somebodys house and they say we are having chili and the chili is made with ground turkey and black beans

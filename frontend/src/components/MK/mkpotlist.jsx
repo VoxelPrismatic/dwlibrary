@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     textAlign: "center",
     marginBottom: theme.spacing(1),
-    fontFamily: "Helvetica Neue" // Change 'YourCustomFont' to your custom font name
+    fontFamily: "Helvetica Neue" //
   },
   link: {
     color: theme.palette.primary.main,
