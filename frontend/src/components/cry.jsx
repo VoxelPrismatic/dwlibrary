@@ -72,7 +72,7 @@ export default function MenCryingList() {
               aria-controls={`panel0d-content`}
               id={`panel0d-header`}
             >
-              <Typography>8 Reasons Men Are Allowed To Cry</Typography>
+              <Typography>Reasons Men Are Allowed To Cry</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.accordionDetails}>
               <Typography variant="body1">
