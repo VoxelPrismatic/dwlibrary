@@ -10,6 +10,7 @@ import MW from "./components/mw";
 import Library from "./components/library";
 import KnowlesTranscript from "./components/knowlesTranscript";
 import MKPotlist from "./components/MK/mkpotlist";
+import MWtitles from "./components/mwtitles";
 // Create a custom theme
 const theme = createTheme({
   palette: {
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/library" element={<Library />} />
           <Route path="/sinspinach" element={<MKPotlist />} />
           <Route path="/mktranscripts" element={<KnowlesTranscript />} />
+          <Route path="/mwtitles" element={<MWtitles />} />
         </Routes>
       </ThemeProvider>
     </>
