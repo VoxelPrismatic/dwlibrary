@@ -74,6 +74,7 @@ const MWtitles = () => {
     "Fashion Guru",
     "Father",
     "Husband",
+    "Son",
     "Number #1 Best Selling Children's LGBTQ+ Author",
     "Philanthropist",
     "Potential Pulitzer Nominee",
