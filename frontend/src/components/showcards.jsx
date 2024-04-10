@@ -108,6 +108,10 @@ const App = () => {
     {
       text: "Michael Knowles' Dank Names for Sin Spinach",
       url: "/sinspinach"
+    },
+    {
+      text: "Michael Knowles' FACE-OFF Record",
+      url: "/mkfaceoff"
     }
   ];
 
