@@ -38,7 +38,7 @@ const WebsiteHeadBanner = () => {
           has ever said. Please note that all these transcripts are auto
           generated so there will be typos.
           <br />
-          This site is not affiliated or owned by the Daily Wire, all resources
+          This site is not affiliated or owned by the Daily Wire. All resources
           on this site are non-member block transcripts. Any information that
           was pulled used public platforms where the shows are available for
           free with Ads.
