@@ -40,8 +40,8 @@ const WebsiteHeadBanner = () => {
           <br />
           This site is not affiliated or owned by the Daily Wire, all resources
           on this site are non-member block transcripts. Any information that
-          was pulled was used public platforms where the shows are availble for
-          free with Ads.
+          was pulled used public platforms where the shows are availble for free
+          with Ads.
         </Typography>
       </AccordionDetails>
     </Accordion>
