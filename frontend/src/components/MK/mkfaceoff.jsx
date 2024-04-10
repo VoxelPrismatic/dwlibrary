@@ -22,43 +22,43 @@ const MyTable = () => {
   // Data for the table rows, including titles, points, winners, and images
   const rows = [
     {
-      title: "Michael Knowles Vs Walsh Women Edition",
+      title: "Walsh Women: Edition",
       points: "11-7",
       winner: "Michael Knowles",
       image: MWalsh
     },
     {
-      title: "Michael Knowles Vs Ben Shapiro Famous Dead Guys",
+      title: "Ben Shapiro: Famous Dead Guys Edition",
       points: "12-9",
       winner: "Michael Knowles",
       image: Bshapiro
     },
     {
-      title: "Michael Knowles Vs Michael Malice Famous Dictators",
+      title: "Michael Malice: Famous Dictators Edition",
       points: "12-11",
       winner: "Michael Knowles",
       image: Mmalice
     },
     {
-      title: "Michael Knowles Vs Dave Rubin Culture War",
+      title: "Dave Rubin: Culture War Edition",
       points: "10-8",
       winner: "Michael Knowles",
       image: Drubin
     },
     {
-      title: "Michael Knowles Vs Matt Walsh Catholic Edition",
+      title: "Matt Walsh Catholic Edition",
       points: "11-7",
       winner: "Michael Knowles",
       image: Mwalshw
     },
     {
-      title: "Michael Knowles Andrew Klavan Riddles",
+      title: "Andrew Klavan Riddles Edition",
       points: "7-10",
       winner: "Andrew Klavan",
       image: Aklavan
     },
     {
-      title: "Michael Knowles vs Jim Jordan Corrupt Democrats",
+      title: "Jim Jordan Corrupt Democrats Edition",
       points: "8-8",
       winner: "Tied",
       image: Jjordan
@@ -71,7 +71,7 @@ const MyTable = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Title</TableCell>
+            <TableCell>Contestent</TableCell>
             <TableCell>Points</TableCell>
             <TableCell>Winner</TableCell>
           </TableRow>
