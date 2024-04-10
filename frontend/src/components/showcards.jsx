@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import MKShow from "../media/mkshowcard.png";
 import MWShow from "../media/mwshowcard.png";
+import AKShow from "../media/akshowcard.png";
 
 const useStyles = makeStyles({
   root: {
@@ -114,6 +115,12 @@ const App = () => {
       url: "/mkfaceoff"
     }
   ];
+  const image3Links = [
+    {
+      text: "Transcripts Coming Soon... Klavanon is real!",
+      url: "/"
+    }
+  ];
 
   return (
     <div className={classes.root}>
@@ -128,6 +135,12 @@ const App = () => {
         title="The Michael Knowles Show"
         description="Transcripts for the show will be updated weekly."
         links={image2Links}
+      />
+      <ImageCard
+        imageUrl={AKShow}
+        title="The Andrew Klavan Show"
+        description="Transcripts for the show will be updated weekly."
+        links={image3Links}
       />
       {/* Add more ImageCard components as needed */}
     </div>
