@@ -22,7 +22,7 @@ const WebsiteHeadBanner = () => {
               variant="h4"
               style={{ fontFamily: "Apple Color Emoji" }}
             >
-              Upcoming Changes to the site!
+              Disclaimer Below
             </Typography>
           </Grid>
           <Grid item>
@@ -32,13 +32,15 @@ const WebsiteHeadBanner = () => {
       </AccordionSummary>
       <AccordionDetails style={{ justifyContent: "center" }}>
         <Typography>
-          I don't own the domain thesweetbabygang.com anymore. All I will say is
-          don't worry it's in good hands. I've always wanted this project to
-          grow and expand into other hosts and that's my plan for the future of
-          this site. I will have it split into separate sections and I still
-          plan to have a full blown section dedicated to the SBG. The only
-          natural and fastest growing cult at the Daily Wire. Stay Tuned
-          everyone
+          My name is SBGHistorian on X and this started out as a pet project
+          documenting all of Matt's transcripts and cancellations having a
+          centralized repository for mega fans of the SBG to search anything he
+          has ever said.
+          <br />
+          This site is not affiliated or owned by the Daily Wire, all resources
+          on this this are non-member block transcripts. Any information that
+          was pulled was used using public platforms where the shows are
+          availble for free with Ads in the auto generate transcripts.
         </Typography>
       </AccordionDetails>
     </Accordion>
