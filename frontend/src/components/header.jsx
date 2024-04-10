@@ -35,12 +35,13 @@ const WebsiteHeadBanner = () => {
           My name is SBGHistorian on X and this started out as a pet project
           documenting all of Matt's transcripts and cancellations having a
           centralized repository for mega fans of the SBG to search anything he
-          has ever said.
+          has ever said. Please note that all these transcripts are auto
+          generated so there will be typos.
           <br />
           This site is not affiliated or owned by the Daily Wire, all resources
-          on this this are non-member block transcripts. Any information that
+          on this site are non-member block transcripts. Any information that
           was pulled was used using public platforms where the shows are
-          availble for free with Ads in the auto generate transcripts.
+          availble for free with Ads.
         </Typography>
       </AccordionDetails>
     </Accordion>
