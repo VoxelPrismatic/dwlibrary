@@ -16,13 +16,14 @@ import Mmalice from "../../media/faceoff/mmalice.jpg";
 import Aklavan from "../../media/faceoff/aklavan.jpg";
 import Drubin from "../../media/faceoff/drubin.jpg";
 import Mwalshw from "../../media/faceoff/mwalshw.jpg";
+import Crufo from "../../media/faceoff/crufo.jpg";
 // Import other images as needed
 
 const MyTable = () => {
   // Data for the table rows, including titles, points, winners, and images
   const rows = [
     {
-      title: "Walsh Women: Edition",
+      title: "Matt Walsh: Women Edition",
       points: "11-7",
       winner: "Michael Knowles",
       image: MWalsh
@@ -46,19 +47,25 @@ const MyTable = () => {
       image: Drubin
     },
     {
-      title: "Matt Walsh Catholic Edition",
+      title: "Matt Walsh: Catholic Edition",
       points: "11-7",
       winner: "Michael Knowles",
       image: Mwalshw
     },
     {
-      title: "Andrew Klavan Riddles Edition",
+      title: "Christopher Rufo: Race Hustler Edition",
+      points: "13-12",
+      winner: "Michael Knowles",
+      image: Crufo
+    },
+    {
+      title: "Andrew Klavan: Riddles Edition",
       points: "7-10",
       winner: "Andrew Klavan",
       image: Aklavan
     },
     {
-      title: "Jim Jordan Corrupt Democrats Edition",
+      title: "Jim Jordan: Corrupt Democrats Edition",
       points: "8-8",
       winner: "Tied",
       image: Jjordan
@@ -71,7 +78,7 @@ const MyTable = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Contestent</TableCell>
+            <TableCell>Contestent: Edition</TableCell>
             <TableCell>Points</TableCell>
             <TableCell>Winner</TableCell>
           </TableRow>
