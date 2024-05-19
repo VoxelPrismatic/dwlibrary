@@ -85,7 +85,7 @@ const MyTable = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Contestent: Edition</TableCell>
+            <TableCell>Contestant: Edition</TableCell>
             <TableCell>Points</TableCell>
             <TableCell>Winner</TableCell>
           </TableRow>
