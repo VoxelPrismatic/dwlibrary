@@ -133,7 +133,7 @@ const CancelledCard = () => {
     const category = event.target.value;
     setSelectedCategory(category);
     setCurrentPage(1); // Reset current page when changing category
-    // navigate(`/cancelled/${category}`);
+    //navigate(`/cancelled/${category}`);
   };
   const highlightText = (text) => {
     const regex = new RegExp(searchQuery, "gi");

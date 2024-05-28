@@ -17,11 +17,18 @@ import Aklavan from "../../media/faceoff/aklavan.jpg";
 import Drubin from "../../media/faceoff/drubin.jpg";
 import Mwalshw from "../../media/faceoff/mwalshw.jpg";
 import Crufo from "../../media/faceoff/crufo.jpg";
+import CRaichik from "../../media/faceoff/craichik.jpg";
 // Import other images as needed
 
 const MyTable = () => {
   // Data for the table rows, including titles, points, winners, and images
   const rows = [
+    {
+      title: "Chaya Raichik: LibsofTikTok",
+      points: "0-18",
+      winner: "Chaya Raichik",
+      image: CRaichik
+    },
     {
       title: "Matt Walsh: Women Edition",
       points: "11-7",
@@ -78,7 +85,7 @@ const MyTable = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Contestent: Edition</TableCell>
+            <TableCell>Contestant: Edition</TableCell>
             <TableCell>Points</TableCell>
             <TableCell>Winner</TableCell>
           </TableRow>

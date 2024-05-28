@@ -1,17 +1,18 @@
 import React from "react";
 import Home from "./components/Home";
-import Transcript from "./components/transcript";
+import Transcript from "./components/walshTranscript";
 import Books from "./components/books";
 import { Routes, Route } from "react-router"; // Correct import
 import Navbar from "./components/navbar";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import CancelledList from "./components/cancelled";
 import MW from "./components/mw";
 import Library from "./components/library";
 import KnowlesTranscript from "./components/knowlesTranscript";
 import MKPotlist from "./components/MK/mkpotlist";
 import MWtitles from "./components/mwtitles";
 import MKFaceoff from "./components/MK/mkfaceoff";
+import Cancelled from "./components/dailycancellation";
+
 // Create a custom theme
 const theme = createTheme({
   palette: {
@@ -32,7 +33,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/transcript" element={<Transcript />} />
-          <Route path="/cancelled/:page?" element={<CancelledList />} />
           <Route path="/books" element={<Books />} />
           <Route path="/mw" element={<MW />} />
           <Route path="/library" element={<Library />} />
@@ -40,6 +40,7 @@ const App = () => {
           <Route path="/mktranscripts" element={<KnowlesTranscript />} />
           <Route path="/mwtitles" element={<MWtitles />} />
           <Route path="/mkfaceoff" element={<MKFaceoff />} />
+          <Route path="/cancelled" element={<Cancelled />} />
         </Routes>
       </ThemeProvider>
     </>

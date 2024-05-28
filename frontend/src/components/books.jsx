@@ -36,20 +36,17 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: "100%",
+    height: "300px", // Set a fixed height for the Card
     borderRadius: theme.spacing(1)
   },
   coverImage: {
     objectFit: "cover",
-    width: "50%"
-  },
-  libraryBooksIcon: {
-    marginRight: theme.spacing(1),
-    fontSize: "1.5rem" //
+    width: "100%",
+    height: "100%" // Make sure the image fills the container
   }
 }));
 
-const BooksList = ({ onClose }) => {
+const BooksList = () => {
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -73,30 +70,16 @@ const BooksList = ({ onClose }) => {
     setOpenDialog(false);
   };
 
-  const handleCloseBooks = () => {
-    onClose(); // Call the onClose function passed from the parent component
-  };
-
   const classes = useStyles();
 
   return (
     <div>
-      {/* Close Button for Books */}
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={handleCloseBooks}
-        style={{ width: 300, height: 200 }}
-      >
-        <LibraryBooksIcon className={classes.libraryBooksIcon} />
-        Close Recommended Books
-      </Button>
       <Grid container spacing={2} className={classes.gridContainer}>
         {books.map((book) => (
           <Grid item key={book._id} xs={12} sm={6} md={4} lg={3}>
             <Card
               onClick={() => handleCardClick(book)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", height: "100%" }} // Set a fixed height for the Card
             >
               <div className={classes.coverImageContainer}>
                 <img
@@ -105,16 +88,14 @@ const BooksList = ({ onClose }) => {
                   className={classes.coverImage}
                 />
               </div>
-              <CardContent>
+              <CardContent style={{ height: "100%" }}>
+                {" "}
+                {/* Set a fixed height for the CardContent */}
                 <Typography variant="h6" className={classes.title}>
                   {book.title}
                 </Typography>
                 <Typography variant="subtitle1" className={classes.author}>
                   {book.author}
-                </Typography>
-                <Typography variant="body2">
-                  <span className={classes.episodeText}>Episode:</span>{" "}
-                  {book.episode}
                 </Typography>
               </CardContent>
             </Card>

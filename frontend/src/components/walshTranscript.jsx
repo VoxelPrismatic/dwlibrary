@@ -23,8 +23,33 @@ import {
 const useStyles = makeStyles((theme) => ({
   episodeText: {
     color: "#cb767d"
+  },
+  responsiveText: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.8rem"
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem"
+    }
+  },
+  responsiveButton: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.8rem"
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem"
+    }
+  },
+  responsiveCard: {
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(1)
+    },
+    [theme.breakpoints.up("md")]: {
+      padding: theme.spacing(2)
+    }
   }
 }));
+
 const TranscriptCard = () => {
   const [transcript, setTranscript] = useState([]);
   const [title, setTitles] = useState([]);
@@ -41,7 +66,7 @@ const TranscriptCard = () => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   console.log(totalItems);
 
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInputs, setSearchInputs] = useState([]);
   const [typingSearchInput, setTypingSearchInput] = useState("");
   const [isSearchActive, setIsSearchActive] = useState(false);
 
@@ -53,38 +78,39 @@ const TranscriptCard = () => {
     try {
       // Fetch titles and episodes
       const titlesResponse = await axios.get(
-        //`https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/titles?page=${currentPage}`
-        `http://localhost:9000/api/titles?page=${currentPage}`
+        `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/titles?page=${currentPage}`
       );
       setTitles(titlesResponse.data);
 
-      const encodedSearchInput = encodeURIComponent(searchInput);
+      const encodedSearchInputs = searchInputs.map((input) =>
+        encodeURIComponent(`"${input}"`)
+      );
       const endpoint = isSearchActive
-        ? //? `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?query=${encodedSearchInput}&page=${currentPage}`
-          //: `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?page=${currentPage}`;
-          `http://localhost:9000/api/posts?query=${encodedSearchInput}&page=${currentPage}`
-        : `http://localhost:9000/api/posts?page=${currentPage}`;
+        ? `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?query=${encodedSearchInputs.join(
+            ","
+          )}&page=${currentPage}`
+        : `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts?page=${currentPage}`;
 
       const response = await axios.get(endpoint);
       const sortedTranscript = response.data.sort(
         (a, b) => a.episode - b.episode
       );
 
-      //setTranscript(sortedTranscript);
+      setTranscript(sortedTranscript);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
   useEffect(() => {
     fetchData();
-  }, [currentPage, searchInput]);
+  }, [currentPage, searchInputs]);
 
   const fetchMetadata = async () => {
     try {
       // Fetch metadata
       const metaResponse = await axios.get(
-        //"https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/meta"
-        "http://localhost:9000/api/posts/meta"
+        "https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/meta"
       );
       const totalCount = metaResponse.data.totalCount;
       setTotalItems(totalCount);
@@ -92,15 +118,32 @@ const TranscriptCard = () => {
       console.error("Error fetching metadata:", error);
     }
   };
+
   useEffect(() => {
     fetchMetadata();
+  }, []);
+
+  const fetchTitleMetadata = async () => {
+    try {
+      // Fetch metadata
+      const metaResponse = await axios.get(
+        "https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/titles/meta"
+      );
+      const totalCount = metaResponse.data.totalCount;
+      setTotalItems(totalCount);
+    } catch (error) {
+      console.error("Error fetching metadata:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTitleMetadata();
   }, []);
 
   const fetchTranscript = async (episodeNumber) => {
     try {
       const response = await axios.get(
-        //`https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/${episodeNumber}`
-        `http://localhost:9000/api/posts/${episodeNumber}`
+        `https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts/${episodeNumber}`
       );
       const transcriptItem = response.data;
 
@@ -117,20 +160,27 @@ const TranscriptCard = () => {
   };
 
   const handleSearchSubmit = async () => {
-    setSearchInput(typingSearchInput);
+    // Add the new search term to the searchInputs array
+    setSearchInputs((prevInputs) => [...prevInputs, typingSearchInput]);
     setIsSearchActive(true);
 
     try {
+      // Construct the search query to include all search terms
+      const searchTerms = [...searchInputs, typingSearchInput].map(
+        (term) => `"${term}"`
+      );
+      const searchQuery = searchTerms.join(" ");
+
       // Fetch search results from the /posts API
       const response = await axios.get(
-        //"https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts",
-        "http://localhost:9000/api/posts",
+        "https://the-sweet-baby-gang-backend-git-main-tyler-sowers-projects.vercel.app/api/posts",
         {
           params: {
-            query: typingSearchInput
+            query: searchQuery
           }
         }
       );
+      console.log("query", searchTerms);
 
       const searchResults = response.data;
 
@@ -144,20 +194,20 @@ const TranscriptCard = () => {
       // Log the search results and the updated transcript state
       console.log("Search Results:", searchResults);
       console.log("Updated Transcript State:", transcript);
+      console.log("updated titles", title);
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
   };
-  // useEffect(() => {
-  //   console.log("Updated Transcript State:", transcript);
-  // }, [transcript]);
 
   const clearSearch = () => {
-    setSearchInput("");
+    setSearchInputs([]);
     setTypingSearchInput("");
     setIsSearchActive(false);
+    setSearchQuery(""); // Clear search query
     fetchData();
-    fetchMetadata(); // Fetch data again to reset results
+    fetchMetadata();
+    fetchTitleMetadata(); // Fetch data again to reset results
   };
 
   const handleTypingSearch = (e) => {
@@ -204,8 +254,9 @@ const TranscriptCard = () => {
       setExpandedCardId(cardId);
     }
   };
-  console.log("total pages", totalPages);
-  console.log("transcripts", transcript);
+  //console.log("total pages", totalPages);
+  //console.log("transcripts", transcript);
+
   const classes = useStyles();
   return (
     <div>
@@ -220,61 +271,90 @@ const TranscriptCard = () => {
             key={i + 1}
             onClick={() => handlePageChange(i + 1)}
             disabled={currentPage === i + 1}
+            className={classes.responsiveButton}
           >
             {i + 1}
           </button>
         ))}
       </Box>
-      <Box display="flex" justifyContent="center" marginBottom={2}>
-        <Box display="flex" justifyContent="center" marginBottom={2}>
-          <TextField
-            label="Pandas"
-            variant="outlined"
-            value={typingSearchInput}
-            onChange={handleTypingSearch}
-          />
+
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        marginBottom={2}
+      >
+        <TextField
+          label="Pandas"
+          variant="outlined"
+          value={typingSearchInput}
+          onChange={handleTypingSearch}
+          margin="normal"
+          className={classes.responsiveText}
+        />
+        <Box display="flex" justifyContent="center" width="100%">
           <Button
             onClick={handleSearchSubmit}
             variant="contained"
             color="primary"
+            style={{ marginRight: 8 }}
+            className={classes.responsiveButton}
           >
             Search
           </Button>
+          <Button
+            onClick={clearSearch}
+            variant="contained"
+            color="secondary"
+            className={classes.responsiveButton}
+          >
+            Clear Search
+          </Button>
+        </Box>
+      </Box>
 
-          {isSearchActive && (
+      {isSearchActive && (
+        <Box display="flex" justifyContent="center" marginBottom={2}>
+          {searchInputs.map((input, index) => (
             <Chip
-              label="Clear Search"
+              key={index}
+              label={input}
               size="small"
-              onDelete={clearSearch}
               variant="outlined"
               style={{ marginLeft: 8 }}
             />
-          )}
+          ))}
         </Box>
-      </Box>
+      )}
+
       <Grid container spacing={2}>
         {filteredTitle.map((titleItem) => (
           <Grid item xs={12} sm={6} key={titleItem._id}>
-            <Card>
+            <Card className={classes.responsiveCard}>
               <CardContent>
                 <Box
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <Typography variant="h5" component="h2">
-                    {titleItem.title}
-                  </Typography>
                   <Button
                     onClick={() => openTranscriptDialog(titleItem.episode)}
+                    className={classes.responsiveButton}
                   >
-                    Popout
+                    Open
                   </Button>
+                  <Typography
+                    variant="h3"
+                    component="h2"
+                    className={classes.responsiveText}
+                  >
+                    {titleItem.title}
+                  </Typography>
+                  <Typography color="textSecondary" gutterBottom>
+                    <span className={classes.episodeText}>Episode</span>{" "}
+                    {titleItem.episode}
+                  </Typography>
                 </Box>
-                <Typography color="textSecondary" gutterBottom>
-                  <span className={classes.episodeText}>Episode:</span>{" "}
-                  {titleItem.episode}
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -286,7 +366,9 @@ const TranscriptCard = () => {
         onClose={() => setIsDialogOpen(false)}
         maxWidth="lg"
       >
-        <DialogTitle>{currentEpisodeTitle}</DialogTitle>
+        <DialogTitle className={classes.responsiveText}>
+          {currentEpisodeTitle}
+        </DialogTitle>
         <DialogContent>
           <Typography
             variant="body2"
@@ -294,10 +376,15 @@ const TranscriptCard = () => {
             dangerouslySetInnerHTML={{
               __html: highlightText(expandedTranscript)
             }}
+            className={classes.responsiveText}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setIsDialogOpen(false)} color="primary">
+          <Button
+            onClick={() => setIsDialogOpen(false)}
+            color="primary"
+            className={classes.responsiveButton}
+          >
             Close
           </Button>
         </DialogActions>
