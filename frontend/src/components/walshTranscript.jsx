@@ -19,6 +19,7 @@ import {
   DialogContent,
   DialogActions
 } from "@material-ui/core";
+import SearchHelp from "./searchHelp";
 
 const useStyles = makeStyles((theme) => ({
   episodeText: {
@@ -260,6 +261,9 @@ const TranscriptCard = () => {
   const classes = useStyles();
   return (
     <div>
+      <Box marginTop={2} marginBottom={2}>
+        <SearchHelp />
+      </Box>
       <Box
         display="flex"
         justifyContent="center"
