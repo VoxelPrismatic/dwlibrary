@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MKShow from "../media/mkshowcard.png";
 import MWShow from "../media/mwshowcard.png";
 import AKShow from "../media/akshowcard.png";
+import Backstage from "../media/backstage.png";
 
 const useStyles = makeStyles({
   root: {
@@ -121,6 +122,12 @@ const App = () => {
       url: "/"
     }
   ];
+  const image4Links = [
+    {
+      text: "Transcripts for Daily Wire Backstage",
+      url: "/backstage"
+    }
+  ];
 
   return (
     <div className={classes.root}>
@@ -135,6 +142,12 @@ const App = () => {
         title="The Michael Knowles Show"
         description="Transcripts for the show will be updated weekly."
         links={image2Links}
+      />
+      <ImageCard
+        imageUrl={Backstage}
+        title="Daily Wire Backstage"
+        description="Probably the only time Candace Owens will appear on this site."
+        links={image4Links}
       />
       <ImageCard
         imageUrl={AKShow}

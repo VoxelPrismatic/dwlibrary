@@ -12,6 +12,7 @@ import MKPotlist from "./components/MK/mkpotlist";
 import MWtitles from "./components/mwtitles";
 import MKFaceoff from "./components/MK/mkfaceoff";
 import Cancelled from "./components/dailycancellation";
+import Backstage from "./components/Backstage/backstageTranscripts";
 
 // Create a custom theme
 const theme = createTheme({
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/mwtitles" element={<MWtitles />} />
           <Route path="/mkfaceoff" element={<MKFaceoff />} />
           <Route path="/cancelled" element={<Cancelled />} />
+          <Route path="/backstage" element={<Backstage />} />
         </Routes>
       </ThemeProvider>
     </>
