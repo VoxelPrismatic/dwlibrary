@@ -180,14 +180,7 @@ const Navbar = () => {
             >
               Matt Walsh Daily Cancellation
             </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/library"
-              onClick={handleMobileMenuClose}
-              className={isActive("/library")}
-            >
-              The Sweet Baby Library
-            </MenuItem>
+
             <MenuItem
               component={Link}
               to="/mktranscripts"
@@ -203,6 +196,14 @@ const Navbar = () => {
               className={isActive("/aktranscripts")}
             >
               Andrew Klavan Transcripts
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to="/backstage"
+              onClick={handleMobileMenuClose}
+              className={isActive("/backstage")}
+            >
+              Daily Wire Backstage
             </MenuItem>
           </Box>
         </Popover>
