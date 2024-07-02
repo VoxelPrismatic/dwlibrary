@@ -118,7 +118,7 @@ const App = () => {
   ];
   const image3Links = [
     {
-      text: "Transcript for the Andrew Klavan Show: Klavanon is real!",
+      text: "Transcripts for the Andrew Klavan Show: Klavanon is real!",
       url: "/aktranscripts"
     }
   ];

@@ -20,6 +20,7 @@ import {
   DialogActions
 } from "@material-ui/core";
 import SearchHelp from "./searchHelp";
+import KlavanNotice from "./klavannotice";
 
 const useStyles = makeStyles((theme) => ({
   episodeText: {
@@ -262,7 +263,7 @@ const AKTranscriptCard = () => {
   return (
     <div>
       <Box marginTop={2} marginBottom={2}>
-        <SearchHelp />
+        <KlavanNotice />
       </Box>
 
       <Box
