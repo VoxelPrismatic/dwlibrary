@@ -118,8 +118,8 @@ const App = () => {
   ];
   const image3Links = [
     {
-      text: "Transcripts Coming Soon... Klavanon is real!",
-      url: "/"
+      text: "Transcript for the Andrew Klavan Show: Klavanon is real!",
+      url: "/aktranscripts"
     }
   ];
   const image4Links = [

@@ -63,6 +63,7 @@ const Navbar = () => {
   const [mobileMenuAnchor, setMobileMenuAnchor] = useState(null);
   const [walshMenuAnchor, setWalshMenuAnchor] = useState(null);
   const [knowlesMenuAnchor, setKnowlesMenuAnchor] = useState(null);
+  const [klavanMenuAnchor, setKlavanMenuAnchor] = useState(null);
 
   const isActive = (path) => {
     return location.pathname === path ? classes.selectedButton : "";
@@ -82,6 +83,13 @@ const Navbar = () => {
 
   const handleWalshMenuClose = () => {
     setWalshMenuAnchor(null);
+  };
+
+  const handleKlavanMenuOpen = (event) => {
+    setKlavanMenuAnchor(event.currentTarget);
+  };
+  const handleKlavanMenuClose = () => {
+    setKlavanMenuAnchor(null);
   };
 
   const handleKnowlesMenuOpen = (event) => {
@@ -106,7 +114,7 @@ const Navbar = () => {
             onClick={handleWalshMenuOpen}
           >
             <Typography variant="h6" component="span">
-              The Matt Walsh Show
+              Matt Walsh
             </Typography>
             <ArrowDropDownIcon className={classes.dropdownIcon} />
           </Button>
@@ -117,7 +125,18 @@ const Navbar = () => {
             onClick={handleKnowlesMenuOpen}
           >
             <Typography variant="h6" component="span">
-              The Michael Knowles Show
+              Michael Knowles
+            </Typography>
+            <ArrowDropDownIcon className={classes.dropdownIcon} />
+          </Button>
+          <Button
+            color="secondary"
+            className={classes.navbarButton}
+            aria-haspopup="true"
+            onClick={handleKlavanMenuOpen}
+          >
+            <Typography variant="h6" component="span">
+              Andrew Klavan
             </Typography>
             <ArrowDropDownIcon className={classes.dropdownIcon} />
           </Button>
@@ -177,14 +196,14 @@ const Navbar = () => {
             >
               Michael Knowles Transcripts
             </MenuItem>
-            {/* <MenuItem
+            <MenuItem
               component={Link}
-              to="/knowles/yaf-speeches"
+              to="/aktranscripts"
               onClick={handleMobileMenuClose}
-              className={isActive("/knowles/yaf-speeches")}
+              className={isActive("/aktranscripts")}
             >
-              Knowles YAF Speeches
-            </MenuItem> */}
+              Andrew Klavan Transcripts
+            </MenuItem>
           </Box>
         </Popover>
         <Popover
@@ -227,6 +246,7 @@ const Navbar = () => {
             </MenuItem>
           </Box>
         </Popover>
+
         <Popover
           open={Boolean(knowlesMenuAnchor)}
           anchorEl={knowlesMenuAnchor}
@@ -249,14 +269,38 @@ const Navbar = () => {
             >
               Michael Knowles Transcripts
             </MenuItem>
-            {/* <MenuItem
+            <MenuItem
               component={Link}
-              to="/knowles/yaf-speeches"
+              to="/sinspinach"
               onClick={handleKnowlesMenuClose}
-              className={isActive("/knowles/yaf-speeches")}
+              className={isActive("/sinspinach")}
             >
-              Knowles YAF Speeches
-            </MenuItem> */}
+              Knowles Sin Spinach List
+            </MenuItem>
+          </Box>
+        </Popover>
+        <Popover
+          open={Boolean(klavanMenuAnchor)}
+          anchorEl={klavanMenuAnchor}
+          onClose={handleKlavanMenuClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left"
+          }}
+        >
+          <Box>
+            <MenuItem
+              component={Link}
+              to="/aktranscripts"
+              onClick={handleKlavanMenuClose}
+              className={isActive("/aktranscripts")}
+            >
+              Andrew Klavan Transcripts
+            </MenuItem>
           </Box>
         </Popover>
       </Toolbar>
