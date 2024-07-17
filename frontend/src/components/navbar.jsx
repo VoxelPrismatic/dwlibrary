@@ -5,15 +5,18 @@ import {
   Typography,
   Button,
   Box,
-  Divider,
   makeStyles,
   IconButton,
-  Popover,
-  MenuItem
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  MenuItem,
+  Container,
+  Grid
 } from "@material-ui/core";
 import { Link, useLocation } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Logo from "../media/dwlogo.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -54,258 +57,132 @@ const useStyles = makeStyles((theme) => ({
   },
   dropdownIcon: {
     marginLeft: theme.spacing(1)
+  },
+  fullWidthAccordion: {
+    width: "100%",
+    position: "relative",
+    top: "0",
+    zIndex: theme.zIndex.drawer
+  },
+  columnTitle: {
+    marginBottom: theme.spacing(2),
+    fontWeight: "bold"
   }
 }));
 
 const Navbar = () => {
   const classes = useStyles();
   const location = useLocation();
-  const [mobileMenuAnchor, setMobileMenuAnchor] = useState(null);
-  const [walshMenuAnchor, setWalshMenuAnchor] = useState(null);
-  const [knowlesMenuAnchor, setKnowlesMenuAnchor] = useState(null);
-  const [klavanMenuAnchor, setKlavanMenuAnchor] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const isActive = (path) => {
     return location.pathname === path ? classes.selectedButton : "";
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMenuAnchor(event.currentTarget);
+  const handleMenuToggle = () => {
+    setMenuOpen(!menuOpen);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMenuAnchor(null);
+  const closeMenu = () => {
+    setMenuOpen(false);
   };
 
-  const handleWalshMenuOpen = (event) => {
-    setWalshMenuAnchor(event.currentTarget);
-  };
-
-  const handleWalshMenuClose = () => {
-    setWalshMenuAnchor(null);
-  };
-
-  const handleKlavanMenuOpen = (event) => {
-    setKlavanMenuAnchor(event.currentTarget);
-  };
-  const handleKlavanMenuClose = () => {
-    setKlavanMenuAnchor(null);
-  };
-
-  const handleKnowlesMenuOpen = (event) => {
-    setKnowlesMenuAnchor(event.currentTarget);
-  };
-
-  const handleKnowlesMenuClose = () => {
-    setKnowlesMenuAnchor(null);
-  };
+  const menuItems = [
+    {
+      title: "Home",
+      items: [{ name: "DWLibrary Home", link: "/" }]
+    },
+    {
+      title: "Matt Walsh",
+      items: [
+        { name: "Matt Walsh Transcripts", link: "/transcript" },
+        { name: "Matt Walsh Daily Cancellation", link: "/cancelled" }
+      ]
+    },
+    {
+      title: "Michael Knowles",
+      items: [{ name: "Michael Knowles Transcripts", link: "/mktranscripts" }]
+    },
+    {
+      title: "Andrew Klavan",
+      items: [{ name: "Andrew Klavan Transcripts", link: "/aktranscripts" }]
+    },
+    {
+      title: "Backstage",
+      items: [{ name: "Backstage Transcripts", link: "/backstage" }]
+    }
+  ];
 
   return (
-    <AppBar className={classes.appBar}>
-      <Toolbar>
-        <Link to="/">
-          <img src={Logo} alt="Logo" className={classes.image} />
-        </Link>
-        <Box className={classes.navbarContainer}>
-          <Button
-            color="secondary"
-            className={classes.navbarButton}
-            aria-haspopup="true"
-            onClick={handleWalshMenuOpen}
+    <>
+      <AppBar className={classes.appBar}>
+        <Toolbar>
+          <Link to="/">
+            <img src={Logo} alt="Logo" className={classes.image} />
+          </Link>
+          <Box className={classes.navbarContainer}>
+            <Button
+              color="secondary"
+              className={classes.navbarButton}
+              onClick={handleMenuToggle}
+            >
+              <Typography variant="h6" component="span">
+                The Archives
+              </Typography>
+              <ExpandMoreIcon className={classes.dropdownIcon} />
+            </Button>
+          </Box>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            className={classes.menuButton}
+            onClick={handleMenuToggle}
           >
-            <Typography variant="h6" component="span">
-              Matt Walsh
-            </Typography>
-            <ArrowDropDownIcon className={classes.dropdownIcon} />
-          </Button>
-          <Button
-            color="secondary"
-            className={classes.navbarButton}
-            aria-haspopup="true"
-            onClick={handleKnowlesMenuOpen}
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      {menuOpen && (
+        <Accordion
+          expanded={menuOpen}
+          onChange={handleMenuToggle}
+          className={classes.fullWidthAccordion}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="menu-content"
+            id="menu-header"
           >
-            <Typography variant="h6" component="span">
-              Michael Knowles
-            </Typography>
-            <ArrowDropDownIcon className={classes.dropdownIcon} />
-          </Button>
-          <Button
-            color="secondary"
-            className={classes.navbarButton}
-            aria-haspopup="true"
-            onClick={handleKlavanMenuOpen}
-          >
-            <Typography variant="h6" component="span">
-              Andrew Klavan
-            </Typography>
-            <ArrowDropDownIcon className={classes.dropdownIcon} />
-          </Button>
-        </Box>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          className={classes.menuButton}
-          onClick={handleMobileMenuOpen}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Popover
-          open={Boolean(mobileMenuAnchor)}
-          anchorEl={mobileMenuAnchor}
-          onClose={handleMobileMenuClose}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-        >
-          <Box>
-            <MenuItem
-              component={Link}
-              to="/transcript"
-              onClick={handleMobileMenuClose}
-              className={isActive("/transcript")}
-            >
-              Matt Walsh Transcripts
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/cancelled"
-              onClick={handleMobileMenuClose}
-              className={isActive("/cancelled")}
-            >
-              Matt Walsh Daily Cancellation
-            </MenuItem>
-
-            <MenuItem
-              component={Link}
-              to="/mktranscripts"
-              onClick={handleMobileMenuClose}
-              className={isActive("/mktranscripts")}
-            >
-              Michael Knowles Transcripts
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/aktranscripts"
-              onClick={handleMobileMenuClose}
-              className={isActive("/aktranscripts")}
-            >
-              Andrew Klavan Transcripts
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/backstage"
-              onClick={handleMobileMenuClose}
-              className={isActive("/backstage")}
-            >
-              Daily Wire Backstage
-            </MenuItem>
-          </Box>
-        </Popover>
-        <Popover
-          open={Boolean(walshMenuAnchor)}
-          anchorEl={walshMenuAnchor}
-          onClose={handleWalshMenuClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left"
-          }}
-        >
-          <Box>
-            <MenuItem
-              component={Link}
-              to="/transcript"
-              onClick={handleWalshMenuClose}
-              className={isActive("/transcript")}
-            >
-              Matt Walsh Transcripts
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/cancelled"
-              onClick={handleWalshMenuClose}
-              className={isActive("/cancelled")}
-            >
-              Matt Walsh Daily Cancellation
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/library"
-              onClick={handleWalshMenuClose}
-              className={isActive("/library")}
-            >
-              The Sweet Baby Library
-            </MenuItem>
-          </Box>
-        </Popover>
-
-        <Popover
-          open={Boolean(knowlesMenuAnchor)}
-          anchorEl={knowlesMenuAnchor}
-          onClose={handleKnowlesMenuClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left"
-          }}
-        >
-          <Box>
-            <MenuItem
-              component={Link}
-              to="/mktranscripts"
-              onClick={handleKnowlesMenuClose}
-              className={isActive("/mktranscripts")}
-            >
-              Michael Knowles Transcripts
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/sinspinach"
-              onClick={handleKnowlesMenuClose}
-              className={isActive("/sinspinach")}
-            >
-              Knowles Sin Spinach List
-            </MenuItem>
-          </Box>
-        </Popover>
-        <Popover
-          open={Boolean(klavanMenuAnchor)}
-          anchorEl={klavanMenuAnchor}
-          onClose={handleKlavanMenuClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left"
-          }}
-        >
-          <Box>
-            <MenuItem
-              component={Link}
-              to="/aktranscripts"
-              onClick={handleKlavanMenuClose}
-              className={isActive("/aktranscripts")}
-            >
-              Andrew Klavan Transcripts
-            </MenuItem>
-          </Box>
-        </Popover>
-      </Toolbar>
-    </AppBar>
+            <Typography variant="h6">The Daily Wire Library</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Container>
+              <Grid container spacing={3}>
+                {menuItems.map((column) => (
+                  <Grid item xs={12} sm={6} md={3} key={column.title}>
+                    <Typography variant="h6" className={classes.columnTitle}>
+                      {column.title}
+                    </Typography>
+                    {column.items.map((item) => (
+                      <MenuItem
+                        key={item.link}
+                        component={Link}
+                        to={item.link}
+                        onClick={closeMenu}
+                        className={isActive(item.link)}
+                      >
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+          </AccordionDetails>
+        </Accordion>
+      )}
+    </>
   );
 };
 
