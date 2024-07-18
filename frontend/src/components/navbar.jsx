@@ -33,14 +33,14 @@ const useStyles = makeStyles((theme) => ({
   navbarButton: {
     padding: theme.spacing(1, 2),
     "&:hover": {
-      backgroundColor: theme.palette.primary.dark
+      backgroundColor: "theme.palette.primary.dark"
     },
     [theme.breakpoints.down("sm")]: {
       display: "none"
     }
   },
   selectedButton: {
-    backgroundColor: theme.palette.primary.light
+    backgroundColor: "#b0b0b0"
   },
   menuButton: {
     [theme.breakpoints.up("md")]: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     backgroundColor: "#000000", // Set the background color of the AppBar
-    borderBottom: "4px solid #ffffff",
+    borderBottom: "4px solid #b0b0b0",
     width: "auto",
     marginBottom: "15px",
     position: "static",
