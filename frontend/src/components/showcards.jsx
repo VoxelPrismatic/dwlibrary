@@ -15,6 +15,7 @@ import MKShow from "../media/mkshowcard.png";
 import MWShow from "../media/mwshowcard.png";
 import AKShow from "../media/akshowcard.png";
 import Backstage from "../media/backstage.png";
+import AIR from "../media/air.png";
 
 const useStyles = makeStyles({
   root: {
@@ -132,7 +133,7 @@ const App = () => {
   return (
     <div className={classes.root}>
       <ImageCard
-        imageUrl={MWShow}
+        imageUrl={AIR}
         title="The Matt Walsh Show"
         description="Transcripts and cancellations for the show will be updated weekly."
         links={image1Links}
