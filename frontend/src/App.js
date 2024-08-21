@@ -14,6 +14,9 @@ import MKFaceoff from "./components/MK/mkfaceoff";
 import Cancelled from "./components/dailycancellation";
 import Backstage from "./components/Backstage/backstageTranscripts";
 import KlavanTranscript from "./components/klavanTranscripts";
+import DWOOC from "./components/outofcontext";
+import DWSomeContext from "./components/dwsomecontext"; // Import the new component
+import DWVideo from "./components/DWVideos";
 
 // Create a custom theme
 const theme = createTheme({
@@ -45,6 +48,10 @@ const App = () => {
           <Route path="/cancelled" element={<Cancelled />} />
           <Route path="/backstage" element={<Backstage />} />
           <Route path="/aktranscripts" element={<KlavanTranscript />} />
+          <Route path="/outofcontext" element={<DWOOC />} />
+          <Route path="/dwsomecontext" element={<DWSomeContext />} />{" "}
+          <Route path="/dwlibraryvideos" element={<DWVideo />} />{" "}
+          {/* New route */}
         </Routes>
       </ThemeProvider>
     </>

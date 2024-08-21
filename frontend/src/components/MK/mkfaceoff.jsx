@@ -18,11 +18,18 @@ import Drubin from "../../media/faceoff/drubin.jpg";
 import Mwalshw from "../../media/faceoff/mwalshw.jpg";
 import Crufo from "../../media/faceoff/crufo.jpg";
 import CRaichik from "../../media/faceoff/craichik.jpg";
+import TPool from "../../media/faceoff/tpool.png";
 // Import other images as needed
 
 const MyTable = () => {
   // Data for the table rows, including titles, points, winners, and images
   const rows = [
+    {
+      title: "Tim Pool: Civil War",
+      points: "0-22",
+      winner: "Tim Pool",
+      image: TPool
+    },
     {
       title: "Chaya Raichik: LibsofTikTok",
       points: "0-18",

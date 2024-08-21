@@ -1,34 +1,48 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser"); // Import bodyParser module
+const bodyParser = require("body-parser");
 require("dotenv").config();
-const cors = require('cors');
-const routes = require('./routes/api');
+const cors = require("cors");
+const routes = require("./routes/api");
+const videoRoutes = require("./routes/video"); // Import video routes
 
 // Port
 const port = process.env.PORT || 9000;
 
-mongoose.connect(process.env.DATABASE, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false
-})
+app.use(
+  cors({
+    origin: "*", // Allow all origins
+    methods: "GET,POST,PUT,DELETE", // Allow common HTTP methods
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization" // Allow common headers
+  })
+);
+
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  })
   .then(() => console.log("DB connected"))
   .catch((err) => console.log(err));
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 
-// Increase the limit of request payload size
-app.use(bodyParser.json({ limit: '50mb' })); // Adjust the limit value as needed
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/api', routes);
+app.use("/api", routes);
+app.use("/api", videoRoutes); // Add video routes to the API
 
 app.use((err, req, res, next) => {
   console.log(err);

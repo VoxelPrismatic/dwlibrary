@@ -108,8 +108,12 @@ const Navbar = () => {
       items: [{ name: "Andrew Klavan Transcripts", link: "/aktranscripts" }]
     },
     {
-      title: "Backstage",
-      items: [{ name: "Backstage Transcripts", link: "/backstage" }]
+      title: "More Daily Wire",
+      items: [
+        { name: "Backstage Transcripts", link: "/backstage" },
+        { name: "Daily Wire Out Of Context", link: "/outofcontext" },
+        { name: "Daily Wire Some Context", link: "/dwsomecontext" }
+      ]
     }
   ];
 

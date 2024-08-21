@@ -16,6 +16,7 @@ import MWShow from "../media/mwshowcard.png";
 import AKShow from "../media/akshowcard.png";
 import Backstage from "../media/backstage.png";
 import AIR from "../media/air.png";
+import OOC from "../media/outofcontext.jpg";
 
 const useStyles = makeStyles({
   root: {
@@ -117,6 +118,12 @@ const App = () => {
       url: "/mkfaceoff"
     }
   ];
+  const OOCLinks = [
+    {
+      text: "Your Favorite DW Hosts Taken Out Of Context",
+      url: "/dwlibraryvideos"
+    }
+  ];
   const image3Links = [
     {
       text: "Transcripts for the Andrew Klavan Show: Klavanon is real!",
@@ -138,6 +145,7 @@ const App = () => {
         description="Transcripts and cancellations for the show will be updated weekly."
         links={image1Links}
       />
+
       <ImageCard
         imageUrl={MKShow}
         title="The Michael Knowles Show"
@@ -145,17 +153,24 @@ const App = () => {
         links={image2Links}
       />
       <ImageCard
-        imageUrl={Backstage}
-        title="Daily Wire Backstage"
-        description="Probably the only time Candace Owens will appear on this site."
-        links={image4Links}
-      />
-      <ImageCard
         imageUrl={AKShow}
         title="The Andrew Klavan Show"
         description="Transcripts for the show will be updated weekly."
         links={image3Links}
       />
+      {/* <ImageCard
+        imageUrl={OOC}
+        title="Daily Wire Some Context"
+        description="This section is a tribute to X User RealTruthCactus."
+        links={OOCLinks}
+      /> */}
+      <ImageCard
+        imageUrl={Backstage}
+        title="Daily Wire Backstage"
+        description="Probably the only time Candace Owens will appear on this site."
+        links={image4Links}
+      />
+
       {/* Add more ImageCard components as needed */}
     </div>
   );
