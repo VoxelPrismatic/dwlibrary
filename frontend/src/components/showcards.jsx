@@ -158,12 +158,12 @@ const App = () => {
         description="Transcripts for the show will be updated weekly."
         links={image3Links}
       />
-      {/* <ImageCard
+      <ImageCard
         imageUrl={OOC}
         title="Daily Wire Some Context"
         description="This section is a tribute to X User RealTruthCactus."
         links={OOCLinks}
-      /> */}
+      />
       <ImageCard
         imageUrl={Backstage}
         title="Daily Wire Backstage"
