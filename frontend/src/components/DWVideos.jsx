@@ -25,9 +25,14 @@ const LandingPage = () => {
           padding: "20px",
           borderRadius: "8px",
           backgroundColor: "#ffffff",
-          textAlign: "center" // Center the image but not the text
+          textAlign: "center"
         }}
       >
+        <h1
+          style={{ marginBottom: "20px", fontSize: "32px", fontWeight: "bold" }}
+        >
+          DW Out Of Context
+        </h1>
         <Link
           to="/outofcontext"
           style={{ textDecoration: "none", color: "inherit" }}
@@ -41,13 +46,8 @@ const LandingPage = () => {
             One of my favorite accounts on X is RealTruthCactus, previously
             known as DWOutofcontext_.
             <br />
-            <br />
-            I wanted to pay homage to her account and create a collection of out
-            of context videos.
-            <br />
-            <br />
-            Click here to view random videos out of context from your favorite
-            Daily Wire Hosts.
+            <br />I wanted to pay homage to her account and create a collection
+            of out of context videos.
           </p>
         </Link>
       </Paper>
@@ -61,9 +61,14 @@ const LandingPage = () => {
           padding: "20px",
           borderRadius: "8px",
           backgroundColor: "#ffffff",
-          textAlign: "center" // Center the image but not the text
+          textAlign: "center"
         }}
       >
+        <h1
+          style={{ marginBottom: "20px", fontSize: "32px", fontWeight: "bold" }}
+        >
+          DW Some Context
+        </h1>
         <Link
           to="/dwsomecontext"
           style={{ textDecoration: "none", color: "inherit" }}
@@ -74,13 +79,9 @@ const LandingPage = () => {
             style={{ width: "300px", height: "auto", marginBottom: "20px" }}
           />
           <p style={{ textAlign: "left" }}>
-            Click here to view all the available videos sorted by{" "}
-            <strong>Host</strong> with very little context.
-            <br />
-            <br />
             If you haven't noticed by now, I like to centralize all of my
             favorite Daily Wire content, and out of context videos are no
-            exception.
+            exception. View all videos sorted by hosts here.
           </p>
         </Link>
       </Paper>
