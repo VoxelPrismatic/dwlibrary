@@ -54,17 +54,6 @@ const SweetBabyLibrary = () => {
 
   const classes = useStyles();
 
-  const books = [
-    {
-      _id: 1,
-      title: "Johnny The Walrus",
-      author: "Matt Walsh",
-      coverimage: Johnny,
-      description:
-        "Johnny is a little boy with a big imagination. One day he pretends to be a big scary dinosaur, the next day he’s a knight in shining armor or a playful puppy. But when the internet people find out Johnny likes to make-believe, he’s forced to make a decision between the little boy he is and the things he pretends to be — and he’s not allowed to change his mind."
-    }
-  ];
-
   return (
     <Grid container spacing={2} marginLeft={"5px"}>
       {/* library image */}
@@ -81,43 +70,6 @@ const SweetBabyLibrary = () => {
       {/* recommended */}
       <Grid item xs={12} marginLeft={"5px"}>
         <BooksList />
-      </Grid>
-
-      {/* Matts books */}
-      <Grid
-        container
-        spacing={2}
-        className={classes.gridContainer}
-        marginTop={"10px"}
-        marginLeft={"5px"}
-      >
-        {books.slice(0, 4).map((book) => (
-          <Grid item key={book._id} xs={12} sm={6} md={4} lg={3}>
-            <Card className={classes.card}>
-              <div className={classes.coverImageContainer}>
-                <img
-                  src={book.coverimage}
-                  alt={book.title}
-                  className={classes.mattsBooks}
-                />
-              </div>
-              <CardContent>
-                <Typography variant="h6">{book.title}</Typography>
-                <Typography variant="subtitle1">
-                  Author: {book.author}
-                </Typography>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  size="small"
-                  onClick={() => handleDescriptionClick(book)}
-                >
-                  Description
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
       </Grid>
 
       {/* Description Popout */}

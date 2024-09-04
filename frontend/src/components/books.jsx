@@ -36,13 +36,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: "300px", // Set a fixed height for the Card
+    height: "300px", // Fixed height for the Card
     borderRadius: theme.spacing(1)
   },
   coverImage: {
-    objectFit: "cover",
-    width: "100%",
-    height: "100%" // Make sure the image fills the container
+    objectFit: "contain", // Ensure the image is fully visible
+    width: "150px", // Fixed width for the image
+    height: "225px" // Fixed height for the image
   }
 }));
 
@@ -89,8 +89,6 @@ const BooksList = () => {
                 />
               </div>
               <CardContent style={{ height: "100%" }}>
-                {" "}
-                {/* Set a fixed height for the CardContent */}
                 <Typography variant="h6" className={classes.title}>
                   {book.title}
                 </Typography>
