@@ -19,11 +19,18 @@ import Mwalshw from "../../media/faceoff/mwalshw.jpg";
 import Crufo from "../../media/faceoff/crufo.jpg";
 import CRaichik from "../../media/faceoff/craichik.jpg";
 import TPool from "../../media/faceoff/tpool.png";
+import BCooper from "../../media/faceoff/bcooper.jpg";
 // Import other images as needed
 
 const MyTable = () => {
   // Data for the table rows, including titles, points, winners, and images
   const rows = [
+    {
+      title: "Brett Cooper: Dating & Relationships",
+      points: "11-10.5",
+      winner: "Michael Knowles",
+      image: BCooper
+    },
     {
       title: "Tim Pool: Civil War",
       points: "0-22",
