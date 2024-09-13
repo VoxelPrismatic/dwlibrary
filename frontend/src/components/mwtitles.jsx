@@ -60,6 +60,7 @@ const MWtitles = () => {
   const listItems = [
     "Handsome",
     "Brilliant",
+    "Comedian",
     "World Renowned DEI Consultant",
     "Acclaimed Bottled Water Critic",
     "Actor",
