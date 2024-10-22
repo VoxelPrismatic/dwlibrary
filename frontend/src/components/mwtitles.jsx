@@ -78,7 +78,7 @@ const MWtitles = () => {
     "Husband",
     "Alien Enthusiast",
     "Documentarian",
-    "Number #1 Best Selling Children's LGBTQ+ Author",
+    "Number 1 Best Selling Children's LGBTQ+ Author",
     "Philanthropist",
     "Potential Pulitzer Nominee",
     "Proud former Virginia resident",

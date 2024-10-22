@@ -217,7 +217,7 @@ const TranscriptCard = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    navigate(`/transcript?page=${pageNumber}`);
+    navigate(`/mktranscripts?page=${pageNumber}`);
   };
 
   const highlightText = (text) => {
