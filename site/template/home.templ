@@ -1,0 +1,113 @@
+package template
+
+type HomeCardKwargs struct {
+    Title string
+    Subtitle string
+    Image string
+    Links []HomeCardLink
+}
+
+type HomeCardLink struct {
+    Title string
+    Link string
+}
+
+templ Home() {
+    @Head("DWLibrary", "DWLibrary, the digital library for the DailyWire.")
+    <body>
+        <div class="home masonry">
+            @WalshCard()
+            @KnowlesCard()
+            @KlavanCard()
+            @BackstageCard()
+        </div>
+        <script type="text/javascript" src="/src/script.js"></script>
+    </body>
+}
+
+templ HomeCard(kwargs HomeCardKwargs) {
+    <div class="home-card post">
+        <div class="head">
+            <div class="img">
+                <img src={ kwargs.Image } />
+            </div>
+            <div class="title">
+                <h1 class="series">
+                    { kwargs.Title }
+                </h1>
+                <h3 class="description">
+                    { kwargs.Subtitle }
+                </h3>
+            </div>
+        </div>
+
+        <div class="links">
+            for _, link := range kwargs.Links {
+                <div class="link">
+                    <a href={ templ.SafeURL(link.Link) }>
+                        { link.Title }
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+func WalshCard() templ.Component {
+    card := HomeCardKwargs{
+        Title: "The Matt Walsh Show",
+        Subtitle: "Transcripts and cancellations for the show will be updated weekly.",
+        Image: "/src/MattWalsh.webp",
+        Links: []HomeCardLink{
+            { Title: "Transcripts", Link: "/transcripts/matt" },
+            { Title: "Cancellations", Link: "/transcripts/cancelled" },
+            { Title: "The Sweet Baby Library", Link: "/library/matt" },
+            { Title: "Acceptable Reasons Men Can Cry", Link: "/collections/men-can-cry" },
+            { Title: "Matt Walsh's Prestigious Titles", Link: "/collections/matts-titles" },
+        },
+    }
+
+    return HomeCard(card)
+}
+
+func KnowlesCard() templ.Component {
+    card := HomeCardKwargs{
+        Title: "The Michael Knowles Show",
+        Subtitle: "Transcripts for the show will be updated weekly.",
+        Image: "/src/MichaelKnowles.webp",
+        Links: []HomeCardLink{
+            { Title: "Transcripts", Link: "/transcripts/michael" },
+            { Title: "Dank Names for Sin Spinach", Link: "/collections/sin-spinach" },
+            { Title: "FACE-OFF Record", Link: "/records/face-off/michael" },
+            { Title: "Yes or No Record", Link: "/records/yes-or-no/michael" },
+        },
+    }
+
+    return HomeCard(card)
+}
+
+func KlavanCard() templ.Component {
+    card := HomeCardKwargs{
+        Title: "The Andrew Klavan Show",
+        Subtitle: "Transcripts for the show will be updated weekly.",
+        Image: "/src/AndrewKlavan.webp",
+        Links: []HomeCardLink{
+            { Title: "Transcripts", Link: "/transcripts/andrew" },
+        },
+    }
+
+    return HomeCard(card)
+}
+
+func BackstageCard() templ.Component {
+    card := HomeCardKwargs{
+        Title: "DailyWire Backstage",
+        Subtitle: "Probably the only time Candace Owens will appear on this site.",
+        Image: "/src/Backstage.webp",
+        Links: []HomeCardLink{
+            { Title: "Transcripts", Link: "/transcripts/backstage" },
+        },
+    }
+
+    return HomeCard(card)
+}

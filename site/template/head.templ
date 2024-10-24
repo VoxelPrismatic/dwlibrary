@@ -1,0 +1,13 @@
+package template
+
+templ Head(title string, description string) {
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="icon" href="/src/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={ description } />
+        <meta name="theme-color" content="#3d1127" />
+        <link rel="stylesheet" href="/src/style.css" />
+        <title>{ title }</title>
+    </head>
+}

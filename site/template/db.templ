@@ -1,0 +1,57 @@
+package template
+
+import (
+    "dwlibrary/site/data"
+    "time"
+)
+
+func ToDate(date int64) string {
+    t := time.Unix(date, 0)
+    return t.Format("Jan 02, 2006")
+}
+
+templ DbLink(link data.Link) {
+    <div class="db-episode">
+        <div class="img">
+            <a href={ templ.SafeURL("/episode/" + link.Name) }>
+                <img src={ link.Thumb } />
+            </a>
+        </div>
+        <div class="details">
+            <div class="meta">
+                <h1>{ link.Title }</h1>
+                <h4 class="timestamp">{ ToDate(link.Date) }</h4>
+                <p>{ link.Description }</p>
+            </div>
+            <div class="links">
+                if link.LinkYT != "" {
+                    <a href={ templ.SafeURL(link.LinkYT) }>
+                        <img src="/src/icon/yt.svg" />
+                    </a>
+                }
+                if link.LinkDW != "" {
+                    <a href={ templ.SafeURL(link.LinkDW) }>
+                        <img src="/src/icon/dw.svg" />
+                    </a>
+                }
+                if link.LinkX != "" {
+                    <a href={ templ.SafeURL(link.LinkX) }>
+                        <img src="/src/icon/x.svg" />
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+templ DbEpisodes(episodes []data.Link) {
+    @Head("DWLibrary - Episodes", "DWLibrary, the digital library for the DailyWire.")
+    <body>
+        <div class="listing">
+            for _, episode := range episodes {
+                @DbLink(episode)
+            }
+        </div>
+        <script type="text/javascript" src="/src/script.js"></script>
+    </body>
+}
