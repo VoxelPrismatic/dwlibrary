@@ -200,4 +200,37 @@ func DbEpisodes(episodes []data.Link) templ.Component {
 	})
 }
 
+func IsEditable(user data.UserEntry, page string) string {
+	if !user.IsAdmin && !user.IsEditor {
+		return ""
+	}
+
+	/*db, err := data.Connect()
+	  if err != nil {
+	      return false
+	  }*/
+
+	if page == "/home" {
+		return "/edit/home"
+	}
+
+	return ""
+}
+
+func GetUser(user string) data.UserEntry {
+	entry := data.UserEntry{
+		Username: user,
+		IsAdmin:  false,
+		IsEditor: false,
+	}
+
+	db, err := data.Connect()
+	if err != nil {
+		return entry
+	}
+
+	db.Model(&entry).Where("user = ?", user).First(&entry)
+	return entry
+}
+
 var _ = templruntime.GeneratedTemplate

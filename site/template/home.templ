@@ -1,5 +1,9 @@
 package template
 
+import (
+    "dwlibrary/site/data"
+)
+
 type HomeCardKwargs struct {
     Title string
     Subtitle string
@@ -12,20 +16,28 @@ type HomeCardLink struct {
     Link string
 }
 
-templ Home() {
+func home_cards() []data.SiteHomeEntry {
+    db := data.ForceConnect()
+    ret := []data.SiteHomeEntry{}
+    db.Model(&data.SiteHomeEntry{}).Find(&ret)
+
+    return ret
+}
+
+templ Home(user data.UserEntry) {
     @Head("DWLibrary", "DWLibrary, the digital library for the DailyWire.")
     <body>
         <div class="home masonry">
-            @WalshCard()
-            @KnowlesCard()
-            @KlavanCard()
-            @BackstageCard()
+            for _, card := range home_cards() {
+                @HomeCard(card)
+            }
         </div>
-        <script type="text/javascript" src="/src/script.js"></script>
+        @Buttons(user, "/home")
+        <script type="text/javascript" src="/src/js/script.js"></script>
     </body>
 }
 
-templ HomeCard(kwargs HomeCardKwargs) {
+templ HomeCard(kwargs data.SiteHomeEntry) {
     <div class="home-card post">
         <div class="head">
             <div class="img">
@@ -36,78 +48,19 @@ templ HomeCard(kwargs HomeCardKwargs) {
                     { kwargs.Title }
                 </h1>
                 <h3 class="description">
-                    { kwargs.Subtitle }
+                    { kwargs.Subtext }
                 </h3>
             </div>
         </div>
 
         <div class="links">
-            for _, link := range kwargs.Links {
+            for _, link := range kwargs.GetLinks() {
                 <div class="link">
                     <a href={ templ.SafeURL(link.Link) }>
-                        { link.Title }
+                        { link.Text }
                     </a>
                 </div>
             }
         </div>
     </div>
-}
-
-func WalshCard() templ.Component {
-    card := HomeCardKwargs{
-        Title: "The Matt Walsh Show",
-        Subtitle: "Transcripts and cancellations for the show will be updated weekly.",
-        Image: "/src/MattWalsh.webp",
-        Links: []HomeCardLink{
-            { Title: "Transcripts", Link: "/transcripts/matt" },
-            { Title: "Cancellations", Link: "/transcripts/cancelled" },
-            { Title: "The Sweet Baby Library", Link: "/library/matt" },
-            { Title: "Acceptable Reasons Men Can Cry", Link: "/collections/men-can-cry" },
-            { Title: "Matt Walsh's Prestigious Titles", Link: "/collections/matts-titles" },
-        },
-    }
-
-    return HomeCard(card)
-}
-
-func KnowlesCard() templ.Component {
-    card := HomeCardKwargs{
-        Title: "The Michael Knowles Show",
-        Subtitle: "Transcripts for the show will be updated weekly.",
-        Image: "/src/MichaelKnowles.webp",
-        Links: []HomeCardLink{
-            { Title: "Transcripts", Link: "/transcripts/michael" },
-            { Title: "Dank Names for Sin Spinach", Link: "/collections/sin-spinach" },
-            { Title: "FACE-OFF Record", Link: "/records/face-off/michael" },
-            { Title: "Yes or No Record", Link: "/records/yes-or-no/michael" },
-        },
-    }
-
-    return HomeCard(card)
-}
-
-func KlavanCard() templ.Component {
-    card := HomeCardKwargs{
-        Title: "The Andrew Klavan Show",
-        Subtitle: "Transcripts for the show will be updated weekly.",
-        Image: "/src/AndrewKlavan.webp",
-        Links: []HomeCardLink{
-            { Title: "Transcripts", Link: "/transcripts/andrew" },
-        },
-    }
-
-    return HomeCard(card)
-}
-
-func BackstageCard() templ.Component {
-    card := HomeCardKwargs{
-        Title: "DailyWire Backstage",
-        Subtitle: "Probably the only time Candace Owens will appear on this site.",
-        Image: "/src/Backstage.webp",
-        Links: []HomeCardLink{
-            { Title: "Transcripts", Link: "/transcripts/backstage" },
-        },
-    }
-
-    return HomeCard(card)
 }

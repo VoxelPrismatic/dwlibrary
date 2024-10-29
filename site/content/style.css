@@ -117,9 +117,24 @@ div.home-card {
         width: 100%;
         border-radius: calc(var(--padding) - var(--gap));
     }
+
     & h1 {
         color: var(--sakura-layer-inv);
+        & > input {
+            font-size: large;
+            font-weight: bold;
+        }
     }
+
+    & .card-id {
+        display: flex;
+        gap: var(--gap);
+        margin-bottom: var(--gap);
+        & button {
+            width: 36px;
+        }
+    }
+
     & div.link {
         background-color: var(--sakura-layer-base);
         border-radius: calc(var(--padding) - var(--gap));
@@ -135,26 +150,71 @@ div.home-card {
             display: block;
             padding: var(--gap);
         }
+        &.edit {
+            display: flex;
+            flex-direction: row;
+            gap: var(--gap);
+            height: 75px;
+            & > div:first-child {
+                display: flex;
+                flex-direction: column;
+                gap: var(--gap);
+                flex: 1;
+            }
+            & div:last-child {
+                height: 100%;
+                & button {
+                    height: 100%;
+                    background-color: var(--sakura-layer-base);
+                    color: var(--sakura-paint-rose);
+                    & path {
+                        stroke: var(--sakura-paint-rose);
+                    }
+                    &:hover {
+                        background-color: var(--sakura-layer-surface);
+                    }
+                }
+            }
+        }
     }
-}
 
-button#theme {
-    position: fixed;
-    bottom: var(--padding);
-    right: var(--padding);
-    backdrop-filter: blur(calc(var(--padding) / 2));
-    border: 2px solid var(--sakura-text-subtle);
-    border-radius: calc(var(--padding) / 2);
-    background-color: var(--sakura-layer-inv);
-    color: var(--sakura-text-inv);
-    cursor: pointer;
-    width: calc(var(--padding) * 2);
-    height: calc(var(--padding) * 2);
-    & > svg {
+    & input {
+        padding-top: var(--gap);
+        padding-bottom: var(--gap);
+        border: 2px solid var(--sakura-hl-high);
         width: 100%;
-        height: 100%;
-        & path {
-            stroke: var(--sakura-text-inv);
+        border-radius: calc(var(--padding) / 2);
+
+    }
+
+    & input[data-id="show-id"] {
+        font-family: "Ubuntu Mono", monospace;
+        background-color: var(--sakura-layer-inv);
+        color: var(--sakura-layer-surface);
+    }
+
+    & button {
+        background-color: var(--sakura-hl-high);
+        border: 2px solid var(--sakura-hl-high);
+        color: var(--sakura-text-norm);
+        border-radius: calc(var(--padding) / 2);
+        padding: var(--gap);
+        cursor: pointer;
+        width: 100%;
+        height: 38px;
+        & span {
+            vertical-align: super;
+        }
+        & svg {
+            height: 100%;
+            width: min-content;
+            display: inline;
+            & path {
+                stroke: var(--sakura-text-norm);
+            }
+        }
+        &:hover {
+            background-color: var(--sakura-hl-med);
         }
     }
 }
@@ -198,5 +258,123 @@ div.db-episode {
         & div.meta {
             flex-grow: 1;
         }
+    }
+}
+
+div#buttons {
+    position: fixed;
+    bottom: var(--padding);
+    right: var(--padding);
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--gap) / 2);
+
+    & > div {
+        display: flex;
+        flex-direction: row;
+        gap: calc(var(--gap) / 2);
+        justify-content: end;
+    }
+
+    & button {
+        border: 2px solid var(--btn-bg);
+        backdrop-filter: blur(calc(var(--padding) / 2));
+        background-color: color-mix(in oklab, var(--btn-bg) 25%, #0000 75%);
+        color: var(--btn-path);
+        border-radius: calc(var(--padding) / 2);
+        cursor: pointer;
+        width: calc(var(--padding) * 2);
+        height: calc(var(--padding) * 2);
+        & > svg {
+            width: 100%;
+            height: 100%;
+            & path {
+                stroke: var(--btn-path);
+            }
+        }
+
+        &.inv {
+            --btn-bg: var(--sakura-layer-inv);
+            --btn-path: var(--sakura-layer-base);
+            background-color: color-mix(in oklab, var(--btn-bg) 75%, #0000 25%);
+        }
+
+        &.gold {
+            --btn-bg: var(--sakura-paint-gold);
+            --btn-path: var(--sakura-text-norm);
+        }
+
+        &.rose {
+            --btn-bg: var(--sakura-paint-rose);
+            --btn-path: var(--sakura-text-norm);
+        }
+
+        &.pine {
+            --btn-bg: var(--sakura-paint-pine);
+            --btn-path: var(--sakura-text-norm);
+        }
+
+        &.foam {
+            --btn-bg: var(--sakura-paint-foam);
+            --btn-path: var(--sakura-text-norm);
+        }
+
+        &.tree {
+            --btn-bg: var(--sakura-paint-tree);
+            --btn-path: var(--sakura-text-norm);
+        }
+
+        &.iris {
+            --btn-bg: var(--sakura-paint-iris);
+            --btn-path: var(--sakura-text-norm);
+        }
+
+        &.love {
+            --btn-bg: var(--sakura-paint-love);
+            --btn-path: var(--sakura-text-norm);
+        }
+    }
+}
+
+div.svg-cache {
+    display: none;
+}
+
+div.login {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    & form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+    }
+}
+
+input[type="text"], input[type="password"] {
+    background-color: var(--sakura-layer-surface);
+    color: var(--sakura-text-norm);
+    border: 2px solid var(--sakura-layer-surface);
+    padding: var(--padding);
+    border-radius: var(--padding);
+    & + span.error {
+        color: var(--sakura-paint-rose);
+        font-size: small;
+        font-weight: bold;
+    }
+}
+
+input[type="submit"] {
+    background-color: var(--sakura-paint-tree);
+    color: var(--sakura-layer-base);
+    font-weight: bold;
+    border: 2px solid var(--sakura-layer-overlay);
+    padding: var(--padding);
+    border-radius: var(--padding);
+    &[disabled] {
+        background-color: var(--sakura-paint-rose);
     }
 }

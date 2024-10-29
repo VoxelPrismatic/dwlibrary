@@ -18,6 +18,9 @@ func main() {
 	}
 
 	http.HandleFunc("/", router.HomeRouter)
+	http.HandleFunc("/api/", router.ApiRouter)
+	http.HandleFunc("/login", router.LoginRouter)
+	http.HandleFunc("/edit/", router.EditRouter)
 	http.HandleFunc("/collections/", router.CollectionsRouter)
 	http.HandleFunc("/src/", router.HandleSource)
 	http.HandleFunc("/db/link", router.DatabaseLinkRouter)

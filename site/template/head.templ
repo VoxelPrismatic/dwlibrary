@@ -1,5 +1,15 @@
 package template
 
+import (
+    "os"
+    "strings"
+    "fmt"
+
+    "dwlibrary/site/data"
+
+    "html/template"
+)
+
 templ Head(title string, description string) {
     <head>
         <meta charset="utf-8"/>
@@ -10,4 +20,75 @@ templ Head(title string, description string) {
         <link rel="stylesheet" href="/src/style.css" />
         <title>{ title }</title>
     </head>
+}
+
+
+// ICONS FROM https://www.svgrepo.com/collection/dazzle-line-icons
+templ Buttons(user data.UserEntry, page string) {
+    <div id="buttons">
+        <div>
+            if strings.Contains(page, "/edit/") {
+                @Button("dazzle", "floppy-disk", "love", "save", "Save page")
+            } else if IsEditable(user, page) != "" {
+                <button id="edit" title="Edit page" class="rose" data-href={ IsEditable(user, page) }>
+                    @SvgIcon("dazzle", "pencil")
+                </button>
+            }
+
+            if user.Username == "" {
+                @Button("dazzle", "user", "iris", "login", "Log in")
+            } else if user.IsAdmin {
+                @Button("dazzle", "crown", "gold", "login", "Admin")
+            } else if user.IsEditor {
+                @Button("dazzle", "message-circle-pencil", "tree", "login", "Editor")
+            } else {
+                @Button("dazzle", "eye", "rose", "login", "View Only")
+            }
+        </div>
+        <div>
+            @Button("dazzle", "house-chimney-blank", "pine", "home", "Home")
+            @Button("dazzle", "moon", "inv", "theme", "Switch to Dark Mode")
+        </div>
+    </div>
+    <div class="svg-cache">
+        @SvgIcon("dazzle", "sun")
+    </div>
+}
+
+templ Button(collection string, icon string, color string, id string, title string) {
+    <button id={ id } title={ title } class={ color }>
+        @SvgIcon(collection, icon)
+    </button>
+
+}
+
+var svg_cache = map[string]templ.Component{}
+
+func SvgIcon(collection string, icon string) templ.Component {
+    if svg, ok := svg_cache[icon]; ok {
+        return svg
+    }
+
+    loc := fmt.Sprintf("./site/content/svg/%s/%s.svg", collection, icon)
+    bytes, err := os.ReadFile(loc)
+    if err != nil {
+        return to_component(loc)
+    }
+
+
+    str := string(bytes)
+    str = fmt.Sprintf(`<svg data-id="%s" class="svg-cache" %s`, icon, strings.SplitN(str, "<svg", 2)[1])
+    t, err := template.New("example").Parse(str)
+    if err != nil {
+        return to_component(err.Error())
+    }
+
+    ret := templ.FromGoHTML(t, nil)
+
+    svg_cache[icon] = ret
+    return ret
+}
+
+templ to_component(str string) {
+    { str }
 }

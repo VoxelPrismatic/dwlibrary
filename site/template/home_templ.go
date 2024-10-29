@@ -8,6 +8,10 @@ package template
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import (
+	"dwlibrary/site/data"
+)
+
 type HomeCardKwargs struct {
 	Title    string
 	Subtitle string
@@ -20,7 +24,15 @@ type HomeCardLink struct {
 	Link  string
 }
 
-func Home() templ.Component {
+func home_cards() []data.SiteHomeEntry {
+	db := data.ForceConnect()
+	ret := []data.SiteHomeEntry{}
+	db.Model(&data.SiteHomeEntry{}).Find(&ret)
+
+	return ret
+}
+
+func Home(user data.UserEntry) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -49,23 +61,21 @@ func Home() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = WalshCard().Render(ctx, templ_7745c5c3_Buffer)
+		for _, card := range home_cards() {
+			templ_7745c5c3_Err = HomeCard(card).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = KnowlesCard().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Buttons(user, "/home").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = KlavanCard().Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = BackstageCard().Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><script type=\"text/javascript\" src=\"/src/script.js\"></script></body>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script type=\"text/javascript\" src=\"/src/js/script.js\"></script></body>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -73,7 +83,7 @@ func Home() templ.Component {
 	})
 }
 
-func HomeCard(kwargs HomeCardKwargs) templ.Component {
+func HomeCard(kwargs data.SiteHomeEntry) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -101,7 +111,7 @@ func HomeCard(kwargs HomeCardKwargs) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(kwargs.Image)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `home.templ`, Line: 32, Col: 39}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `home.templ`, Line: 44, Col: 39}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -114,7 +124,7 @@ func HomeCard(kwargs HomeCardKwargs) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(kwargs.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `home.templ`, Line: 36, Col: 34}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `home.templ`, Line: 48, Col: 34}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -125,9 +135,9 @@ func HomeCard(kwargs HomeCardKwargs) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(kwargs.Subtitle)
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(kwargs.Subtext)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `home.templ`, Line: 39, Col: 37}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `home.templ`, Line: 51, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -137,7 +147,7 @@ func HomeCard(kwargs HomeCardKwargs) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, link := range kwargs.Links {
+		for _, link := range kwargs.GetLinks() {
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"link\"><a href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -152,9 +162,9 @@ func HomeCard(kwargs HomeCardKwargs) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
-			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(link.Title)
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(link.Text)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home.templ`, Line: 48, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home.templ`, Line: 60, Col: 35}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -173,63 +183,63 @@ func HomeCard(kwargs HomeCardKwargs) templ.Component {
 	})
 }
 
-func WalshCard() templ.Component {
-	card := HomeCardKwargs{
-		Title:    "The Matt Walsh Show",
-		Subtitle: "Transcripts and cancellations for the show will be updated weekly.",
-		Image:    "/src/MattWalsh.webp",
-		Links: []HomeCardLink{
-			{Title: "Transcripts", Link: "/transcripts/matt"},
-			{Title: "Cancellations", Link: "/transcripts/cancelled"},
-			{Title: "The Sweet Baby Library", Link: "/library/matt"},
-			{Title: "Acceptable Reasons Men Can Cry", Link: "/collections/men-can-cry"},
-			{Title: "Matt Walsh's Prestigious Titles", Link: "/collections/matts-titles"},
-		},
-	}
+/*func WalshCard() templ.Component {
+    card := HomeCardKwargs{
+        Title: "The Matt Walsh Show",
+        Subtitle: "Transcripts and cancellations for the show will be updated weekly.",
+        Image: "/src/MattWalsh.webp",
+        Links: []HomeCardLink{
+            { Title: "Transcripts", Link: "/transcripts/matt" },
+            { Title: "Cancellations", Link: "/transcripts/cancelled" },
+            { Title: "The Sweet Baby Library", Link: "/library/matt" },
+            { Title: "Acceptable Reasons Men Can Cry", Link: "/collections/men-can-cry" },
+            { Title: "Matt Walsh's Prestigious Titles", Link: "/collections/matts-titles" },
+        },
+    }
 
-	return HomeCard(card)
+    return HomeCard(card)
 }
 
 func KnowlesCard() templ.Component {
-	card := HomeCardKwargs{
-		Title:    "The Michael Knowles Show",
-		Subtitle: "Transcripts for the show will be updated weekly.",
-		Image:    "/src/MichaelKnowles.webp",
-		Links: []HomeCardLink{
-			{Title: "Transcripts", Link: "/transcripts/michael"},
-			{Title: "Dank Names for Sin Spinach", Link: "/collections/sin-spinach"},
-			{Title: "FACE-OFF Record", Link: "/records/face-off/michael"},
-			{Title: "Yes or No Record", Link: "/records/yes-or-no/michael"},
-		},
-	}
+    card := HomeCardKwargs{
+        Title: "The Michael Knowles Show",
+        Subtitle: "Transcripts for the show will be updated weekly.",
+        Image: "/src/MichaelKnowles.webp",
+        Links: []HomeCardLink{
+            { Title: "Transcripts", Link: "/transcripts/michael" },
+            { Title: "Dank Names for Sin Spinach", Link: "/collections/sin-spinach" },
+            { Title: "FACE-OFF Record", Link: "/records/face-off/michael" },
+            { Title: "Yes or No Record", Link: "/records/yes-or-no/michael" },
+        },
+    }
 
-	return HomeCard(card)
+    return HomeCard(card)
 }
 
 func KlavanCard() templ.Component {
-	card := HomeCardKwargs{
-		Title:    "The Andrew Klavan Show",
-		Subtitle: "Transcripts for the show will be updated weekly.",
-		Image:    "/src/AndrewKlavan.webp",
-		Links: []HomeCardLink{
-			{Title: "Transcripts", Link: "/transcripts/andrew"},
-		},
-	}
+    card := HomeCardKwargs{
+        Title: "The Andrew Klavan Show",
+        Subtitle: "Transcripts for the show will be updated weekly.",
+        Image: "/src/AndrewKlavan.webp",
+        Links: []HomeCardLink{
+            { Title: "Transcripts", Link: "/transcripts/andrew" },
+        },
+    }
 
-	return HomeCard(card)
+    return HomeCard(card)
 }
 
 func BackstageCard() templ.Component {
-	card := HomeCardKwargs{
-		Title:    "DailyWire Backstage",
-		Subtitle: "Probably the only time Candace Owens will appear on this site.",
-		Image:    "/src/Backstage.webp",
-		Links: []HomeCardLink{
-			{Title: "Transcripts", Link: "/transcripts/backstage"},
-		},
-	}
+    card := HomeCardKwargs{
+        Title: "DailyWire Backstage",
+        Subtitle: "Probably the only time Candace Owens will appear on this site.",
+        Image: "/src/Backstage.webp",
+        Links: []HomeCardLink{
+            { Title: "Transcripts", Link: "/transcripts/backstage" },
+        },
+    }
 
-	return HomeCard(card)
-}
+    return HomeCard(card)
+}*/
 
 var _ = templruntime.GeneratedTemplate

@@ -212,9 +212,9 @@ func FillSeries() error {
 	return nil
 }
 
-func main() {
+/*func main() {
 	err := FillSeries()
 	if err != nil {
 		panic(err)
 	}
-}
+}*/

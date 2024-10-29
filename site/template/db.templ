@@ -55,3 +55,37 @@ templ DbEpisodes(episodes []data.Link) {
         <script type="text/javascript" src="/src/script.js"></script>
     </body>
 }
+
+func IsEditable(user data.UserEntry, page string) string {
+    if !user.IsAdmin && !user.IsEditor {
+        return ""
+    }
+
+    /*db, err := data.Connect()
+    if err != nil {
+        return false
+    }*/
+
+    if page == "/home" {
+        return "/edit/home"
+    }
+
+    return ""
+}
+
+func GetUser(user string) data.UserEntry {
+    entry := data.UserEntry{
+        Username: user,
+        IsAdmin: false,
+        IsEditor: false,
+    }
+
+    db, err := data.Connect()
+    if err != nil {
+        return entry
+    }
+
+    db.Model(&entry).Where("user = ?", user).First(&entry)
+    return entry
+}
+
