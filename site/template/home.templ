@@ -158,36 +158,41 @@ templ EditHomeHead(user data.UserEntry, kwargs data.SiteHomeEntry) {
 
 templ HomeLink(user data.UserEntry, kwargs data.SiteHomeEntry, link data.SiteHomeLinkEntry) {
     <div class="anchor" id={ fmt.Sprintf("%s-%d", kwargs.Show, link.Placement) }>
-        <div class="link">
-            <a href={ templ.SafeURL(link.Link) }>
-                { link.Text }
-            </a>
-        </div>
-        if user.IsAdmin {
-            <div class="edit">
-                if link.Placement == len(kwargs.GetLinks()) {
-                    <button hx-patch={ fmt.Sprintf("/htmx/home-link/%s/%d", kwargs.Show, link.Placement) }
-                        hx-target={ fmt.Sprintf("#%s-%d", kwargs.Show, link.Placement) }
-                        hx-trigger="click"
-                        hx-swap="outerHTML"
-                        title="New Link"
-                        class="action new"
-                    >
-                        @SvgIcon("dazzle", "plus")
-                    </button>
-                } else {
-                    <button hx-patch={ fmt.Sprintf("/htmx/home-link/%s/%d", kwargs.Show, link.Placement) }
-                        hx-target={ fmt.Sprintf("#%s-%d", kwargs.Show, link.Placement) }
-                        hx-trigger="click"
-                        hx-swap="outerHTML"
-                        title="Edit Link"
-                        class="action edit"
-                    >
-                        @SvgIcon("dazzle", "pencil")
-                    </button>
-                }
+        <div>
+            <div class="link">
+                <a href={ templ.SafeURL(link.Link) }>
+                    { link.Text }
+                </a>
             </div>
-        }
+            if user.IsAdmin {
+                <div class="edit">
+                    if link.Placement == len(kwargs.GetLinks()) {
+                        <button hx-patch={ fmt.Sprintf("/htmx/home-link/%s/%d", kwargs.Show, link.Placement) }
+                            hx-target={ fmt.Sprintf("#%s-%d", kwargs.Show, link.Placement) }
+                            hx-trigger="click"
+                            hx-swap="outerHTML"
+                            title="New Link"
+                            class="action new"
+                        >
+                            @SvgIcon("dazzle", "plus")
+                        </button>
+                    } else {
+                        <button hx-patch={ fmt.Sprintf("/htmx/home-link/%s/%d", kwargs.Show, link.Placement) }
+                            hx-target={ fmt.Sprintf("#%s-%d", kwargs.Show, link.Placement) }
+                            hx-trigger="click"
+                            hx-swap="outerHTML"
+                            title="Edit Link"
+                            class="action edit"
+                        >
+                            @SvgIcon("dazzle", "pencil")
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+        <div class="behind">
+            <input class="link" data-id="link-url" type="text" name="url" value={ link.Link } placeholder="Link URL"/>
+        </div>
     </div>
 }
 
@@ -198,14 +203,19 @@ templ EditHomeLink(user data.UserEntry, kwargs data.SiteHomeEntry, link data.Sit
             hx-swap="outerHTML"
         >
             <div>
-                <input class="link" data-id="link-text" type="text" name="text" value={ link.Text } placeholder="Link Text"/>
-                <div class="save">
+                <input class="link"
+                    data-id="link-text"
+                    type="text"
+                    name="text"
+                    value={ link.Text }
+                    placeholder="Link Text"/>
+                <div class="edit">
                     <button type="submit" class="action save" title="Save Link">
                         @SvgIcon("dazzle", "floppy-disk")
                     </button>
                 </div>
             </div>
-            <div>
+            <div class="behind">
                 <input class="link" data-id="link-url" type="text" name="url" value={ link.Link } placeholder="Link URL"/>
                 <div class="undo">
                     <button hx-get={ fmt.Sprintf("/htmx/home-link/%s/%d", kwargs.Show, link.Placement) }

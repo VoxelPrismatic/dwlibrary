@@ -222,7 +222,7 @@ func HtmxHomeLinkRouter(user data.UserEntry, w http.ResponseWriter, r *http.Requ
 			placement++
 			db.Save(&link)
 		}
-		db.Debug().Model(&data.SiteHomeLinkEntry{}).Delete(&data.SiteHomeLinkEntry{Show: show, Placement: placement})
+		db.Model(&data.SiteHomeLinkEntry{}).Delete(&data.SiteHomeLinkEntry{Show: show, Placement: placement})
 
 		err = template.HomeCard(user, card).Render(r.Context(), w)
 		if err != nil {
