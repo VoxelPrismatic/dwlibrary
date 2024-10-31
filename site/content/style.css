@@ -89,6 +89,7 @@
 body {
     background-color: var(--sakura-layer-base);
     color: var(--sakura-text-norm);
+    margin-bottom: 96px;
 }
 
 div.home {
@@ -108,11 +109,85 @@ div.listing {
     gap: var(--gap);
 }
 
+button.action {
+    border-radius: calc(var(--padding) - var(--gap));
+    border: 0px solid #0000;
+    --bg: var(--sakura-layer-inv);
+
+    background-color: var(--bg);
+    cursor: pointer;
+    color: var(--sakura-text-norm);
+    border-radius: calc(var(--padding)  / 2);
+    padding: var(--gap);
+    border: 2px solid color-mix(in oklab, var(--bg) 75%, var(--sakura-layer-base) 25%);
+    width: min-content;
+    height: 38px;
+
+    &.new { --bg: var(--sakura-paint-pine); }
+    &.edit { --bg: var(--sakura-paint-iris); }
+    &.save { --bg: var(--sakura-paint-tree); }
+    &.delete { --bg: var(--sakura-paint-love); }
+    &.undo { --bg: var(--sakura-paint-gold); }
+    &.glass {
+        border: 2px solid color-mix(in oklab, var(--sakura-layer-inv) 75%, #0000 25%);
+        background-color: color-mix(in oklab, var(--sakura-layer-inv) 50%, #0000 50%);
+        backdrop-filter: blur(calc(var(--padding) / 2));
+        &:hover {
+            background-color: color-mix(in oklab, var(--sakura-layer-inv) 25%, #0000 75%);
+            backdrop-filter: blur(calc(var(--padding) / 4));
+        }
+        &:active {
+            background-color: color-mix(in oklab, var(--sakura-layer-inv) 75%, #0000 25%);
+            backdrop-filter: blur(calc(var(--padding)));
+        }
+    }
+
+    &:hover {
+        background-color: color-mix(in oklab, var(--bg) 75%, var(--sakura-layer-base) 25%);
+    }
+    &:active {
+        background-color: color-mix(in oklab, var(--bg) 75%, var(--sakura-layer-inv) 25%);
+    }
+    & span {
+        vertical-align: super;
+    }
+    & svg {
+        height: 100%;
+        width: min-content;
+        display: inline;
+        & path {
+            stroke: var(--sakura-layer-base);
+        }
+    }
+}
+
 div.home-card {
     background-color: var(--sakura-layer-surface);
     max-width: 100%;
     padding: var(--gap);
     border-radius: var(--padding);
+
+    &.template form {
+        display: flex;
+        gap: var(--gap);
+        margin-bottom: 0px;
+    }
+
+    & div.token {
+        font-family: "Ubuntu Mono", monospace;
+        background-color: color-mix(in oklab, var(--sakura-layer-inv) 50%, #0000 50%);
+        backdrop-filter: blur(calc(var(--padding) / 2));
+        color: var(--sakura-layer-surface);
+        border: 2px solid var(--sakura-layer-surface);
+        border-radius: calc(var(--padding) / 4);
+        padding: var(--gap);
+        font-weight: bold;
+        width: min-content;
+        position: absolute;
+        bottom: var(--gap);
+        right: var(--gap);
+    }
+
     & img {
         width: 100%;
         border-radius: calc(var(--padding) - var(--gap));
@@ -123,6 +198,45 @@ div.home-card {
         & > input {
             font-size: large;
             font-weight: bold;
+        }
+    }
+
+    & .head .img {
+        position: relative;
+
+        & button {
+            position: absolute;
+            bottom: var(--gap);
+            right: var(--gap);
+        }
+
+        & img[src=""] + button {
+            bottom: unset;
+            top: var(--gap);
+        }
+    }
+
+    & .head.edit {
+        padding: var(--gap);
+        margin-bottom: var(--gap);
+        border-radius: calc(var(--padding) / 2);
+        background-color: var(--sakura-paint-iris);
+        & h1, h3, form {
+            margin: 0;
+        }
+        & form, div.title {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap);
+        }
+    }
+
+    & .upload {
+        display: flex;
+        flex-direction: row;
+        gap: var(--gap);
+        & input {
+            width: 100%;
         }
     }
 
@@ -160,22 +274,6 @@ div.home-card {
                 & input.link {
                     border-radius: calc(var(--padding) - var(--gap));
                 }
-                & button {
-                    border-radius: calc(var(--padding) - var(--gap));
-                    border: 0px solid #0000;
-                    & path {
-                        stroke: var(--sakura-layer-base);
-                    }
-                    &.save {
-                        background-color: var(--sakura-paint-tree);
-                    }
-                    &.delete {
-                        background-color: var(--sakura-paint-love);
-                    }
-                    &.undo {
-                        background-color: var(--sakura-paint-gold);
-                    }
-                }
             }
         }
     }
@@ -204,38 +302,13 @@ div.home-card {
         border: 2px solid var(--sakura-hl-high);
         width: 100%;
         border-radius: calc(var(--padding) / 2);
-
+        background-color: var(--sakura-layer-surface);
     }
 
     & input[data-id="show-id"] {
         font-family: "Ubuntu Mono", monospace;
         background-color: var(--sakura-layer-inv);
         color: var(--sakura-layer-surface);
-    }
-
-    & button {
-        background-color: var(--sakura-hl-high);
-        border: 2px solid var(--sakura-hl-high);
-        color: var(--sakura-text-norm);
-        border-radius: calc(var(--padding) / 2);
-        padding: var(--gap);
-        cursor: pointer;
-        width: 100%;
-        height: 38px;
-        & span {
-            vertical-align: super;
-        }
-        & svg {
-            height: 100%;
-            width: min-content;
-            display: inline;
-            & path {
-                stroke: var(--sakura-text-norm);
-            }
-        }
-        &:hover {
-            background-color: var(--sakura-hl-med);
-        }
     }
 }
 
@@ -384,6 +457,11 @@ input[type="text"], input[type="password"] {
         color: var(--sakura-paint-rose);
         font-size: small;
         font-weight: bold;
+    }
+    &.mono {
+        font-family: "Ubuntu Mono", monospace;
+        background-color: var(--sakura-layer-inv);
+        color: var(--sakura-layer-surface);
     }
 }
 

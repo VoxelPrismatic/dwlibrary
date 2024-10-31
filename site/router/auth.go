@@ -5,6 +5,7 @@ import (
 	"dwlibrary/site/data"
 	"dwlibrary/site/template"
 	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"net/http"
 	"os/exec"
@@ -36,7 +37,6 @@ func AuthUser(w http.ResponseWriter, r *http.Request) data.UserEntry {
 	for _, cookie := range cookies {
 		if cookie.Name == "jwt" {
 			db.Model(&user).Where("jwt = ? AND git_hash = ?", cookie.Value, GIT_HASH).Find(&user)
-			break
 		}
 	}
 
@@ -52,6 +52,7 @@ func AuthUser(w http.ResponseWriter, r *http.Request) data.UserEntry {
 	cookie := &http.Cookie{
 		Name:  "jwt",
 		Value: user.JWT,
+		Path:  "/",
 	}
 	http.SetCookie(w, cookie)
 
@@ -62,7 +63,7 @@ func LoginRouter(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		cookie := &http.Cookie{
 			Name:  "jwt",
-			Value: "",
+			Value: "nil",
 		}
 		http.SetCookie(w, cookie)
 		err := template.LoginPage("").Render(r.Context(), w)
@@ -113,7 +114,8 @@ func LoginRouter(w http.ResponseWriter, r *http.Request) {
 	}
 
 	hash := crypto.SHA256.New()
-	pass_hash := string(hash.Sum([]byte(password)))
+	hash.Write([]byte(password))
+	pass_hash := hex.EncodeToString(hash.Sum(nil))
 	store_pass := base64.StdEncoding.EncodeToString([]byte(username + ":#:" + pass_hash))
 
 	db, err := data.Connect()
@@ -127,6 +129,7 @@ func LoginRouter(w http.ResponseWriter, r *http.Request) {
 
 	// user exists & password is correct
 	if user.Username != "" {
+		user.GitHash = GIT_HASH
 		user.JWT = base64.StdEncoding.EncodeToString(
 			[]byte(fmt.Sprintf(`{"username":"%s","time":%d}`, username, time.Now().Unix())),
 		)

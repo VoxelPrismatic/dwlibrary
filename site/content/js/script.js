@@ -1,4 +1,4 @@
-function _(e) { e.$ = (q) => $(q, e); e.$$ = (q) => $$(q, e); e._$ = (q) => _$(q, e); return e; }
+function _(e) { if(!e) return e; e.$ = (q) => $(q, e); e.$$ = (q) => $$(q, e); e._$ = (q) => _$(q, e); return e; }
 function $(q, e = document) { r = e.querySelector(q); return _(r); }
 function $$(q, e = document) { r = [...e.querySelectorAll(q)]; r.map((j) => _(j)); return r; }
 function _$(q, e = document) { r = document.createElement(q); e.appendChild(r); return _(r); }
@@ -97,8 +97,18 @@ window.onload = () => {
 $("#home").onclick = () => location = "/";
 $("#login").onclick = () => location = "/login";
 
-if($("#edit")) {
-    $("#edit").onclick = (evt) => {
-        location = evt.currentTarget.dataset.href;
-    }
+async function uploadImage(elem) {
+    const file = elem.files[0];
+    const data = new FormData();
+    data.append("file", file);
+    const resp = await fetch("/htmx/upload", {
+        method: "POST",
+        body: data
+    });
+
+    const target = $(elem.dataset.for);
+    const src = await resp.text();
+
+    target.src = src;
+    target.nextElementSibling.value = src;
 }
