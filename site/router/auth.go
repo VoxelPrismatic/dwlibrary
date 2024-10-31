@@ -7,31 +7,65 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"os/exec"
 	"regexp"
+	"strings"
 	"time"
 )
+
+func getGitHash() string {
+	cmd := exec.Command("git", "rev-parse", "HEAD")
+	out, err := cmd.Output()
+	if err != nil {
+		panic(err)
+	}
+	return string(out)
+}
+
+var GIT_HASH string = getGitHash()
 
 func AuthUser(w http.ResponseWriter, r *http.Request) data.UserEntry {
 	cookies := r.Cookies()
 	user := data.UserEntry{}
+	db, err := data.Connect()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return data.UserEntry{}
+	}
+
 	for _, cookie := range cookies {
 		if cookie.Name == "jwt" {
-			db, err := data.Connect()
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return data.UserEntry{}
-			}
-			db.Model(&user).Where("jwt = ?", cookie.Value).Find(&user)
+			db.Model(&user).Where("jwt = ? AND git_hash = ?", cookie.Value, GIT_HASH).Find(&user)
 			break
 		}
 	}
+
+	if user.Username == "" {
+		return data.UserEntry{}
+	}
+
+	user.GitHash = GIT_HASH
+	user.JWT = base64.StdEncoding.EncodeToString(
+		[]byte(fmt.Sprintf(`{"username":"%s","time":%d}`, user.Username, time.Now().Unix())),
+	)
+	db.Save(&user)
+	cookie := &http.Cookie{
+		Name:  "jwt",
+		Value: user.JWT,
+	}
+	http.SetCookie(w, cookie)
 
 	return user
 }
 
 func LoginRouter(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		err := template.LoginPage().Render(r.Context(), w)
+		cookie := &http.Cookie{
+			Name:  "jwt",
+			Value: "",
+		}
+		http.SetCookie(w, cookie)
+		err := template.LoginPage("").Render(r.Context(), w)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -44,17 +78,26 @@ func LoginRouter(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	username := r.Form.Get("username")
+	username := strings.ToLower(r.Form.Get("username"))
 	if len(username) < 3 {
-		http.Redirect(w, r, "/login?reason=username-too-short", http.StatusBadRequest)
+		err := template.LoginPage("Username too short").Render(r.Context(), w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	}
 	if len(username) > 50 {
-		http.Redirect(w, r, "/login?reason=username-too-long", http.StatusBadRequest)
+		err := template.LoginPage("Username too long").Render(r.Context(), w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	}
-	if !regexp.MustCompile(`^[a-zA-Z0-9_]+$`).MatchString(username) {
-		http.Redirect(w, r, "/login?reason=invalid-username", http.StatusBadRequest)
+	if !regexp.MustCompile(`^[a-z0-9_]+$`).MatchString(username) {
+		err := template.LoginPage("Invalid username").Render(r.Context(), w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -62,13 +105,15 @@ func LoginRouter(w http.ResponseWriter, r *http.Request) {
 	check_pw := r.Form.Get("check-pw")
 
 	if password != check_pw {
-		http.Redirect(w, r, "/login?reason=passwords-dont-match", http.StatusBadRequest)
+		err := template.LoginPage("Passwords don't match").Render(r.Context(), w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	}
 
 	hash := crypto.SHA256.New()
-	hash.Write([]byte(password))
-	pass_hash := string(hash.Sum(nil))
+	pass_hash := string(hash.Sum([]byte(password)))
 	store_pass := base64.StdEncoding.EncodeToString([]byte(username + ":#:" + pass_hash))
 
 	db, err := data.Connect()
@@ -78,8 +123,9 @@ func LoginRouter(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user := data.UserEntry{}
-	db.Model(&user).Where("username = ?", username).Where("password = ?", store_pass).Find(&user)
+	db.Model(&user).Where("username = ? AND password = ?", username, store_pass).Find(&user)
 
+	// user exists & password is correct
 	if user.Username != "" {
 		user.JWT = base64.StdEncoding.EncodeToString(
 			[]byte(fmt.Sprintf(`{"username":"%s","time":%d}`, username, time.Now().Unix())),
@@ -91,16 +137,23 @@ func LoginRouter(w http.ResponseWriter, r *http.Request) {
 			Value: user.JWT,
 		}
 		http.SetCookie(w, cookie)
+
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
 	}
 
 	db.Model(&user).Where("username = ?", username).Find(&user)
 	if user.Username != "" {
-		http.Redirect(w, r, "/login?reason=bad-credentials", http.StatusUnauthorized)
+		err := template.LoginPage("Bad credentials").Render(r.Context(), w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	}
 
 	user.Username = username
 	user.Password = store_pass
+	user.GitHash = GIT_HASH
 	user.JWT = base64.StdEncoding.EncodeToString(
 		[]byte(fmt.Sprintf(`{"username":"%s","time":%d}`, username, time.Now().Unix())),
 	)

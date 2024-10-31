@@ -4,7 +4,7 @@ import (
     "dwlibrary/site/data"
 )
 
-templ LoginPage() {
+templ LoginPage(reason string) {
     @Head("DWLibrary - Login", "Log in to DWLibrary.")
     <body>
         <div class="login">
@@ -16,6 +16,9 @@ templ LoginPage() {
                 <input name="check-pw" type="password" placeholder="Confirm Password" />
                 <span class="error"></span>
                 <input type="submit" value="Create" disabled="disabled"/>
+                if reason != "" {
+                    <div class="error">{ reason }</div>
+                }
             </form>
         </div>
         @Buttons(data.UserEntry{}, "login")

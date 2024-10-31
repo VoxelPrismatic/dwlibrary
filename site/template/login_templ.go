@@ -12,7 +12,7 @@ import (
 	"dwlibrary/site/data"
 )
 
-func LoginPage() templ.Component {
+func LoginPage(reason string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -37,7 +37,30 @@ func LoginPage() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body><div class=\"login\"><form action=\"/login\" method=\"post\"><input name=\"username\" type=\"text\" placeholder=\"Username\"> <span class=\"error\"></span> <input name=\"password\" type=\"password\" placeholder=\"Password\"> <span class=\"error\"></span> <input name=\"check-pw\" type=\"password\" placeholder=\"Confirm Password\"> <span class=\"error\"></span> <input type=\"submit\" value=\"Create\" disabled=\"disabled\"></form></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body><div class=\"login\"><form action=\"/login\" method=\"post\"><input name=\"username\" type=\"text\" placeholder=\"Username\"> <span class=\"error\"></span> <input name=\"password\" type=\"password\" placeholder=\"Password\"> <span class=\"error\"></span> <input name=\"check-pw\" type=\"password\" placeholder=\"Confirm Password\"> <span class=\"error\"></span> <input type=\"submit\" value=\"Create\" disabled=\"disabled\"> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if reason != "" {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"error\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var2 string
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(reason)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `login.templ`, Line: 20, Col: 47}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</form></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -63,3 +63,10 @@ function check_valid() {
     else
         submit.value = "Create";
 }
+
+window.onload = () => {
+    username.onkeyup();
+    password.onkeyup();
+    check_pw.onkeyup();
+    check_valid();
+};

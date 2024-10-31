@@ -396,5 +396,18 @@ input[type="submit"] {
     border-radius: var(--padding);
     &[disabled] {
         background-color: var(--sakura-paint-rose);
+        &:hover {
+            background-color: var(--sakura-paint-love);
+            cursor: not-allowed;
+        }
+    }
+    &:hover {
+        background-color: var(--sakura-paint-gold);
+        cursor: pointer;
+    }
+    & + div.error {
+        color: var(--sakura-paint-rose);
+        font-size: small;
+        font-weight: bold;
     }
 }

@@ -40,7 +40,7 @@ func ApiLoginRouter(w http.ResponseWriter, r *http.Request) {
 func ApiCheckUsername(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 
-	username := query.Get("username")
+	username := strings.ToLower(query.Get("username"))
 	if len(username) < 3 {
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write([]byte(`{"taken":true,"reason":"username-too-short"}`))

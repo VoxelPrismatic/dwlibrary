@@ -28,14 +28,6 @@ templ Head(title string, description string) {
 templ Buttons(user data.UserEntry, page string) {
     <div id="buttons">
         <div>
-            if strings.Contains(page, "/edit/") {
-                @Button("dazzle", "floppy-disk", "love", "save", "Save page")
-            } else if IsEditable(user, page) != "" {
-                <button id="edit" title="Edit page" class="rose" data-href={ IsEditable(user, page) }>
-                    @SvgIcon("dazzle", "pencil")
-                </button>
-            }
-
             if user.Username == "" {
                 @Button("dazzle", "user", "iris", "login", "Log in")
             } else if user.IsAdmin {

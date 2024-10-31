@@ -50,6 +50,7 @@ type UserEntry struct {
 	Username string `gorm:"primaryKey"`
 	Password string
 	JWT      string
+	GitHash  string
 	IsEditor bool
 	IsAdmin  bool
 }
