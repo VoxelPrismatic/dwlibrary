@@ -86,7 +86,13 @@ function masonry(listing) {
 }
 
 window.onresize = () => masonry();
-window.onload = () => masonry();
+window.onload = () => {
+    masonry();
+    column_order = {};
+    col_count = 0;
+    window.setTimeout(masonry, 50);
+}
+
 
 $("#home").onclick = () => location = "/";
 $("#login").onclick = () => location = "/login";

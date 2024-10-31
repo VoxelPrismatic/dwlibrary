@@ -63,15 +63,33 @@ type SiteHomeEntry struct {
 }
 
 type SiteHomeLinkEntry struct {
-	Show      string `gorm:"foreignKey:Show;references:Show"`
+	Show      string `gorm:"primaryKey" json:"show"`
 	Text      string `json:"text"`
 	Link      string `json:"link"`
-	Placement int    `json:"placement"`
+	Placement int    `gorm:"primaryKey;autoIncrement:false" json:"placement"`
 }
 
 func (e *SiteHomeEntry) GetLinks() []SiteHomeLinkEntry {
 	db := ForceConnect()
 	var links []SiteHomeLinkEntry
-	db.Model(&SiteHomeLinkEntry{}).Where("show = ?", e.Show).Find(&links)
+	db.Model(&SiteHomeLinkEntry{}).Where("show = ?", e.Show).Order("placement ASC").Find(&links)
 	return links
+}
+
+type SeriesEntry struct {
+	Show string `gorm:"primaryKey" json:"show"`
+	Name string `json:"name"`
+}
+
+type DWSeason struct {
+	Show   string `gorm:"foreignKey:Show;references:ShowEntry" json:"show"`
+	Season string `json:"season"`
+	Year   int    `json:"year"`
+}
+
+type TranscriptEntry struct {
+	Show    string `gorm:"foreignKey:Show;references:Show" json:"show"`
+	Episode string `json:"episode"`
+	Segment string `json:"segment"`
+	Text    string `json:"text"`
 }

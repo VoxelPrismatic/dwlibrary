@@ -1,0 +1,65 @@
+package template
+
+import (
+    "dwlibrary/site/data"
+    "fmt"
+)
+
+templ TranscriptEpisode(link data.Link) {
+    <div class="db-episode">
+        <div class="img">
+            <a href={ templ.SafeURL("/episode/" + link.Name) }>
+                <img src={ link.Thumb } />
+            </a>
+        </div>
+        <div class="details">
+            <div class="meta">
+                <h1>{ link.Title }</h1>
+                <h4 class="timestamp">{ ToDate(link.Date) }</h4>
+                <p>{ link.Description }</p>
+            </div>
+            <div class="links">
+                if link.LinkYT != "" {
+                    <a href={ templ.SafeURL(link.LinkYT) }>
+                        <img src="/src/icon/yt.svg" />
+                    </a>
+                }
+                if link.LinkDW != "" {
+                    <a href={ templ.SafeURL(link.LinkDW) }>
+                        <img src="/src/icon/dw.svg" />
+                    </a>
+                }
+                if link.LinkX != "" {
+                    <a href={ templ.SafeURL(link.LinkX) }>
+                        <img src="/src/icon/x.svg" />
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+templ TranscriptEpisodeListing(user data.UserEntry, page int, max_page int64, search string, episodes []data.Link) {
+    @Head("DWLibrary - Episodes", "DWLibrary, the digital library for the DailyWire.")
+    <body>
+        <div class="search">
+            <form action="/search" method="get">
+                <input type="text" name="q" placeholder="Search" value={ search }/>
+                <input
+                    type="number"
+                    name="page"
+                    value={ fmt.Sprint(page) }
+                    min="1"
+                    max={ fmt.Sprint(max_page) }
+                />/{ fmt.Sprint(max_page) }
+                <input type="submit" value="Go" />
+            </form>
+        </div>
+        <div class="listing">
+            for _, episode := range episodes {
+                @TranscriptEpisode(episode)
+            }
+        </div>
+        <script type="text/javascript" src="/src/script.js"></script>
+    </body>
+}
