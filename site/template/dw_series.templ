@@ -1,3 +1,4 @@
+
 package template
 
 import (
@@ -5,53 +6,45 @@ import (
     "fmt"
 )
 
-
-func home_cards() []data.SiteHomeEntry {
+func dw_series_cards() []data.SiteDwSeriesEntry {
     db := data.ForceConnect()
-    ret := []data.SiteHomeEntry{}
-    db.Model(&data.SiteHomeEntry{}).Order("random()").Find(&ret)
+    ret := []data.SiteDwSeriesEntry{}
+    db.Model(&data.SiteDwSeriesEntry{}).Order("random()").Find(&ret)
 
     return ret
 }
 
-templ Home(user data.UserEntry) {
+templ DwSeries(user data.UserEntry) {
     @Head("DWLibrary", "DWLibrary, the digital library for the DailyWire.")
     <body>
         <div class="home masonry">
-            for _, card := range home_cards() {
-                @HomeCard(user, card)
+            for _, card := range dw_series_cards() {
+                @DwSeriesCard(user, card)
             }
-            @HomeCardTemplate(user)
+            @DwSeriesCardTemplate(user)
         </div>
-        @Buttons(user, EditBtn{
-            href: "/admin/series",
-            requireAdmin: true,
-            title: "Manage Series",
-            icon: "film",
-            color: "rose",
-            class: "edit",
-        })
+        @Buttons(user, EditBtn{})
         <script type="text/javascript" src="/src/js/script.js"></script>
     </body>
 }
 
-templ HomeCardTemplate(user data.UserEntry) {
+templ DwSeriesCardTemplate(user data.UserEntry) {
     if user.IsAdmin {
         <div class="home-card post template" id="__template__">
             <div class="head">
                 <div class="title">
                     <h1 class="series">
-                        New Show
+                        New Series
                     </h1>
                     <div>
                         <p>Enter the show ID below, eg "matt" or "crain"</p>
-                        <p>Title & Subtext details will be available on the next screen</p>
+                        <p>Title & other details will be available on the next screen</p>
                         <p>This ID <b>CANNOT</b> be changed</p>
                     </div>
                 </div>
             </div>
-            <form hx-put="/htmx/home-card/__template__" hx-target="#__template__" hx-swap="outerHTML">
-                <input type="text" name="show" value="" placeholder="Show ID" class="mono"/>
+            <form hx-put="/htmx/series-card/__template__" hx-target="#__template__" hx-swap="outerHTML">
+                <input type="text" name="show" value="" placeholder="Series ID" class="mono"/>
                 <button type="submit" class="action new" title="Create Card">
                     @SvgIcon("dazzle", "plus")
                 </button>
@@ -60,32 +53,32 @@ templ HomeCardTemplate(user data.UserEntry) {
     }
 }
 
-templ HomeCardPlusTemplate(user data.UserEntry, kwargs data.SiteHomeEntry) {
-    @HomeCard(user, kwargs)
-    @HomeCardTemplate(user)
+templ DwSeriesCardPlusTemplate(user data.UserEntry, kwargs data.SiteDwSeriesEntry) {
+    @DwSeriesCard(user, kwargs)
+    @DwSeriesCardTemplate(user)
 }
 
-templ HomeCard(user data.UserEntry, kwargs data.SiteHomeEntry) {
+templ DwSeriesCard(user data.UserEntry, kwargs data.SiteDwSeriesEntry) {
     <div class="home-card post" id={ kwargs.Show }>
-        @HomeHead(user, kwargs)
+        @DwSeriesHead(user, kwargs)
 
         <div class="links">
             for _, link := range kwargs.GetLinks() {
-                @HomeLink(user, kwargs, link)
+                @DwSeriesLink(user, kwargs, link, false)
             }
             if user.IsAdmin {
-                @HomeLink(user, kwargs, data.SiteHomeLinkEntry{Placement: len(kwargs.GetLinks())})
+                @DwSeriesLink(user, kwargs, data.SiteDwSeriesLinkEntry{Placement: len(kwargs.GetLinks())}, false)
             }
         </div>
     </div>
 }
 
-templ HomeHead(user data.UserEntry, kwargs data.SiteHomeEntry) {
+templ DwSeriesHead(user data.UserEntry, kwargs data.SiteDwSeriesEntry) {
     <div class="head" id={ kwargs.Show + "-head" }>
         <div class="img">
             <img src={ kwargs.Image } />
             if user.IsAdmin {
-                <button hx-patch={ fmt.Sprintf("/htmx/home-card/%s", kwargs.Show) }
+                <button hx-patch={ fmt.Sprintf("/htmx/series-card/%s", kwargs.Show) }
                     hx-target={ fmt.Sprintf("#%s-head", kwargs.Show) }
                     hx-trigger="click"
                     hx-swap="outerHTML"
@@ -100,17 +93,14 @@ templ HomeHead(user data.UserEntry, kwargs data.SiteHomeEntry) {
             <h1 class="series">
                 { kwargs.Title }
             </h1>
-            <h3 class="description">
-                { kwargs.Subtext }
-            </h3>
         </div>
     </div>
 }
 
 
-templ EditHomeHead(user data.UserEntry, kwargs data.SiteHomeEntry) {
+templ EditDwSeriesHead(user data.UserEntry, kwargs data.SiteDwSeriesEntry) {
     <div class="head edit" id={ kwargs.Show + "-head" }>
-        <form hx-post={ fmt.Sprintf("/htmx/home-card/%s", kwargs.Show) }
+        <form hx-post={ fmt.Sprintf("/htmx/series-card/%s", kwargs.Show) }
             hx-target={ fmt.Sprintf("#%s-head", kwargs.Show) }
             hx-swap="outerHTML"
         >
@@ -128,7 +118,7 @@ templ EditHomeHead(user data.UserEntry, kwargs data.SiteHomeEntry) {
                     onchange="uploadImage(this)"
                     data-for={ "#" + kwargs.Show + "-image" }
                 />
-                <button hx-get={ fmt.Sprintf("/htmx/home-card/%s", kwargs.Show) }
+                <button hx-get={ fmt.Sprintf("/htmx/series-card/%s", kwargs.Show) }
                     hx-target={ fmt.Sprintf("#%s-head", kwargs.Show) }
                     hx-trigger="click"
                     hx-swap="outerHTML"
@@ -137,7 +127,7 @@ templ EditHomeHead(user data.UserEntry, kwargs data.SiteHomeEntry) {
                 >
                     @SvgIcon("dazzle", "trash-undo")
                 </button>
-                <button hx-delete={ fmt.Sprintf("/htmx/home-card/%s", kwargs.Show) }
+                <button hx-delete={ fmt.Sprintf("/htmx/series-card/%s", kwargs.Show) }
                     hx-target={ fmt.Sprintf("#%s", kwargs.Show) }
                     hx-trigger="click"
                     hx-swap="outerHTML"
@@ -156,26 +146,32 @@ templ EditHomeHead(user data.UserEntry, kwargs data.SiteHomeEntry) {
                 <h1 class="series">
                     <input type="text" name="title" value={ kwargs.Title }/>
                 </h1>
-                <h3 class="description">
-                    <input type="text" name="subtext" value={ kwargs.Subtext }/>
-                </h3>
             </div>
         </form>
     </div>
 }
 
-templ HomeLink(user data.UserEntry, kwargs data.SiteHomeEntry, link data.SiteHomeLinkEntry) {
+templ DwSeriesLink(user data.UserEntry, kwargs data.SiteDwSeriesEntry, link data.SiteDwSeriesLinkEntry, syncing bool) {
     <div class="anchor" id={ fmt.Sprintf("%s-%d", kwargs.Show, link.Placement) }>
         <div>
             <div class="link">
-                <a href={ templ.SafeURL(link.Link) }>
-                    { link.Text }
-                </a>
+                <span>
+                    { fmt.Sprint(link.Year) }
+                    <span class="details">
+                        { "\u2014" }
+                        { fmt.Sprint(len(link.GetEpisodes())) }
+                        if len(link.GetEpisodes()) == 1 {
+                            episode
+                        } else {
+                            episodes
+                        }
+                    </span>
+                </span>
             </div>
             if user.IsAdmin {
-                <div class="edit">
+                <div class="edit flex">
                     if link.Placement == len(kwargs.GetLinks()) {
-                        <button hx-patch={ fmt.Sprintf("/htmx/home-link/%s/%d", kwargs.Show, link.Placement) }
+                        <button hx-patch={ fmt.Sprintf("/htmx/series-link/%s/%d", kwargs.Show, link.Placement) }
                             hx-target={ fmt.Sprintf("#%s-%d", kwargs.Show, link.Placement) }
                             hx-trigger="click"
                             hx-swap="outerHTML"
@@ -185,7 +181,7 @@ templ HomeLink(user data.UserEntry, kwargs data.SiteHomeEntry, link data.SiteHom
                             @SvgIcon("dazzle", "plus")
                         </button>
                     } else {
-                        <button hx-patch={ fmt.Sprintf("/htmx/home-link/%s/%d", kwargs.Show, link.Placement) }
+                        <button hx-patch={ fmt.Sprintf("/htmx/series-link/%s/%d", kwargs.Show, link.Placement) }
                             hx-target={ fmt.Sprintf("#%s-%d", kwargs.Show, link.Placement) }
                             hx-trigger="click"
                             hx-swap="outerHTML"
@@ -194,6 +190,7 @@ templ HomeLink(user data.UserEntry, kwargs data.SiteHomeEntry, link data.SiteHom
                         >
                             @SvgIcon("dazzle", "pencil")
                         </button>
+                        @DwSeriesSyncBtn(user, link, syncing)
                     }
                 </div>
             }
@@ -204,18 +201,44 @@ templ HomeLink(user data.UserEntry, kwargs data.SiteHomeEntry, link data.SiteHom
     </div>
 }
 
-templ EditHomeLink(user data.UserEntry, kwargs data.SiteHomeEntry, link data.SiteHomeLinkEntry) {
+templ DwSeriesSyncBtn(user data.UserEntry, link data.SiteDwSeriesLinkEntry, syncing bool) {
+    if syncing {
+        <button hx-get={ fmt.Sprintf("/htmx/series-sync/%s/%s", link.Show, link.Link) }
+            hx-target={ fmt.Sprintf("#%s-%d", link.Show, link.Placement) }
+            hx-trigger="load delay:1s"
+            hx-swap="outerHTML"
+            title="Sync Series"
+            class="action sync rot disable"
+            id={ fmt.Sprintf("sync-%s-%d", link.Show, link.Placement) }
+        >
+            @SvgIcon("dazzle", "loader")
+        </button>
+    } else {
+        <button hx-get={ fmt.Sprintf("/htmx/series-sync/%s/%s", link.Show, link.Link) }
+            hx-target={ fmt.Sprintf("#%s-%d", link.Show, link.Placement) }
+            hx-trigger="click"
+            hx-swap="outerHTML"
+            title="Sync Series"
+            class="action sync"
+            id={ fmt.Sprintf("sync-%s-%d", link.Show, link.Placement) }
+        >
+            @SvgIcon("dazzle", "refresh-ccw-alt-1")
+        </button>
+    }
+}
+
+templ EditDwSeriesLink(user data.UserEntry, kwargs data.SiteDwSeriesEntry, link data.SiteDwSeriesLinkEntry) {
     <div class="anchor edit" id={ fmt.Sprintf("%s-%d", kwargs.Show, link.Placement) }>
-        <form hx-post={ fmt.Sprintf("/htmx/home-link/%s/%d", kwargs.Show, link.Placement) }
+        <form hx-post={ fmt.Sprintf("/htmx/series-link/%s/%d", kwargs.Show, link.Placement) }
             hx-target={ fmt.Sprintf("#%s-%d", kwargs.Show, link.Placement) }
             hx-swap="outerHTML"
         >
             <div>
                 <input class="link"
                     data-id="link-text"
-                    type="text"
-                    name="text"
-                    value={ link.Text }
+                    type="number"
+                    name="year"
+                    value={ fmt.Sprint(link.Year) }
                     placeholder="Link Text"/>
                 <div class="edit">
                     <button type="submit" class="action save" title="Save Link">
@@ -224,9 +247,9 @@ templ EditHomeLink(user data.UserEntry, kwargs data.SiteHomeEntry, link data.Sit
                 </div>
             </div>
             <div class="behind">
-                <input class="link" data-id="link-url" type="text" name="url" value={ link.Link } placeholder="Link URL"/>
+                <input class="link" data-id="link-url" type="text" name="url" value={ link.Link } placeholder="GraphQL series ID"/>
                 <div class="undo">
-                    <button hx-get={ fmt.Sprintf("/htmx/home-link/%s/%d", kwargs.Show, link.Placement) }
+                    <button hx-get={ fmt.Sprintf("/htmx/series-link/%s/%d", kwargs.Show, link.Placement) }
                         hx-target={ fmt.Sprintf("#%s-%d", kwargs.Show, link.Placement) }
                         hx-swap="outerHTML"
                         class="action undo"
@@ -236,7 +259,7 @@ templ EditHomeLink(user data.UserEntry, kwargs data.SiteHomeEntry, link data.Sit
                     </button>
                 </div>
                 <div class="delete">
-                    <button hx-delete={ fmt.Sprintf("/htmx/home-link/%s/%d", kwargs.Show, link.Placement) }
+                    <button hx-delete={ fmt.Sprintf("/htmx/series-link/%s/%d", kwargs.Show, link.Placement) }
                         hx-confirm="Are you sure you want to delete this link?"
                         hx-target={ fmt.Sprintf("#%s", kwargs.Show) }
                         hx-swap="outerHTML"

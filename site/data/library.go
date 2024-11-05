@@ -29,6 +29,8 @@ func Connect() (*gorm.DB, error) {
 		&SeriesEntry{},
 		&TranscriptEntry{},
 		&DWSeason{},
+		&SiteDwSeriesEntry{},
+		&SiteDwSeriesLinkEntry{},
 	)
 
 	if err != nil {

@@ -1,15 +1,17 @@
 package data
 
 type Link struct {
-	Name        string `gorm:"primaryKey"`
-	Series      string
-	Title       string
-	Date        int64
-	Description string
-	LinkDW      string
-	LinkX       string
-	LinkYT      string
-	Thumb       string
+	Name            string `gorm:"primaryKey"`
+	Series          string
+	GraphQLSeriesID string
+	Title           string
+	Date            int64
+	Description     string
+	LinkDW          string // DailyWire link
+	LinkX           string // Link to X.com
+	LinkYT          string // YouTube link
+	LinkRUM         string // Rumble link
+	Thumb           string
 }
 
 type Collection struct {
@@ -53,28 +55,6 @@ type UserEntry struct {
 	GitHash  string
 	IsEditor bool
 	IsAdmin  bool
-}
-
-type SiteHomeEntry struct {
-	Show    string              `gorm:"primaryKey" json:"show"`
-	Title   string              `json:"title"`
-	Subtext string              `json:"subtext"`
-	Image   string              `json:"image"`
-	Links   []SiteHomeLinkEntry `json:"links" gorm:"-"`
-}
-
-type SiteHomeLinkEntry struct {
-	Show      string `gorm:"primaryKey" json:"show"`
-	Text      string `json:"text"`
-	Link      string `json:"link"`
-	Placement int    `gorm:"primaryKey;autoIncrement:false" json:"placement"`
-}
-
-func (e *SiteHomeEntry) GetLinks() []SiteHomeLinkEntry {
-	db := ForceConnect()
-	var links []SiteHomeLinkEntry
-	db.Model(&SiteHomeLinkEntry{}).Where("show = ?", e.Show).Order("placement ASC").Find(&links)
-	return links
 }
 
 type SeriesEntry struct {

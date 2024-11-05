@@ -1,0 +1,20 @@
+<head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/src/favicon.ico\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"description\" content=\"
+\"><meta name=\"theme-color\" content=\"#3d1127\"><link rel=\"stylesheet\" href=\"/src/style.css\"><script type=\"text/javascript\" src=\"https://unpkg.com/htmx.org@2.0.3\"></script><title>
+</title></head>
+<div id=\"buttons\"><div>
+<a href=\"
+\">
+</a>
+ 
+<a href=\"
+\">
+</a>
+ 
+</div><div>
+</div></div><div class=\"svg-cache\">
+</div>
+<button id=\"
+\" title=\"
+\" class=\"
+\">
+</button>

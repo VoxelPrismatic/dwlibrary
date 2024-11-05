@@ -109,6 +109,11 @@ div.listing {
     gap: var(--gap);
 }
 
+@keyframes spinner {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 button.action {
     border-radius: calc(var(--padding) - var(--gap));
     border: 0px solid #0000;
@@ -123,11 +128,15 @@ button.action {
     width: min-content;
     height: 38px;
 
+    &.disable { opacity: 50%; cursor: not-allowed; }
+    &.rot { svg { animation: spinner 1s linear infinite; } }
+
     &.new { --bg: var(--sakura-paint-pine); }
     &.edit { --bg: var(--sakura-paint-iris); }
     &.save { --bg: var(--sakura-paint-tree); }
     &.delete { --bg: var(--sakura-paint-love); }
     &.undo { --bg: var(--sakura-paint-gold); }
+    &.sync { --bg: var(--sakura-paint-foam); }
     &.glass {
         border: 2px solid color-mix(in oklab, var(--sakura-layer-inv) 75%, #0000 25%);
         background-color: color-mix(in oklab, var(--sakura-layer-inv) 50%, #0000 50%);
@@ -256,6 +265,11 @@ div.home-card {
     }
 
     & div.anchor {
+        & .edit.flex {
+            display: flex;
+            flex-direction: row;
+            gap: var(--gap);
+        }
         &.edit {
             background-color: var(--sakura-paint-iris);
             border-radius: calc(var(--padding) - var(--gap));
@@ -305,11 +319,15 @@ div.home-card {
         &:hover {
             background-color: var(--sakura-layer-overlay);
         }
-        a {
+        & > a, & > span {
             text-decoration: none;
             color: var(--sakura-text-norm);
             display: block;
             padding: var(--gap);
+            & span.details {
+                color: var(--sakura-text-muted);
+                font-style: italic;
+            }
         }
     }
 
@@ -355,7 +373,7 @@ div.db-episode {
         &:hover {
             background-color: var(--sakura-layer-overlay);
         }
-        a {
+        & a {
             text-decoration: none;
             color: var(--sakura-text-norm);
             display: block;
@@ -389,8 +407,7 @@ div#buttons {
     & button {
         border: 2px solid var(--btn-bg);
         backdrop-filter: blur(calc(var(--padding) / 2));
-        background-color: color-mix(in oklab, var(--btn-bg) 25%, #0000 75%);
-        color: var(--btn-path);
+        background-color: color-mix(in oklab, var(--btn-bg) 75%, #0000 25%);
         border-radius: calc(var(--padding) / 2);
         cursor: pointer;
         width: calc(var(--padding) * 2);
@@ -399,49 +416,41 @@ div#buttons {
             width: 100%;
             height: 100%;
             & path {
-                stroke: var(--btn-path);
+                stroke: var(--sakura-layer-base);
             }
         }
 
         &.inv {
             --btn-bg: var(--sakura-layer-inv);
-            --btn-path: var(--sakura-layer-base);
             background-color: color-mix(in oklab, var(--btn-bg) 75%, #0000 25%);
         }
 
         &.gold {
             --btn-bg: var(--sakura-paint-gold);
-            --btn-path: var(--sakura-text-norm);
         }
 
         &.rose {
             --btn-bg: var(--sakura-paint-rose);
-            --btn-path: var(--sakura-text-norm);
         }
 
         &.pine {
             --btn-bg: var(--sakura-paint-pine);
-            --btn-path: var(--sakura-text-norm);
         }
 
         &.foam {
             --btn-bg: var(--sakura-paint-foam);
-            --btn-path: var(--sakura-text-norm);
         }
 
         &.tree {
             --btn-bg: var(--sakura-paint-tree);
-            --btn-path: var(--sakura-text-norm);
         }
 
         &.iris {
             --btn-bg: var(--sakura-paint-iris);
-            --btn-path: var(--sakura-text-norm);
         }
 
         &.love {
             --btn-bg: var(--sakura-paint-love);
-            --btn-path: var(--sakura-text-norm);
         }
     }
 }

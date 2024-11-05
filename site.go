@@ -22,6 +22,7 @@ func main() {
 	http.HandleFunc("/htmx/", router.HtmxRouter)
 	http.HandleFunc("/login", router.LoginRouter)
 	http.HandleFunc("/edit/", router.EditRouter)
+	http.HandleFunc("/admin/", router.AdminRouter)
 	http.HandleFunc("/collections/", router.CollectionsRouter)
 	http.HandleFunc("/src/", router.HandleSource)
 	http.HandleFunc("/db/link", router.DatabaseLinkRouter)

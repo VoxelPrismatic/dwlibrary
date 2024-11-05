@@ -10,6 +10,16 @@ import (
     "html/template"
 )
 
+type EditBtn struct {
+    href string
+    requireEditor bool
+    requireAdmin bool
+    title string
+    icon string
+    class string
+    color string
+}
+
 templ Head(title string, description string) {
     <head>
         <meta charset="utf-8"/>
@@ -25,14 +35,24 @@ templ Head(title string, description string) {
 
 
 // ICONS FROM https://www.svgrepo.com/collection/dazzle-line-icons
-templ Buttons(user data.UserEntry, page string) {
+templ Buttons(user data.UserEntry, page EditBtn) {
     <div id="buttons">
         <div>
             if user.Username == "" {
                 @Button("dazzle", "user", "iris", "login", "Log in")
             } else if user.IsAdmin {
+                if page.requireAdmin || page.requireEditor {
+                    <a href={ templ.SafeURL(page.href) }>
+                        @Button("dazzle", page.icon, page.color, page.class, page.title)
+                    </a>
+                }
                 @Button("dazzle", "crown", "gold", "login", "Admin")
             } else if user.IsEditor {
+                if !page.requireAdmin && page.requireEditor {
+                    <a href={ templ.SafeURL(page.href) }>
+                        @Button("dazzle", page.icon, page.color, page.class, page.title)
+                    </a>
+                }
                 @Button("dazzle", "message-circle-pencil", "tree", "login", "Editor")
             } else {
                 @Button("dazzle", "eye", "rose", "login", "View Only")
@@ -66,6 +86,7 @@ func SvgIcon(collection string, icon string) templ.Component {
     bytes, err := os.ReadFile(loc)
     if err != nil {
         return to_component(loc)
+
     }
 
 
