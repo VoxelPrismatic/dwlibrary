@@ -21,7 +21,7 @@ templ Home(user data.UserEntry) {
             for _, card := range home_cards() {
                 @HomeCard(user, card)
             }
-            @HomeCardTemplate(user)
+            @HomeCardTemplate(user, "")
         </div>
         @Buttons(user, EditBtn{
             href: "/admin/series",
@@ -35,7 +35,7 @@ templ Home(user data.UserEntry) {
     </body>
 }
 
-templ HomeCardTemplate(user data.UserEntry) {
+templ HomeCardTemplate(user data.UserEntry, err string) {
     if user.IsAdmin {
         <div class="home-card post template" id="__template__">
             <div class="head">
@@ -43,11 +43,19 @@ templ HomeCardTemplate(user data.UserEntry) {
                     <h1 class="series">
                         New Show
                     </h1>
-                    <div>
-                        <p>Enter the show ID below, eg "matt" or "crain"</p>
-                        <p>Title & Subtext details will be available on the next screen</p>
-                        <p>This ID <b>CANNOT</b> be changed</p>
-                    </div>
+                    if err != "" {
+                        <div>
+                            <p class="error">
+                                { err }
+                            </p>
+                        </div>
+                    } else {
+                        <div>
+                            <p>Enter the show ID below, eg "matt" or "crain"</p>
+                            <p>Title & Subtext details will be available on the next screen</p>
+                            <p>This ID <b>CANNOT</b> be changed</p>
+                        </div>
+                    }
                 </div>
             </div>
             <form hx-put="/htmx/home-card/__template__" hx-target="#__template__" hx-swap="outerHTML">
@@ -62,7 +70,7 @@ templ HomeCardTemplate(user data.UserEntry) {
 
 templ HomeCardPlusTemplate(user data.UserEntry, kwargs data.SiteHomeEntry) {
     @HomeCard(user, kwargs)
-    @HomeCardTemplate(user)
+    @HomeCardTemplate(user, "")
 }
 
 templ HomeCard(user data.UserEntry, kwargs data.SiteHomeEntry) {

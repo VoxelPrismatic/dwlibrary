@@ -5,9 +5,12 @@ import (
 	"dwlibrary/site/template"
 	"fmt"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 )
+
+var valid_ids = regexp.MustCompile(`^([0-9a-z\_]+)$`)
 
 func HtmxSeriesLinkRouter(user data.UserEntry, w http.ResponseWriter, r *http.Request) {
 	if !user.IsAdmin {
@@ -73,7 +76,8 @@ func HtmxSeriesLinkRouter(user data.UserEntry, w http.ResponseWriter, r *http.Re
 
 		if isNew {
 			w.Header().Set("HX-Retarget", "#"+link.Show)
-			err = template.DwSeriesCard(user, card).Render(r.Context(), w)
+			go fill_episodes(link.Link, link.Show)
+			err = template.DwSeriesCard(user, card, link.Link).Render(r.Context(), w)
 		} else {
 			timestamp, ok := syncing[link.Show+"-"+link.Link]
 			if !ok {
@@ -100,7 +104,7 @@ func HtmxSeriesLinkRouter(user data.UserEntry, w http.ResponseWriter, r *http.Re
 		}
 		db.Model(&data.SiteDwSeriesLinkEntry{}).Delete(&data.SiteDwSeriesLinkEntry{Show: show, Placement: placement})
 
-		err = template.DwSeriesCard(user, card).Render(r.Context(), w)
+		err = template.DwSeriesCard(user, card, "").Render(r.Context(), w)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -169,10 +173,18 @@ func HtmxSeriesCardRouter(user data.UserEntry, w http.ResponseWriter, r *http.Re
 		}
 
 		show := strings.ToLower(r.Form.Get("show"))
+		if !valid_ids.MatchString(show) {
+			err := template.DwSeriesCardTemplate(user, "Invalid ID (use only letters, numbers & underscores)").Render(r.Context(), w)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+			return
+		}
+
 		old_card := data.SiteDwSeriesEntry{}
-		db.Debug().Model(&data.SiteDwSeriesEntry{}).Where("show = ?", show).Find(&old_card)
+		db.Model(&data.SiteDwSeriesEntry{}).Where("show = ?", show).Find(&old_card)
 		if old_card.Show != "" || show == "" {
-			err := template.DwSeriesCardTemplate(user).Render(r.Context(), w)
+			err := template.DwSeriesCardTemplate(user, "Duplicate ID").Render(r.Context(), w)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 			}

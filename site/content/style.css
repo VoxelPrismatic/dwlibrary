@@ -133,10 +133,14 @@ button.action {
 
     &.new { --bg: var(--sakura-paint-pine); }
     &.edit { --bg: var(--sakura-paint-iris); }
+    &.page { --bg: var(--sakura-paint-iris); }
     &.save { --bg: var(--sakura-paint-tree); }
+    &.search { --bg: var(--sakura-paint-tree); }
     &.delete { --bg: var(--sakura-paint-love); }
     &.undo { --bg: var(--sakura-paint-gold); }
     &.sync { --bg: var(--sakura-paint-foam); }
+    &.upload { --bg: var(--sakura-paint-rose); }
+
     &.glass {
         border: 2px solid color-mix(in oklab, var(--sakura-layer-inv) 75%, #0000 25%);
         background-color: color-mix(in oklab, var(--sakura-layer-inv) 50%, #0000 50%);
@@ -188,13 +192,10 @@ div.home-card {
         backdrop-filter: blur(calc(var(--padding) / 2));
         color: var(--sakura-layer-surface);
         border: 2px solid var(--sakura-layer-surface);
-        border-radius: calc(var(--padding) / 4);
+        border-radius: calc(var(--padding) / 2);
         padding: var(--gap);
         font-weight: bold;
-        width: min-content;
-        position: absolute;
-        bottom: var(--gap);
-        right: var(--gap);
+        width: 100%;
     }
 
     & img {
@@ -213,10 +214,18 @@ div.home-card {
     & .head .img {
         position: relative;
 
+        & > div {
+            position: relative;
+        }
+
         & button {
             position: absolute;
             bottom: var(--gap);
             right: var(--gap);
+        }
+
+        & img[src=""] {
+            min-height: 48px;
         }
 
         & img[src=""] + button {
@@ -347,22 +356,44 @@ div.home-card {
     }
 }
 
-div.db-episode {
-    display: flex;
-    flex-direction: row;
-    gap: var(--gap);
+div.listing div.episode {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    grid-gap: var(--gap);
     background-color: var(--sakura-layer-surface);
     padding: var(--gap);
     border-radius: var(--padding);
-    & div.img img {
-        height: 256px;
-        border-radius: calc(var(--padding) - var(--gap));
+    & div.img {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+        & > a > img {
+            width: 100%;
+            border-radius: calc(var(--padding) - var(--gap));
+        }
     }
     & h1 {
         color: var(--sakura-layer-inv);
+        margin: 0;
     }
     & h4 {
         color: var(--sakura-text-muted);
+        margin-bottom: 0;
+        margin-top: 16px;
+    }
+    div.links {
+        display: flex;
+        flex-direction: row;
+        gap: var(--gap);
+        height: 100%;
+        align-self: start;
+        & a {
+            height: min-content;
+            align-self: end;
+        }
+        & img {
+            width: 32px;
+        }
     }
     & div.link {
         background-color: var(--sakura-layer-base);
@@ -473,16 +504,24 @@ div.login {
     }
 }
 
-input[type="text"], input[type="password"] {
+span.error, p.error {
+    color: var(--sakura-paint-rose);
+    font-weight: bold;
+}
+
+p {
+    line-height: 1.5;
+}
+
+
+input[type="text"], input[type="number"], input[type="password"], select {
     background-color: var(--sakura-layer-surface);
     color: var(--sakura-text-norm);
-    border: 2px solid var(--sakura-layer-surface);
+    border: 2px solid var(--sakura-hl-high);
     padding: var(--padding);
     border-radius: var(--padding);
     & + span.error {
-        color: var(--sakura-paint-rose);
         font-size: small;
-        font-weight: bold;
     }
     &.mono {
         font-family: "Ubuntu Mono", monospace;
@@ -514,4 +553,46 @@ input[type="submit"] {
         font-size: small;
         font-weight: bold;
     }
+}
+
+div.search {
+    margin: auto;
+    left: 0px;
+    right: 0px;
+    position: relative;
+    width: min-content;
+    white-space: nowrap;
+
+    & button, & span {
+        vertical-align: middle;
+    }
+    & input, & select {
+        height: 38px;
+        border-radius: var(--gap);
+        padding: 0px var(--gap);
+        vertical-align: middle;
+    }
+}
+
+div.banner {
+    height: 512px;
+    background-color: var(--sakura-layer-inv);
+    padding: var(--gap);
+
+    & img {
+        height: 384px;
+        border-radius: var(--padding);
+    }
+}
+
+div.flex-row {
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap);
+}
+
+div.flex-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
 }

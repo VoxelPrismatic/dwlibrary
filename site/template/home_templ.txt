@@ -1,7 +1,11 @@
 <body><div class=\"home masonry\">
 </div>
 <script type=\"text/javascript\" src=\"/src/js/script.js\"></script></body>
-<div class=\"home-card post template\" id=\"__template__\"><div class=\"head\"><div class=\"title\"><h1 class=\"series\">New Show</h1><div><p>Enter the show ID below, eg \"matt\" or \"crain\"</p><p>Title & Subtext details will be available on the next screen</p><p>This ID <b>CANNOT</b> be changed</p></div></div></div><form hx-put=\"/htmx/home-card/__template__\" hx-target=\"#__template__\" hx-swap=\"outerHTML\"><input type=\"text\" name=\"show\" value=\"\" placeholder=\"Show ID\" class=\"mono\"> <button type=\"submit\" class=\"action new\" title=\"Create Card\">
+<div class=\"home-card post template\" id=\"__template__\"><div class=\"head\"><div class=\"title\"><h1 class=\"series\">New Show</h1>
+<div><p class=\"error\">
+</p></div>
+<div><p>Enter the show ID below, eg \"matt\" or \"crain\"</p><p>Title & Subtext details will be available on the next screen</p><p>This ID <b>CANNOT</b> be changed</p></div>
+</div></div><form hx-put=\"/htmx/home-card/__template__\" hx-target=\"#__template__\" hx-swap=\"outerHTML\"><input type=\"text\" name=\"show\" value=\"\" placeholder=\"Show ID\" class=\"mono\"> <button type=\"submit\" class=\"action new\" title=\"Create Card\">
 </button></form></div>
 <div class=\"home-card post\" id=\"
 \">

@@ -53,15 +53,25 @@ func HtmxUploadRouter(user data.UserEntry, w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	url, err, err_code := UploadImage(file_data)
+	if err != nil {
+		http.Error(w, err.Error(), err_code)
+		return
+	}
+
+	_, _ = w.Write([]byte(url))
+}
+
+func UploadImage(file_data []byte) (string, error, int) {
 	mime := http.DetectContentType(file_data)
 	if !strings.HasPrefix(mime, "image/") {
-		http.Error(w, "Not an image", http.StatusBadRequest)
-		return
+		return "", fmt.Errorf("Not an image"), http.StatusBadRequest
 	}
 
 	file_size := len(file_data)
 
 	var img image.Image
+	var err error
 	switch mime {
 	case "image/jpeg":
 		img, err = jpeg.Decode(bytes.NewReader(file_data))
@@ -70,19 +80,16 @@ func HtmxUploadRouter(user data.UserEntry, w http.ResponseWriter, r *http.Reques
 	case "image/webp":
 		img, err = webp.Decode(bytes.NewReader(file_data), nil)
 	default:
-		http.Error(w, "Not a WebP, PNG, or JPEG", http.StatusBadRequest)
-		return
+		return "", fmt.Errorf("Not a WebP, PNG, or JPEG"), http.StatusBadRequest
 	}
 	if err != nil {
-		http.Error(w, mime+"\nDecode(): "+err.Error(), http.StatusInternalServerError)
-		return
+		return "", err, http.StatusInternalServerError
 	}
 
 	out := bytes.NewBuffer(nil)
 	err = webp.Encode(out, img, nil)
 	if err != nil {
-		http.Error(w, "Encode(): "+err.Error(), http.StatusInternalServerError)
-		return
+		return "", err, http.StatusInternalServerError
 	}
 	file_data = out.Bytes()
 
@@ -97,15 +104,29 @@ func HtmxUploadRouter(user data.UserEntry, w http.ResponseWriter, r *http.Reques
 
 	err = os.MkdirAll("./site/content/upload/"+file_dir, 0755)
 	if err != nil {
-		http.Error(w, "MkdirAll(): "+err.Error(), http.StatusInternalServerError)
-		return
+		return "", err, http.StatusInternalServerError
 	}
 
 	err = os.WriteFile("./site/content/upload/"+file_path, file_data, 0644)
 	if err != nil {
-		http.Error(w, "WriteFile(): "+err.Error(), http.StatusInternalServerError)
-		return
+		return "", err, http.StatusInternalServerError
 	}
 
-	_, _ = w.Write([]byte("/src/upload/" + file_path))
+	return "/src/upload/" + file_path, nil, 0
+}
+
+func UploadImageFromUrl(url string) (string, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	file_data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	ret, err, _ := UploadImage(file_data)
+	return ret, err
 }

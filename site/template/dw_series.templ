@@ -19,16 +19,16 @@ templ DwSeries(user data.UserEntry) {
     <body>
         <div class="home masonry">
             for _, card := range dw_series_cards() {
-                @DwSeriesCard(user, card)
+                @DwSeriesCard(user, card, "")
             }
-            @DwSeriesCardTemplate(user)
+            @DwSeriesCardTemplate(user, "")
         </div>
         @Buttons(user, EditBtn{})
         <script type="text/javascript" src="/src/js/script.js"></script>
     </body>
 }
 
-templ DwSeriesCardTemplate(user data.UserEntry) {
+templ DwSeriesCardTemplate(user data.UserEntry, err string) {
     if user.IsAdmin {
         <div class="home-card post template" id="__template__">
             <div class="head">
@@ -36,11 +36,19 @@ templ DwSeriesCardTemplate(user data.UserEntry) {
                     <h1 class="series">
                         New Series
                     </h1>
-                    <div>
-                        <p>Enter the show ID below, eg "matt" or "crain"</p>
-                        <p>Title & other details will be available on the next screen</p>
-                        <p>This ID <b>CANNOT</b> be changed</p>
-                    </div>
+                    if err != "" {
+                        <div>
+                            <p class="error">
+                                { err }
+                            </p>
+                        </div>
+                    } else {
+                        <div>
+                            <p>Enter the show ID below, eg "matt" or "crain"</p>
+                            <p>Title & other details will be available on the next screen</p>
+                            <p>This ID <b>CANNOT</b> be changed</p>
+                        </div>
+                    }
                 </div>
             </div>
             <form hx-put="/htmx/series-card/__template__" hx-target="#__template__" hx-swap="outerHTML">
@@ -54,17 +62,17 @@ templ DwSeriesCardTemplate(user data.UserEntry) {
 }
 
 templ DwSeriesCardPlusTemplate(user data.UserEntry, kwargs data.SiteDwSeriesEntry) {
-    @DwSeriesCard(user, kwargs)
-    @DwSeriesCardTemplate(user)
+    @DwSeriesCard(user, kwargs, "")
+    @DwSeriesCardTemplate(user, "")
 }
 
-templ DwSeriesCard(user data.UserEntry, kwargs data.SiteDwSeriesEntry) {
+templ DwSeriesCard(user data.UserEntry, kwargs data.SiteDwSeriesEntry, loading string) {
     <div class="home-card post" id={ kwargs.Show }>
         @DwSeriesHead(user, kwargs)
 
         <div class="links">
             for _, link := range kwargs.GetLinks() {
-                @DwSeriesLink(user, kwargs, link, false)
+                @DwSeriesLink(user, kwargs, link, loading == link.Link)
             }
             if user.IsAdmin {
                 @DwSeriesLink(user, kwargs, data.SiteDwSeriesLinkEntry{Placement: len(kwargs.GetLinks())}, false)
@@ -107,17 +115,24 @@ templ EditDwSeriesHead(user data.UserEntry, kwargs data.SiteDwSeriesEntry) {
             <div class="img">
                 <img src={ kwargs.Image } id={ kwargs.Show + "-image" }/>
                 <input style="display:none" type="text" name="url" value={ kwargs.Image } />
-                <div class="token">
-                    { kwargs.Show }
-                </div>
+                <label data-for={ kwargs.Show + "-image-input" } onclick="$('#' + this.dataset.for).click()">
+                    <button class="btn action upload glass" type="button">
+                        @SvgIcon("dazzle", "upload")
+                    </button>
+                </label>
             </div>
             <div class="upload">
                 <input type="file"
                     name="image"
                     accept="image/*"
                     onchange="uploadImage(this)"
+                    style="display:none"
+                    id={ kwargs.Show + "-image-input" }
                     data-for={ "#" + kwargs.Show + "-image" }
                 />
+                <div class="token">
+                    { kwargs.Show }
+                </div>
                 <button hx-get={ fmt.Sprintf("/htmx/series-card/%s", kwargs.Show) }
                     hx-target={ fmt.Sprintf("#%s-head", kwargs.Show) }
                     hx-trigger="click"

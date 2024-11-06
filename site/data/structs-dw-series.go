@@ -1,10 +1,11 @@
 package data
 
 type SiteDwSeriesEntry struct {
-	Show  string                  `gorm:"primaryKey" json:"show"`
-	Title string                  `json:"title"`
-	Image string                  `json:"image"`
-	Links []SiteDwSeriesLinkEntry `json:"links" gorm:"-"`
+	Show   string `gorm:"primaryKey" json:"show"`
+	Title  string `json:"title"`
+	Image  string `json:"image"`
+	Poster string
+	Links  []SiteDwSeriesLinkEntry `json:"links" gorm:"-"`
 }
 
 type SiteDwSeriesLinkEntry struct {

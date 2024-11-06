@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -38,6 +40,65 @@ type gql_episode struct {
 	DiscussionId string `json:"discussionId"`
 	IsLive       bool   `json:"isLive"`
 	Status       string `json:"status"`
+}
+
+func (ep gql_episode) ShouldIgnore() bool {
+	if ep.Status != "PUBLISHED" {
+		return true
+	}
+
+	t := strings.ToLower(ep.Title)
+	for _, tag := range ignore_tags {
+		if strings.Contains(t, tag) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (ep gql_episode) GetSlug(show string) string {
+	r := regexp.MustCompile("[Ee][Pp](.|-) ?([0-9]+)")
+	matches := r.FindStringSubmatch(ep.Title)
+	if len(matches) == 0 {
+		matches = r.FindStringSubmatch(ep.Slug)
+	}
+	if len(matches) == 0 {
+		return ep.Id
+	}
+
+	i := matches[2]
+	if len(i) < 2 {
+		i = "0" + i
+	}
+
+	return show + "-" + i
+}
+
+var ignore_tags []string = []string{
+	"[member exclusive]",
+	"[ad free]",
+}
+
+func thumb_exists(thumb string) bool {
+	if thumb == "" {
+		return false
+	}
+
+	if strings.HasPrefix(thumb, "/src/") {
+		thumb = "./site/content/" + thumb[len("/src/"):]
+	}
+
+	stat, err := os.Stat(thumb)
+	if err != nil {
+		return false
+	}
+
+	if stat.Size() == int64(0) {
+		return false
+	}
+
+	return true
 }
 
 func fill_episodes(gql_id string, show string) (int, error) {
@@ -106,25 +167,14 @@ func fill_episodes(gql_id string, show string) (int, error) {
 		count = skip
 
 		for _, episode := range gql.Data.GetSeasonEpisodes {
+			skip++
 			ep := episode.Episode
 			if episode.Episode.Status != "PUBLISHED" {
 				continue
 			}
-			if strings.Contains(ep.Title, "[Member Exclusive]") {
-				continue
-			}
 
-			ep_code := ""
-			if !strings.HasPrefix(ep.Title, "Ep.") {
-				ep_code = episode.Episode.Id
-			} else {
-				parts := strings.Split(ep.Slug, "-")
-				if len(parts) == 2 {
-					ep_code = show + "-" + parts[1]
-				} else {
-					parts = strings.Split(ep.Title, " ")
-					ep_code = show + "-" + parts[1]
-				}
+			if ep.ShouldIgnore() {
+				continue
 			}
 
 			d, err := time.Parse("2006-01-02T15:04:05.9999999Z", ep.CreatedAt)
@@ -132,19 +182,31 @@ func fill_episodes(gql_id string, show string) (int, error) {
 				d = time.Unix(0, 0)
 			}
 
+			existing := data.Link{}
+			db.Where("name = ?", ep.GetSlug(show)).First(&existing)
+
+			img_url := existing.Thumb
+
+			if !thumb_exists(existing.Thumb) {
+				img_url, err = UploadImageFromUrl(ep.Image)
+				if err != nil {
+					fmt.Printf("Failed to upload image: %s\n", err.Error())
+					continue
+				}
+			}
+
 			link := data.Link{
-				Name:            ep_code,
+				Name:            ep.GetSlug(show),
 				GraphQLSeriesID: gql_id,
 				Series:          show,
 				Title:           ep.Title,
 				Date:            d.Unix(),
 				Description:     ep.Description,
 				LinkDW:          "https://www.dailywire.com/episode/" + ep.Slug,
-				Thumb:           ep.Image,
+				Thumb:           img_url,
 			}
 
 			db.Save(&link)
-			skip++
 		}
 
 		if count == skip {
@@ -222,12 +284,7 @@ func HtmxSeriesSyncRouter(user data.UserEntry, w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	if timestamp < -5 {
-		delete(syncing, sync_id)
-	} else {
-		timestamp--
-		syncing[sync_id] = timestamp
-	}
+	delete(syncing, sync_id)
 	w.Header().Set("HX-Retarget", fmt.Sprintf("#%s-%d", show, link.Placement))
 	err = template.DwSeriesLink(user, card, link, false).Render(r.Context(), w)
 	if err != nil {

@@ -24,6 +24,7 @@ func main() {
 	http.HandleFunc("/edit/", router.EditRouter)
 	http.HandleFunc("/admin/", router.AdminRouter)
 	http.HandleFunc("/collections/", router.CollectionsRouter)
+	http.HandleFunc("/transcripts/", router.TranscriptsRouter)
 	http.HandleFunc("/src/", router.HandleSource)
 	http.HandleFunc("/db/link", router.DatabaseLinkRouter)
 

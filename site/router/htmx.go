@@ -9,6 +9,15 @@ import (
 
 func HtmxRouter(w http.ResponseWriter, r *http.Request) {
 	user := AuthUser(w, r)
+
+	source := strings.Split(r.URL.Path[len("/htmx/"):], "/")[0]
+
+	switch source {
+	case "transcript-list":
+		htmx.HtmxTranscriptListingRouter(user, w, r)
+		return
+	}
+
 	if user.Username == "" {
 		w.Header().Set("X-Auth-Reason", "Not logged in")
 		http.Error(w, "Not authorized", http.StatusUnauthorized)
@@ -19,8 +28,6 @@ func HtmxRouter(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not authorized", http.StatusUnauthorized)
 		return
 	}
-
-	source := strings.Split(r.URL.Path[len("/htmx/"):], "/")[0]
 
 	switch source {
 	case "home-link":

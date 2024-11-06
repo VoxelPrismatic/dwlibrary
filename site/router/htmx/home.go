@@ -154,10 +154,17 @@ func HtmxHomeCardRouter(user data.UserEntry, w http.ResponseWriter, r *http.Requ
 		}
 
 		show := strings.ToLower(r.Form.Get("show"))
+		if !valid_ids.MatchString(show) {
+			err := template.HomeCardTemplate(user, "Invalid ID (use only letters, numbers & underscores)").Render(r.Context(), w)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+			return
+		}
 		old_card := data.SiteHomeEntry{}
 		db.Debug().Model(&data.SiteHomeEntry{}).Where("show = ?", show).Find(&old_card)
 		if old_card.Show != "" || show == "" {
-			err := template.HomeCardTemplate(user).Render(r.Context(), w)
+			err := template.HomeCardTemplate(user, "Duplicate ID").Render(r.Context(), w)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 			}

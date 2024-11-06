@@ -14,6 +14,17 @@ type Link struct {
 	Thumb           string
 }
 
+func (l *Link) GetSeries() SiteDwSeriesEntry {
+	ret := SiteDwSeriesEntry{}
+	db, err := Connect()
+	if err != nil {
+		return ret
+	}
+
+	db.Model(&ret).Where("show = ?", l.Series).Find(&ret)
+	return ret
+}
+
 type Collection struct {
 	Name  string `gorm:"primaryKey"`
 	Type  string

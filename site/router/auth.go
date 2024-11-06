@@ -45,7 +45,8 @@ func AuthUser(w http.ResponseWriter, r *http.Request) data.UserEntry {
 	}
 
 	user.GitHash = GIT_HASH
-	user.JWT = base64.StdEncoding.EncodeToString(
+
+	/*user.JWT = base64.StdEncoding.EncodeToString(
 		[]byte(fmt.Sprintf(`{"username":"%s","time":%d}`, user.Username, time.Now().Unix())),
 	)
 	db.Save(&user)
@@ -54,7 +55,7 @@ func AuthUser(w http.ResponseWriter, r *http.Request) data.UserEntry {
 		Value: user.JWT,
 		Path:  "/",
 	}
-	http.SetCookie(w, cookie)
+	http.SetCookie(w, cookie)*/
 
 	return user
 }
