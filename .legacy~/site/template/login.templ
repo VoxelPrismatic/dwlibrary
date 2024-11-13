@@ -1,0 +1,28 @@
+package template
+
+import (
+    "dwlibrary/site/data"
+)
+
+templ LoginPage(reason string) {
+    @Head("DWLibrary - Login", "Log in to DWLibrary.")
+    <body>
+        <div class="login">
+            <form action="/login" method="post">
+                <input name="username" type="text" placeholder="Username" />
+                <span class="error"></span>
+                <input name="password" type="password" placeholder="Password" />
+                <span class="error"></span>
+                <input name="check-pw" type="password" placeholder="Confirm Password" />
+                <span class="error"></span>
+                <input type="submit" value="Create" disabled="disabled"/>
+                if reason != "" {
+                    <div class="error">{ reason }</div>
+                }
+            </form>
+        </div>
+        @Buttons(data.UserEntry{}, EditBtn{})
+        <script src="/src/js/script.js"></script>
+        <script src="/src/js/login.js"></script>
+    </body>
+}

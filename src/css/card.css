@@ -1,0 +1,193 @@
+div.masonry {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--column-width), 1fr));
+    gap: var(--gap);
+    & .column {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+    }
+}
+
+div.card {
+    background-color: var(--sakura-layer-surface);
+    max-width: 100%;
+    padding: var(--gap);
+    border-radius: var(--padding);
+
+    &.template form {
+        display: flex;
+        gap: var(--gap);
+        margin-bottom: 0px;
+    }
+
+    & div.token {
+        font-family: "Ubuntu Mono", monospace;
+        background-color: color-mix(in oklab, var(--sakura-layer-inv) 50%, #0000 50%);
+        backdrop-filter: blur(calc(var(--padding) / 2));
+        color: var(--sakura-layer-surface);
+        border: 2px solid var(--sakura-layer-surface);
+        border-radius: calc(var(--padding) / 2);
+        padding: var(--gap);
+        font-weight: bold;
+        width: 100%;
+    }
+
+    & img {
+        width: 100%;
+        border-radius: calc(var(--padding) - var(--gap));
+    }
+
+    & h1 {
+        color: var(--sakura-layer-inv);
+        & > input {
+            font-size: large;
+            font-weight: bold;
+        }
+    }
+
+    & .head .img {
+        position: relative;
+
+        & > div {
+            position: relative;
+        }
+
+        & button {
+            position: absolute;
+            bottom: var(--gap);
+            right: var(--gap);
+        }
+
+        & img[src=""] {
+            min-height: 48px;
+        }
+
+        & img[src=""] + button {
+            bottom: unset;
+            top: var(--gap);
+        }
+    }
+
+    & .head.edit {
+        padding: var(--gap);
+        margin-bottom: var(--gap);
+        border-radius: calc(var(--padding) / 2);
+        background-color: var(--sakura-paint-iris);
+        & h1, h3, form {
+            margin: 0;
+            display: flex;
+        }
+        & form, div.title {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap);
+        }
+    }
+
+    & .upload {
+        display: flex;
+        flex-direction: row;
+        gap: var(--gap);
+        & input {
+            width: 100%;
+        }
+    }
+
+    & .card-id {
+        display: flex;
+        gap: var(--gap);
+        margin-bottom: var(--gap);
+        & button {
+            width: 36px;
+        }
+    }
+
+    & div.links {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+    }
+
+    & div.anchor {
+        & .edit.flex {
+            display: flex;
+            flex-direction: row;
+            gap: var(--gap);
+        }
+        &.edit {
+            background-color: var(--sakura-paint-iris);
+            border-radius: calc(var(--padding) - var(--gap));
+            padding: var(--gap);
+            & .behind {
+                top: 0px;
+                z-index: 1;
+                height: revert;
+                opacity: 1;
+            }
+        }
+        .behind {
+            position: relative;
+            height: 0px;
+            top: -38px;
+            z-index: -1;
+            opacity: 0;
+        }
+        & > div {
+            display: flex;
+            flex-direction: row;
+            gap: var(--gap);
+        }
+        & form {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            gap: var(--gap);
+            & > div {
+                display: flex;
+                flex-direction: row;
+                gap: var(--gap);
+                & input.link {
+                    border-radius: calc(var(--padding) - var(--gap));
+                }
+            }
+        }
+    }
+
+    & div.link {
+        width: 100%;
+        background-color: var(--sakura-layer-base);
+        border-radius: calc(var(--padding) - var(--gap));
+        &:not(:first-child) {
+            margin-top: var(--gap);
+        }
+        &:hover {
+            background-color: var(--sakura-layer-overlay);
+        }
+        & > a, & > span {
+            text-decoration: none;
+            color: var(--sakura-text-norm);
+            display: block;
+            padding: var(--gap);
+            & span.details {
+                color: var(--sakura-text-muted);
+                font-style: italic;
+            }
+        }
+    }
+
+    & input {
+        padding-top: var(--gap);
+        padding-bottom: var(--gap);
+        border: 2px solid var(--sakura-hl-high);
+        width: 100%;
+        border-radius: calc(var(--padding) / 2);
+        background-color: var(--sakura-layer-surface);
+    }
+
+    & input[data-id="show-id"] {
+        font-family: "Ubuntu Mono", monospace;
+        background-color: var(--sakura-layer-inv);
+        color: var(--sakura-layer-surface);
+    }
+}

@@ -1,0 +1,76 @@
+:root {
+    color-scheme: light dark;
+
+    --sakura-dawn-text-muted: #8983ad;
+    --sakura-dawn-layer-base: #faedf3;
+    --sakura-dawn-hl-high: #cecacd;
+    --sakura-dawn-hl-low: #f4e8ef;
+    --sakura-dawn-layer-surface: #fff3f8;
+    --sakura-dawn-text-norm: #464681;
+    --sakura-dawn-hl-med: #dfd9de;
+    --sakura-dawn-paint-tree: #33b473;
+    --sakura-dawn-paint-iris: #696ac2;
+    --sakura-dawn-paint-foam: #6996c2;
+    --sakura-dawn-paint-pine: #466481;
+    --sakura-dawn-paint-rose: #d875a7;
+    --sakura-dawn-paint-gold: #b4b433;
+    --sakura-dawn-paint-love: #d87576;
+    --sakura-dawn-layer-inv: #3d1127;
+    --sakura-dawn-text-subtle: #67669b;
+    --sakura-dawn-layer-overlay: #f2e1ea;
+
+    --sakura-moon-text-muted: #5c5b75;
+    --sakura-moon-layer-base: #3d1127;
+    --sakura-moon-hl-high: #75304f;
+    --sakura-moon-hl-low: #45162d;
+    --sakura-moon-layer-surface: #46142c;
+    --sakura-moon-text-norm: #cbcbe3;
+    --sakura-moon-hl-med: #612642;
+    --sakura-moon-paint-tree: #4ae194;
+    --sakura-moon-paint-iris: #8a8dff;
+    --sakura-moon-paint-foam: #b5d9fb;
+    --sakura-moon-paint-pine: #678bae;
+    --sakura-moon-paint-rose: #eb8dbd;
+    --sakura-moon-paint-gold: #bfc069;
+    --sakura-moon-paint-love: #ff7677;
+    --sakura-moon-layer-inv: #faedf3;
+    --sakura-moon-text-subtle: #7d7c99;
+    --sakura-moon-layer-overlay: #591c38;
+
+    --sakura-main-text-muted: #5c5b75;
+    --sakura-main-layer-base: #15060e;
+    --sakura-main-hl-high: #582441;
+    --sakura-main-hl-low: #1f0b17;
+    --sakura-main-layer-surface: #1f0915;
+    --sakura-main-text-norm: #cbcbe3;
+    --sakura-main-hl-med: #431a30;
+    --sakura-main-paint-tree: #3dc07e;
+    --sakura-main-paint-iris: #8a8dff;
+    --sakura-main-paint-foam: #b5d9fb;
+    --sakura-main-paint-pine: #52708d;
+    --sakura-main-paint-rose: #ecb0cf;
+    --sakura-main-paint-gold: #bfc069;
+    --sakura-main-paint-love: #ff7677;
+    --sakura-main-layer-inv: #faedf3;
+    --sakura-main-text-subtle: #7d7c99;
+    --sakura-main-layer-overlay: #2b0b1d;
+
+    --sakura-text-muted: light-dark(var(--sakura-dawn-text-muted), var(--sakura-moon-text-muted));
+    --sakura-text-inv: light-dark(var(--sakura-moon-text-norm), var(--sakura-dawn-text-norm));
+    --sakura-layer-base: light-dark(var(--sakura-dawn-layer-base), var(--sakura-moon-layer-base));
+    --sakura-hl-high: light-dark(var(--sakura-dawn-hl-high), var(--sakura-moon-hl-high));
+    --sakura-hl-low: light-dark(var(--sakura-dawn-hl-low), var(--sakura-moon-hl-low));
+    --sakura-layer-surface: light-dark(var(--sakura-dawn-layer-surface), var(--sakura-moon-layer-surface));
+    --sakura-text-norm: light-dark(var(--sakura-dawn-text-norm), var(--sakura-moon-text-norm));
+    --sakura-hl-med: light-dark(var(--sakura-dawn-hl-med), var(--sakura-moon-hl-med));
+    --sakura-paint-tree: light-dark(var(--sakura-dawn-paint-tree), var(--sakura-moon-paint-tree));
+    --sakura-paint-iris: light-dark(var(--sakura-dawn-paint-iris), var(--sakura-moon-paint-iris));
+    --sakura-paint-foam: light-dark(var(--sakura-dawn-paint-foam), var(--sakura-moon-paint-foam));
+    --sakura-paint-pine: light-dark(var(--sakura-dawn-paint-pine), var(--sakura-moon-paint-pine));
+    --sakura-paint-rose: light-dark(var(--sakura-dawn-paint-rose), var(--sakura-moon-paint-rose));
+    --sakura-paint-gold: light-dark(var(--sakura-dawn-paint-gold), var(--sakura-moon-paint-gold));
+    --sakura-paint-love: light-dark(var(--sakura-dawn-paint-love), var(--sakura-moon-paint-love));
+    --sakura-layer-inv: light-dark(var(--sakura-dawn-layer-inv), var(--sakura-moon-layer-inv));
+    --sakura-text-subtle: light-dark(var(--sakura-dawn-text-subtle), var(--sakura-moon-text-subtle));
+    --sakura-layer-overlay: light-dark(var(--sakura-dawn-layer-overlay), var(--sakura-moon-layer-overlay));
+}

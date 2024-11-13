@@ -1,0 +1,94 @@
+div.listing div.episode {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    grid-gap: var(--gap);
+    background-color: var(--sakura-layer-surface);
+    padding: var(--gap);
+    border-radius: var(--padding);
+    & div.img {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+        & > a > img {
+            width: 100%;
+            border-radius: calc(var(--padding) - var(--gap));
+        }
+    }
+    & h1 {
+        color: var(--sakura-layer-inv);
+        margin: 0;
+    }
+    & h4 {
+        color: var(--sakura-text-muted);
+        margin-bottom: 0;
+        margin-top: 16px;
+    }
+    div.links {
+        display: flex;
+        flex-direction: row;
+        gap: var(--gap);
+        height: 100%;
+        align-self: start;
+        & a {
+            height: min-content;
+            align-self: end;
+        }
+        & img {
+            width: 32px;
+        }
+    }
+    & div.link {
+        background-color: var(--sakura-layer-base);
+        border-radius: calc(var(--padding) - var(--gap));
+        &:not(:first-child) {
+            margin-top: var(--gap);
+        }
+        &:hover {
+            background-color: var(--sakura-layer-overlay);
+        }
+        & a {
+            text-decoration: none;
+            color: var(--sakura-text-norm);
+            display: block;
+            padding: var(--gap);
+        }
+    }
+    & div.details {
+        display: flex;
+        flex-direction: column;
+        & div.meta {
+            flex-grow: 1;
+        }
+    }
+}
+
+div.search {
+    margin: auto;
+    left: 0px;
+    right: 0px;
+    position: relative;
+    width: min-content;
+    white-space: nowrap;
+
+    & button, & span {
+        vertical-align: middle;
+    }
+    & input, & select {
+        height: 38px;
+        border-radius: var(--gap);
+        padding: 0px var(--gap);
+        vertical-align: middle;
+    }
+}
+
+div.banner {
+    height: 512px;
+    background-color: var(--sakura-layer-inv);
+    padding: var(--gap);
+
+    & img {
+        height: 384px;
+        border-radius: var(--padding);
+    }
+}
+

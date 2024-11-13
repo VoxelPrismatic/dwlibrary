@@ -1,0 +1,28 @@
+package common
+
+templ Head(title string, desc string) {
+    <!DOCTYPE html>
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="icon" href="/src/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={ desc } />
+        <meta name="theme-color" content="#3d1127" />
+        <link rel="stylesheet" type="text/css" href="/src/css/button.css" />
+        <link rel="stylesheet" type="text/css" href="/src/css/card.css" />
+        <link rel="stylesheet" type="text/css" href="/src/css/episodes.css" />
+        <link rel="stylesheet" type="text/css" href="/src/css/font.css" />
+        <link rel="stylesheet" type="text/css" href="/src/css/global.css" />
+        <link rel="stylesheet" type="text/css" href="/src/css/input.css" />
+        <link rel="stylesheet" type="text/css" href="/src/css/login.css" />
+        <link rel="stylesheet" type="text/css" href="/src/css/sakura-pine.css" />
+        <title>{ title }</title>
+
+        <script type="text/javascript" src="/src/js/htmx-2.0.3.js"></script>
+        <script type="text/javascript" src="/src/js/xquery.js"></script>
+        <script type="text/javascript" src="/src/js/masonry.js"></script>
+        <script type="text/javascript" src="/src/js/theme.js"></script>
+        <script type="text/javascript" src="/src/js/global.js"></script>
+        <script type="text/javascript" src="/src/js/defer.js" defer></script>
+    </head>
+}

@@ -1,0 +1,40 @@
+input[type="text"], input[type="number"], input[type="password"], select {
+    background-color: var(--sakura-layer-surface);
+    color: var(--sakura-text-norm);
+    border: 2px solid var(--sakura-hl-high);
+    padding: var(--padding);
+    border-radius: var(--padding);
+    & + span.error {
+        font-size: small;
+    }
+    &.mono {
+        font-family: "Ubuntu Mono", monospace;
+        background-color: var(--sakura-layer-inv);
+        color: var(--sakura-layer-surface);
+    }
+}
+
+input[type="submit"] {
+    background-color: var(--sakura-paint-tree);
+    color: var(--sakura-layer-base);
+    font-weight: bold;
+    border: 2px solid var(--sakura-layer-overlay);
+    padding: var(--padding);
+    border-radius: var(--padding);
+    &[disabled] {
+        background-color: var(--sakura-paint-love);
+        &:hover {
+            background-color: var(--sakura-paint-rose);
+            cursor: not-allowed;
+        }
+    }
+    &:hover {
+        background-color: var(--sakura-paint-gold);
+        cursor: pointer;
+    }
+    & + div.error {
+        color: var(--sakura-paint-rose);
+        font-size: small;
+        font-weight: bold;
+    }
+}

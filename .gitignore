@@ -25,3 +25,9 @@ yarn-error.log*
 
 /site/content/upload
 /site/content/upload/*
+
+/src/img/upload
+/src/img/upload/*
+
+*_templ.go
+*_templ.txt

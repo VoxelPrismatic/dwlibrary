@@ -1,0 +1,28 @@
+package pages
+
+import (
+    "dwlibrary/web/common"
+    "dwlibrary/web/home"
+)
+
+templ Home(user common.User) {
+    @common.Head("DWLibrary", "DWLibrary, the digital library for the DailyWire.")
+    <body>
+        <div class="home masonry">
+            for _, card := range home.AllHomeCards() {
+                @card.RenderCard(user)
+            }
+            if user.Admin {
+                @(home.HomeCard{}).RenderTemplate(user, "")
+            }
+        </div>
+        @common.Buttons(user, common.EditBtn{
+            Href: "/admin",
+            RequireAdmin: true,
+            Title: "Management",
+            Icon: "gear",
+            Color: "rose",
+            Class: "edit",
+        })
+    </body>
+}

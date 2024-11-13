@@ -1,0 +1,49 @@
+package common
+
+templ Buttons(user User, page EditBtn) {
+    <div id="buttons">
+        <div>
+            if (user.Admin && (page.RequireAdmin || page.RequireEditor)) || (user.Editor && page.RequireEditor && !page.RequireAdmin) {
+                <a href={ templ.SafeURL(page.Href) }>
+                    @Button("dazzle", page.Icon, page.Color, page.Class, page.Title)
+                </a>
+            }
+            <a href="/user">
+                if user.Username == "" {
+                    @Button("dazzle", "user", "iris", "login", "Log in")
+                } else if user.Admin {
+                    @Button("dazzle", "crown", "gold", "login", "Admin")
+                } else if user.Editor {
+                    @Button("dazzle", "message-circle-pencil", "tree", "login", "Editor")
+                } else {
+                    @Button("dazzle", "eye", "rose", "login", "View Only")
+                }
+            </a>
+        </div>
+        <div>
+            <a href="/">
+                @Button("dazzle", "house-chimney-blank", "pine", "home", "Home")
+            </a>
+            @Button("dazzle", "moon", "inv", "theme", "Switch to Dark Mode")
+        </div>
+    </div>
+    <div class="svg-cache">
+        @SvgIcon("dazzle", "sun")
+    </div>
+}
+
+templ Button(collection string, icon string, color string, id string, title string) {
+    <button id={ id } title={ title } class={ color }>
+        @SvgIcon(collection, icon)
+    </button>
+}
+
+type EditBtn struct {
+    Href string
+    RequireEditor bool
+    RequireAdmin bool
+    Title string
+    Icon string
+    Class string
+    Color string
+}

@@ -1,0 +1,42 @@
+package common
+
+import (
+    "os"
+    "fmt"
+    "strings"
+    "html/template"
+)
+
+// ICONS FROM https://www.svgrepo.com/collection/dazzle-line-icons
+var svg_cache = map[string]templ.Component{}
+
+func SvgIcon(collection string, icon string) templ.Component {
+    if svg, ok := svg_cache[icon]; ok {
+        return svg
+    }
+
+    loc := fmt.Sprintf("./src/svg/icons/%s/%s.svg", collection, icon)
+    bytes, err := os.ReadFile(loc)
+    if err != nil {
+        return to_component(loc)
+
+    }
+
+
+    str := string(bytes)
+    str = fmt.Sprintf(`<svg data-id="%s" class="svg-cache" %s`, icon, strings.SplitN(str, "<svg", 2)[1])
+    t, err := template.New("example").Parse(str)
+    if err != nil {
+        return to_component(err.Error())
+    }
+
+    ret := templ.FromGoHTML(t, nil)
+
+    svg_cache[icon] = ret
+    return ret
+}
+
+templ to_component(str string) {
+    { str }
+}
+

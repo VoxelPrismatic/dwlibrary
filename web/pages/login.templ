@@ -1,0 +1,88 @@
+package pages
+
+import (
+    "dwlibrary/web/common"
+)
+
+templ Login(msg string, check bool) {
+    @common.Head("DWLibrary - Login", "Log in to DWLibrary")
+
+    <style type="text/css">
+        body, html {
+            height: 100%;
+        }
+    </style>
+
+    <body>
+        <div class="login">
+            @LoginForm(msg, check)
+        </div>
+        @common.Buttons(common.User{}, common.EditBtn{})
+        <script src="/src/js/script.js"></script>
+    </body>
+}
+
+templ LoginForm(msg string, check bool) {
+    <form id="form"
+        action="/user/login"
+        method="post"
+        hx-patch="/htmx/login"
+        hx-target="#check-pw"
+        hx-swap="innerHTML"
+        hx-trigger="submit"
+    >
+        <div id="username">
+            <input name="username"
+                type="text"
+                placeholder="Username"
+                hx-post="/htmx/login"
+                hx-target="#check-pw"
+                hx-swap="innerHTML"
+                hx-trigger="keyup"
+            />
+        </div>
+        <div id="password">
+            <input name="password"
+                type="password"
+                placeholder="Password"
+                hx-post="/htmx/login"
+                hx-target="#check-pw"
+                hx-swap="innerHTML"
+                hx-trigger="keyup"
+                id="pass-in"
+            />
+        </div>
+        <div id="check-pw" class="flex-col">
+            @LoginBox(msg, check)
+        </div>
+    </form>
+}
+
+templ LoginBox(msg string, check bool) {
+    if check {
+        <input name="check-pw"
+            type="password"
+            placeholder="Confirm Password"
+            hx-post="/htmx/login"
+            hx-target="#check-pw"
+            hx-swap="innerHTML"
+            hx-trigger="keyup"
+        />
+    }
+
+    @LoginBtn(msg, check)
+}
+
+templ LoginBtn(msg string, check bool) {
+    if msg != "" {
+        <input id="login-btn" type="submit" value={ msg } disabled="disabled"/>
+    } else if check {
+        <input id="login-btn" type="submit" value="Create"/>
+    } else {
+        <input id="login-btn" type="submit" value="Log In"/>
+    }
+}
+
+templ LoginError(reason string, target string) {
+    <span class="error" id={ target }>{ reason }</span>
+}

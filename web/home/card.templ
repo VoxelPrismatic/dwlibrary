@@ -1,0 +1,147 @@
+package home
+
+import (
+    "fmt"
+    "dwlibrary/web/common"
+)
+
+
+templ (card HomeCard) RenderCard(user common.User) {
+    <div class="card post" id={ card.Show }>
+        @card.RenderHead_View(user)
+
+        <div class="links">
+            for _, link := range card.Links() {
+                @link.RenderLink_View(user)
+            }
+
+            if user.Admin {
+                @card.NewLink().RenderLink_View(user)
+            }
+        </div>
+    </div>
+}
+
+templ (card HomeCard) RenderTemplate(user common.User, err string) {
+    <div class="card post template" id="__template__">
+        <div class="head">
+            <div class="title">
+                <h1 class="series">New Show</h1>
+                if err != "" {
+                    <p class="error">
+                        { err }
+                    </p>
+                } else {
+                    <p>Enter the show ID below, eg "matt" or "crain"</p>
+                    <p>Title & Subtext details will be available on the next screen</p>
+                    <p>This ID <b>CANNOT</b> be changed</p>
+                }
+            </div>
+        </div>
+        <form hx-put="/htmx/home-card/__template__" hx-target="#__template__" hx-swap="outerHTML">
+            <input type="text" name="show" value="" placeholder="Show ID" class="mono"/>
+            <button type="submit" class="action new" title="Create Card">
+                @common.SvgIcon("dazzle", "plus")
+            </button>
+        </form>
+    </div>
+}
+
+templ (card HomeCard) RenderTemplate_Adjacent(user common.User) {
+    @card.RenderCard(user)
+    @card.RenderTemplate(user, "")
+    <script type="text/javascript">masonry()</script>
+}
+
+templ (card HomeCard) RenderHead_View(user common.User) {
+    <div class="head" id={ card.Show + "-head" }>
+        <div class="img">
+            <img src={ card.Image }/>
+            if user.Admin {
+                <button hx-patch={ fmt.Sprintf("/htmx/home-card/%s", card.Show) }
+                    hx-target={ fmt.Sprintf("#%s-head", card.Show) }
+                    hx-trigger="click"
+                    hx-swap="outerHTML"
+                    title="Edit Card"
+                    class="action edit glass"
+                >
+                    @common.SvgIcon("dazzle", "pencil")
+                </button>
+            }
+        </div>
+        <div class="title">
+            <h1 class="series">
+                { card.Title }
+            </h1>
+            <h3 class="description">
+                { card.Desc }
+            </h3>
+        </div>
+    </div>
+}
+
+templ (card HomeCard) RenderHead_Edit(user common.User) {
+    <div class="head edit" id={ card.Show + "-head" }>
+        <form hx-post={ fmt.Sprintf("/htmx/home-card/%s", card.Show) }
+            hx-target={ fmt.Sprintf("#%s-head", card.Show) }
+            hx-swap="outerHTML"
+        >
+            <div class="img">
+                <img src={ card.Image } id={ card.Show + "-image" }/>
+                <input style="display:none" type="text" name="url" value={ card.Image } />
+                <label data-for={ card.Show + "-image-input" } onclick="$('#' + this.dataset.for).click()">
+                    <button class="btn action upload glass" type="button">
+                        @common.SvgIcon("dazzle", "upload")
+                    </button>
+                </label>
+                <div class="svg-cache">
+                    @common.SvgIcon("dazzle", "loader")
+                </div>
+            </div>
+            <div class="upload">
+                <input type="file"
+                    name="image"
+                    accept="image/*"
+                    onchange="uploadImage(this)"
+                    style="display:none"
+                    id={ card.Show + "-image-input" }
+                    data-for={ "#" + card.Show + "-image" }
+                />
+                <div class="token">
+                    { card.Show }
+                </div>
+                <button hx-get={ fmt.Sprintf("/htmx/home-card/%s", card.Show) }
+                    hx-target={ fmt.Sprintf("#%s-head", card.Show) }
+                    hx-trigger="click"
+                    hx-swap="outerHTML"
+                    title="Discard Changes"
+                    class="action undo"
+                >
+                    @common.SvgIcon("dazzle", "trash-undo")
+                </button>
+                <button hx-delete={ fmt.Sprintf("/htmx/home-card/%s", card.Show) }
+                    hx-target={ fmt.Sprintf("#%s", card.Show) }
+                    hx-trigger="click"
+                    hx-swap="outerHTML"
+                    title="Delete Card"
+                    hx-confirm="Are you sure you want to delete this card?"
+                    class="action delete"
+                >
+                    @common.SvgIcon("dazzle", "trash")
+                </button>
+                <button type="submit" class="action save" title="Save Card">
+                    @common.SvgIcon("dazzle", "floppy-disk")
+                </button>
+            </div>
+            <div class="title">
+                <h1 class="series">
+                    <input type="text" name="title" value={ card.Title }/>
+                </h1>
+                <h3 class="description">
+                    <input type="text" name="desc" value={ card.Desc }/>
+                </h3>
+            </div>
+        </form>
+    </div>
+}
+

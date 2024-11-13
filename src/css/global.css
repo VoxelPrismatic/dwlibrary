@@ -1,0 +1,54 @@
+:root {
+    --padding: 16px;
+    --gap: 8px;
+
+    --round-layer-0: 16px;
+    --round-layer-1: 12px;
+    --round-layer-2: 8px;
+    --round-layer-3: 4px;
+
+    --cubic: cubic-bezier(0.5, 0, 0.25, 1);
+
+    --column-width: 368px;
+}
+
+* {
+    transition: all 0.2s var(--cubic) 0s;
+}
+
+body {
+    background-color: var(--sakura-layer-base);
+    color: var(--sakura-text-norm);
+    margin-bottom: 96px;
+}
+
+div.flex-row {
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap);
+}
+
+div.flex-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
+div.listing {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
+div.svg-cache {
+    display: none;
+}
+
+p {
+    line-height: 1.5;
+}
+
+span.error, p.error {
+    color: var(--sakura-paint-rose);
+    font-weight: bold;
+}
