@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
+	"time"
 )
 
 var ValidNames = regexp.MustCompile(`^([0-9a-z\_]+)$`)
@@ -75,7 +76,7 @@ func (u *User) GenerateJWT() error {
 
 	u.GitHash = GIT_HASH
 	u.JWT = base64.StdEncoding.EncodeToString(
-		[]byte(fmt.Sprintf(`{"name":"%s","git":"%s"}`, u.Username, u.GitHash)),
+		[]byte(fmt.Sprintf(`{"name":"%s","timestamp":%d}`, u.Username, time.Now().Unix())),
 	)
 
 	web.Save(u)
@@ -176,7 +177,7 @@ func CookieAuth(w http.ResponseWriter, r *http.Request) User {
 			continue
 		}
 
-		user = web.GetFirst(User{JWT: cookie.Value})
+		user = web.GetFirst(User{JWT: cookie.Value, GitHash: GIT_HASH})
 		if user.Username != "" {
 			break
 		}
