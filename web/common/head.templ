@@ -1,5 +1,12 @@
 package common
 
+import (
+    "strings"
+    "github.com/gomarkdown/markdown"
+    "github.com/microcosm-cc/bluemonday"
+    "html/template"
+)
+
 templ Head(title string, desc string) {
     <!DOCTYPE html>
     <head>
@@ -26,4 +33,17 @@ templ Head(title string, desc string) {
         <script type="text/javascript" src="/src/js/global.js"></script>
         <script type="text/javascript" src="/src/js/defer.js" defer></script>
     </head>
+}
+
+func Markdown(md string) templ.Component {
+    md = strings.ReplaceAll(md, "<", "&lt;")
+    html := markdown.ToHTML([]byte(md), nil, nil)
+    san := bluemonday.UGCPolicy().Sanitize(string(html))
+
+    t, err := template.New("example").Parse(san)
+    if err != nil {
+        return to_component(err.Error())
+    }
+
+    return templ.FromGoHTML(t, nil)
 }

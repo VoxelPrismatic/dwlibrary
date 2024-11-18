@@ -1,0 +1,65 @@
+package episode
+
+import (
+    "fmt"
+    "dwlibrary/web/common"
+)
+
+templ (show Show) RenderShow(user common.User) {
+    <div class="episode entry">
+        @show.RenderHead_View(user)
+    </div>
+}
+
+templ (show Show) RenderHead_View(user common.User) {
+    <div class="head" id={ show.Code + "-head" }>
+        <img src={ show.Banner } class="banner" />
+        <div class="img">
+            <img src={ show.Poster }/>
+            if user.Admin {
+                <button hx-patch={ fmt.Sprintf("/htmx/admin-series/%s", show.Code) }
+                    hx-target={ fmt.Sprintf("#%s-head", show.Code) }
+                    hx-trigger="click"
+                    hx-swap="outerHTML"
+                    title="Edit Show"
+                    class="action edit glass"
+                >
+                    @common.SvgIcon("dazzle", "pencil")
+                </button>
+            }
+        </div>
+        <div class="title">
+            <h1 class="series">
+                { show.Title }
+            </h1>
+            <p class="description">
+                { show.Desc }
+            </p>
+        </div>
+    </div>
+}
+
+templ (show Show) RenderTemplate(user common.User, err string) {
+    <div class="episode entry template" id="__template__">
+        <form hx-put="/htmx/admin-series/__template__" hx-target="#__template__" hx-swap="outerHTML">
+            <input type="text" name="show" value="" placeholder="Series ID" class="mono"/>
+            <button type="submit" class="action new" title="Create Card">
+                @common.SvgIcon("dazzle", "plus")
+            </button>
+        </form>
+        <div class="head">
+            <div class="title">
+                <h1 class="series">New Series</h1>
+                if err != "" {
+                    <p class="error">
+                        { err }
+                    </p>
+                } else {
+                    <p>Enter the show ID below, eg "matt" or "crain"</p>
+                    <p>Title & Subtext details will be available on the next screen</p>
+                    <p>This ID <b>CANNOT</b> be changed</p>
+                }
+            </div>
+        </div>
+    </div>
+}

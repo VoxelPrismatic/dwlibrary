@@ -10,7 +10,7 @@ templ (link CardLink) RenderLink_View(user common.User) {
         <div>
             <div class="link">
                 <a href={ templ.SafeURL(link.Link) }>
-                    { link.Text }
+                    @common.Markdown(link.Text)
                 </a>
             </div>
             if user.Admin {

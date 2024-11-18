@@ -14,7 +14,5 @@ type AdminChip struct {
 }
 
 func AllAdminChips() []AdminChip {
-	ret := []AdminChip{}
-	web.Db().Model(&AdminChip{}).Find(&ret)
-	return ret
+	return web.GetSorted(AdminChip{}, "")
 }

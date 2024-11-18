@@ -45,6 +45,7 @@ func SvgFile(loc string, icon string, stroke bool) templ.Component {
     } else {
         str = fmt.Sprintf(`<svg data-id="%s" class="svg-cache" %s`, icon, str)
     }
+
     t, err := template.New("example").Parse(str)
     if err != nil {
         return to_component(err.Error())
@@ -75,5 +76,40 @@ templ SvgUpload(path string, id string, target string, stroke bool) {
             hx-target={ "#" + id + "-svg" }
             hx-headers={ fmt.Sprintf(`{"X-Target":"%s","X-Name":"%s","X-Path":"%t"}`, target, id, stroke) }
         />
+        <label data-for={ id + "-svg-input" }
+            for={ id + "-svg-input" }
+            onclick="$('#' + this.dataset.for).click()"
+        >
+            <button class="btn action upload glass" type="button">
+                @SvgIcon("dazzle", "upload")
+            </button>
+        </label>
+    </div>
+}
+
+templ ImgUpload(path string, id string, name string) {
+    <div class="img-upload" id={ id + "-" + name }>
+        <img src={ path } id={ id + "-" + name + "-image" }/>
+        <input style="display:none" type="text" name={ name } value={ path }/>
+        <label data-for={ id + "-" + name + "-image-input" }
+            for={ id + "-" + name + "-image-input" }
+            onclick="$('#' + this.dataset.for).click()"
+        >
+            <button class="btn action upload glass" type="button">
+                @SvgIcon("dazzle", "upload")
+            </button>
+        </label>
+        <input type="file"
+            name={ name + "-image" }
+            accept="image/png, image/jpeg, image/webp"
+            style="display:none"
+            id={ id + "-" + name + "-image-input" }
+            data-for={ "#" + id + "-" + name + "-image" }
+            data-name={ id }
+            onchange="uploadImage(this)"
+        />
+        <div class="svg-cache">
+            @SvgIcon("dazzle", "loader")
+        </div>
     </div>
 }

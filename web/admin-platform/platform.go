@@ -14,7 +14,5 @@ type Platform struct {
 }
 
 func AllPlatforms() []Platform {
-	ret := []Platform{}
-	web.Db().Model(&Platform{}).Find(&ret)
-	return ret
+	return web.GetSorted(Platform{}, "")
 }

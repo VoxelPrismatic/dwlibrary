@@ -19,6 +19,9 @@ func AdminRouter(w http.ResponseWriter, r *http.Request, user common.User, path 
 	case "platforms":
 		fail.Render(w, r, pages.AdminPlatforms(user))
 
+	case "seasons":
+		fail.Render(w, r, pages.AdminSeries(user))
+
 	default:
 		w.Header().Set("X-Redirect-Reason", "404: /admin/"+path[0])
 		http.Redirect(w, r, "/", http.StatusPermanentRedirect)

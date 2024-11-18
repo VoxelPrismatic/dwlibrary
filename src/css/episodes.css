@@ -5,6 +5,17 @@ div.listing div.episode {
     background-color: var(--sakura-layer-surface);
     padding: var(--gap);
     border-radius: var(--padding);
+    &.template form {
+        display: flex;
+        flex-direction: row;
+        gap: var(--gap);
+        height: min-content;
+        & input {
+            width: 100%;
+            border-radius: var(--gap);
+            padding: var(--gap);
+        }
+    }
     & div.img {
         display: flex;
         flex-direction: column;

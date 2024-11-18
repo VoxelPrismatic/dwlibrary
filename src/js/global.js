@@ -13,7 +13,7 @@ async function uploadImage(elem) {
 
     let uri = ""
     switch(elem.accept) {
-        case "image/*":
+        case "image/png, image/jpeg, image/webp":
             uri = "/htmx/upload-img";
             break;
         case "image/svg+xml":

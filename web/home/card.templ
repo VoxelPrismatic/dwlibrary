@@ -73,9 +73,7 @@ templ (card HomeCard) RenderHead_View(user common.User) {
             <h1 class="series">
                 { card.Title }
             </h1>
-            <h3 class="description">
-                { card.Desc }
-            </h3>
+            @common.Markdown(card.Desc)
         </div>
     </div>
 }
@@ -87,27 +85,9 @@ templ (card HomeCard) RenderHead_Edit(user common.User) {
             hx-swap="outerHTML"
         >
             <div class="img">
-                <img src={ card.Image } id={ card.Show + "-image" }/>
-                <input style="display:none" type="text" name="url" value={ card.Image } />
-                <label data-for={ card.Show + "-image-input" } onclick="$('#' + this.dataset.for).click()">
-                    <button class="btn action upload glass" type="button">
-                        @common.SvgIcon("dazzle", "upload")
-                    </button>
-                </label>
-                <div class="svg-cache">
-                    @common.SvgIcon("dazzle", "loader")
-                </div>
+                @common.ImgUpload(card.Image, card.Show, "url")
             </div>
             <div class="upload">
-                <input type="file"
-                    name="image"
-                    accept="image/*"
-                    onchange="uploadImage(this)"
-                    style="display:none"
-                    id={ card.Show + "-image-input" }
-                    data-for={ "#" + card.Show + "-image" }
-                    data-name={ card.Show }
-                />
                 <div class="token">
                     { card.Show }
                 </div>

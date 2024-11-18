@@ -22,9 +22,6 @@ func HomeCard(w http.ResponseWriter, r *http.Request, user common.User, path []s
 	card := web.GetFirst(home.HomeCard{Show: path[0]})
 
 	switch r.Method {
-	case "PATCH":
-		HomeCard_PATCH(w, r, user, card)
-
 	case "POST":
 		HomeCard_POST(w, r, user, card)
 
@@ -32,18 +29,18 @@ func HomeCard(w http.ResponseWriter, r *http.Request, user common.User, path []s
 		HomeCard_PUT(w, r, user, card)
 
 	case "DELETE":
-		HomeCard_DELETE(w, r, user, card)
+		web.Db().Delete(&card)
+		w.Header().Set("HX-Retarget", "#"+card.Show)
+
+	case "PATCH":
+		fail.Render(w, r, card.RenderHead_Edit(user))
 
 	case "GET":
-		HomeCard_GET(w, r, user, card)
+		fail.Render(w, r, card.RenderHead_View(user))
 
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
-}
-
-func HomeCard_PATCH(w http.ResponseWriter, r *http.Request, user common.User, card home.HomeCard) {
-	fail.Render(w, r, card.RenderHead_Edit(user))
 }
 
 func HomeCard_POST(w http.ResponseWriter, r *http.Request, user common.User, card home.HomeCard) {
@@ -83,13 +80,4 @@ func HomeCard_PUT(w http.ResponseWriter, r *http.Request, user common.User, card
 
 	web.Save(&card)
 	fail.Render(w, r, card.RenderTemplate_Adjacent(user))
-}
-
-func HomeCard_DELETE(w http.ResponseWriter, r *http.Request, user common.User, card home.HomeCard) {
-	web.Db().Delete(&card)
-	w.Header().Set("HX-Retarget", "#"+card.Show)
-}
-
-func HomeCard_GET(w http.ResponseWriter, r *http.Request, user common.User, card home.HomeCard) {
-	fail.Render(w, r, card.RenderHead_View(user))
 }

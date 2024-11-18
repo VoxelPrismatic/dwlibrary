@@ -4,6 +4,7 @@ import (
     "dwlibrary/web/common"
     "dwlibrary/web/admin"
     "dwlibrary/web/admin-platform"
+    "dwlibrary/web/episode"
 )
 
 templ Admin(user common.User) {
@@ -27,6 +28,19 @@ templ AdminPlatforms(user common.User) {
                 @p.RenderChip(user)
             }
             @(platform.Platform{}).RenderTemplate(user, "")
+        </div>
+        @common.Buttons(user, common.EditBtn{})
+    </body>
+}
+
+templ AdminSeries(user common.User) {
+    @common.Head("DWLibrary - Series", "DWLibrary Series dashboard")
+    <body>
+        <div class="home listing">
+            for _, s := range episode.AllShows() {
+                @s.RenderShow(user)
+            }
+            @(episode.Show{}).RenderTemplate(user, "")
         </div>
         @common.Buttons(user, common.EditBtn{})
     </body>

@@ -37,6 +37,16 @@ func GetChildren[T interface{}](filter T) []T {
 	return *ret
 }
 
+func GetSorted[T interface{}](filter T, order string) []T {
+	ret := new([]T)
+	if order != "" {
+		db.Where(&filter).Order(order).Find(ret)
+	} else {
+		db.Where(&filter).Find(ret)
+	}
+	return *ret
+}
+
 func Db() *gorm.DB {
 	return db
 }

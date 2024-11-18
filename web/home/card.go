@@ -23,7 +23,5 @@ func (card HomeCard) NewLink() CardLink {
 }
 
 func AllHomeCards() []HomeCard {
-	ret := []HomeCard{}
-	web.Db().Model(&HomeCard{}).Order("random()").Find(&ret)
-	return ret
+	return web.GetSorted(HomeCard{}, "random()")
 }

@@ -41,11 +41,6 @@ templ (p Platform) RenderChip_Edit(user common.User) {
         >
             <div class="img">
                 @common.SvgUpload(p.Image, p.Code, "platform", false)
-                <label data-for={ p.Code + "-svg-input" } onclick="$('#' + this.dataset.for).click()">
-                    <button class="btn action upload glass" type="button">
-                        @common.SvgIcon("dazzle", "upload")
-                    </button>
-                </label>
                 <span class="token">
                     { p.Code }
                 </span>

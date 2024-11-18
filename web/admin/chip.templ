@@ -41,11 +41,6 @@ templ (chip AdminChip) RenderChip_Edit(user common.User) {
         >
             <div class="img">
                 @common.SvgUpload(chip.Image, chip.Chip, "admin", true)
-                <label data-for={ chip.Chip + "-svg-input" } onclick="$('#' + this.dataset.for).click()">
-                    <button class="btn action upload glass" type="button">
-                        @common.SvgIcon("dazzle", "upload")
-                    </button>
-                </label>
                 <span class="token">
                     { chip.Chip }
                 </span>
