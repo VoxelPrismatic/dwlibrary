@@ -38,3 +38,11 @@ input[type="submit"] {
         font-weight: bold;
     }
 }
+
+input.pass {
+    border-color: var(--sakura-paint-iris);
+}
+
+input.fail {
+    border-color: var(--sakura-paint-love);
+}

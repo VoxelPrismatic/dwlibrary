@@ -7,7 +7,7 @@
    viewBox="0 0 73.728 73.728"
    version="1.1"
    id="svg8"
-   sodipodi:docname="x.svg"
+   sodipodi:docname="rumble.svg"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -25,7 +25,7 @@
      inkscape:document-units="pt"
      showgrid="false"
      inkscape:zoom="8.9314782"
-     inkscape:cx="38.571443"
+     inkscape:cx="28.270796"
      inkscape:cy="45.457201"
      inkscape:window-width="1792"
      inkscape:window-height="1056"
@@ -47,7 +47,7 @@
      ry="0"
      x="2.8356988"
      y="2.8356988"
-     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:5.671;stroke-dasharray:none;stroke-linejoin:miter" /><path
-     d="m 51.641741,13.6505 h 7.877654 L 42.308434,33.323023 62.557,60.0875 H 46.703223 L 34.287356,43.852852 20.077611,60.0875 H 12.195676 L 30.605409,39.044965 11.181,13.652641 H 27.437223 L 38.660738,28.491589 Z M 48.87814,55.373802 h 4.36482 L 25.065364,18.118026 h -4.683778 z"
-     id="path10045"
-     style="stroke-width:2.14066;fill:#ffffff" /></svg>
+     style="fill:#85c742;fill-opacity:1;stroke:#85c742;stroke-width:5.671;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;stroke-linecap:square" /><path
+     d="m 41.806002,39.980526 c 1.623118,-1.316773 1.871295,-3.699723 0.554726,-5.322842 a 3.7844552,3.7844611 0 0 0 -0.554726,-0.554727 42.696793,42.69686 0 0 0 -8.679369,-5.587524 c -2.145638,-1.026526 -4.540863,0.402559 -4.883239,2.846094 a 47.346146,47.34622 0 0 0 -0.28179,11.074612 c 0.233484,2.47574 2.600529,3.953133 4.774346,3.003093 a 39.508125,39.508187 0 0 0 9.070052,-5.442604 z m 13.95309,-10.869507 c 4.093016,4.484512 4.105295,11.346137 0.02818,15.845342 A 52.631945,52.632027 0 0 1 29.410814,60.712737 C 24.006866,62.063931 18.507912,58.873041 16.999525,53.51075 13.932027,43.043802 14.382894,31.208354 17.3417,20.693099 c 1.553876,-5.523115 6.747086,-8.989354 12.097294,-7.713039 9.9114,2.363024 19.210709,8.445697 26.320098,16.126732 v 0.004 z"
+     id="path189"
+     style="stroke-width:2.0128;fill:#ffffff" /></svg>

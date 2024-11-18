@@ -1,0 +1,141 @@
+package platform
+
+import (
+    "fmt"
+    "dwlibrary/web/common"
+)
+
+templ (p Platform) RenderChip(user common.User) {
+    <div class="chip post" id={ p.Code }>
+        @p.RenderChip_View(user)
+    </div>
+}
+
+templ (p Platform) RenderChip_View(user common.User) {
+    <div class="head" id={ p.Code + "-head" }>
+        <div class="img">
+            @common.SvgFile(p.Image, "", false)
+        </div>
+        <div class="title">
+            <h2 class="series">
+                { p.Name }
+            </h2>
+        </div>
+        <button hx-patch={ fmt.Sprintf("/htmx/admin-platform/%s", p.Code) }
+            hx-target={ fmt.Sprintf("#%s-head", p.Code) }
+            hx-trigger="click"
+            hx-swap="outerHTML"
+            title="Edit Chip"
+            class="action edit glass"
+        >
+            @common.SvgIcon("dazzle", "pencil")
+        </button>
+    </div>
+}
+
+templ (p Platform) RenderChip_Edit(user common.User) {
+    <div class="head edit" id={ p.Code + "-head" }>
+        <form hx-post={ fmt.Sprintf("/htmx/admin-platform/%s", p.Code) }
+            hx-target={ fmt.Sprintf("#%s-head", p.Code) }
+            hx-swap="outerHTML"
+        >
+            <div class="img">
+                @common.SvgUpload(p.Image, p.Code, "platform", false)
+                <label data-for={ p.Code + "-svg-input" } onclick="$('#' + this.dataset.for).click()">
+                    <button class="btn action upload glass" type="button">
+                        @common.SvgIcon("dazzle", "upload")
+                    </button>
+                </label>
+                <span class="token">
+                    { p.Code }
+                </span>
+                <div class="svg-cache">
+                    @common.SvgIcon("dazzle", "loader")
+                </div>
+            </div>
+            <div class="details">
+                <div class="title">
+                    <input type="text" name="title" value={ p.Name }/>
+                    <button type="submit" class="action save" title="Save Card">
+                        @common.SvgIcon("dazzle", "floppy-disk")
+                    </button>
+                </div>
+                <div class="href">
+                    @p.RenderRegex(user, nil)
+                    <button hx-get={ fmt.Sprintf("/htmx/admin-platform/%s", p.Code) }
+                        hx-target={ fmt.Sprintf("#%s-head", p.Code) }
+                        hx-trigger="click"
+                        hx-swap="outerHTML"
+                        title="Discard Changes"
+                        class="action undo"
+                    >
+                        @common.SvgIcon("dazzle", "trash-undo")
+                    </button>
+                    <button hx-delete={ fmt.Sprintf("/htmx/admin-platform/%s", p.Code) }
+                        hx-target={ fmt.Sprintf("#%s", p.Code) }
+                        hx-trigger="click"
+                        hx-swap="outerHTML"
+                        title="Delete Card"
+                        hx-confirm="Are you sure you want to delete this card?"
+                        class="action delete"
+                    >
+                        @common.SvgIcon("dazzle", "trash")
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+
+templ (p Platform) RenderRegex(user common.User, err error) {
+    if err != nil {
+        <input type="text"
+            value={ p.Regex }
+            name="regex"
+            placeholder="/regex/"
+            title={ err.Error() }
+            id={ p.Code + "-regex" }
+            hx-patch={ fmt.Sprintf("/htmx/admin-platform-regex/%s", p.Code) }
+            hx-target={ fmt.Sprintf("#%s-regex", p.Code) }
+            hx-trigger="keyup changed delay:500ms"
+            hx-swap="outerHTML"
+            class="regex fail"
+        />
+    } else {
+        <input type="text"
+            value={ p.Regex }
+            name="regex"
+            placeholder="/regex/"
+            id={ p.Code + "-regex" }
+            title="[pass]"
+            hx-patch={ fmt.Sprintf("/htmx/admin-platform-regex/%s", p.Code) }
+            hx-target={ fmt.Sprintf("#%s-regex", p.Code) }
+            hx-trigger="keyup changed delay:500ms"
+            hx-swap="outerHTML"
+            class="regex pass"
+        />
+    }
+}
+
+templ (p Platform) RenderTemplate(user common.User, reason string) {
+    <div class="chip post template" id="__template__">
+        <div class="head">
+            <form hx-put="/htmx/admin-platform/__template__" hx-target="#__template__" hx-swap="outerHTML">
+                if reason != "" {
+                    <input type="text" name="title" placeholder={ reason } required/>
+                } else {
+                    <input type="text" name="title" placeholder="New Chip" required/>
+                }
+                <button type="submit" class="action save" title="Save Card">
+                    @common.SvgIcon("dazzle", "floppy-disk")
+                </button>
+            </form>
+        </div>
+    </div>
+}
+
+templ (p Platform) RenderTemplate_Adjacent(user common.User) {
+    @p.RenderChip(user)
+    @p.RenderTemplate(user, "")
+    <script type="text/javascript">masonry()</script>
+}

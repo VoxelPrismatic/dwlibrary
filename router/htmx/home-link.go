@@ -36,25 +36,21 @@ func HomeLink(w http.ResponseWriter, r *http.Request, user common.User, path []s
 	}
 
 	switch r.Method {
-	case "PATCH":
-		HomeLink_PATCH(w, r, user, link)
-
 	case "POST":
 		HomeLink_POST(w, r, user, link)
 
 	case "DELETE":
 		HomeLink_DELETE(w, r, user, link)
 
+	case "PATCH":
+		fail.Render(w, r, link.RenderLink_Edit(user))
+
 	case "GET":
-		HomeLink_GET(w, r, user, link)
+		fail.Render(w, r, link.RenderLink_View(user))
 
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
-}
-
-func HomeLink_PATCH(w http.ResponseWriter, r *http.Request, user common.User, link home.CardLink) {
-	fail.Render(w, r, link.RenderLink_Edit(user))
 }
 
 func HomeLink_POST(w http.ResponseWriter, r *http.Request, user common.User, link home.CardLink) {
@@ -89,8 +85,4 @@ func HomeLink_DELETE(w http.ResponseWriter, r *http.Request, user common.User, l
 	web.Db().Delete(&home.CardLink{Show: card.Show, Index: idx})
 
 	fail.Render(w, r, card.RenderCard(user))
-}
-
-func HomeLink_GET(w http.ResponseWriter, r *http.Request, user common.User, link home.CardLink) {
-	fail.Render(w, r, link.RenderLink_View(user))
 }

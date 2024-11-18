@@ -1,0 +1,111 @@
+package admin
+
+import (
+    "fmt"
+    "dwlibrary/web/common"
+)
+
+templ (chip AdminChip) RenderChip(user common.User) {
+    <div class="chip post" id={ chip.Chip }>
+        @chip.RenderChip_View(user)
+    </div>
+}
+
+templ (chip AdminChip) RenderChip_View(user common.User) {
+    <div class="head" id={ chip.Chip + "-head" }>
+        <div class="img">
+            @common.SvgFile(chip.Image, "", true)
+        </div>
+        <div class="title">
+            <h2 class="series">
+                <a href={ templ.SafeURL(chip.Link) }>{ chip.Title }</a>
+            </h2>
+        </div>
+        <button hx-patch={ fmt.Sprintf("/htmx/admin-chip/%s", chip.Chip) }
+            hx-target={ fmt.Sprintf("#%s-head", chip.Chip) }
+            hx-trigger="click"
+            hx-swap="outerHTML"
+            title="Edit Chip"
+            class="action edit glass"
+        >
+            @common.SvgIcon("dazzle", "pencil")
+        </button>
+    </div>
+}
+
+templ (chip AdminChip) RenderChip_Edit(user common.User) {
+    <div class="head edit" id={ chip.Chip + "-head" }>
+        <form hx-post={ fmt.Sprintf("/htmx/admin-chip/%s", chip.Chip) }
+            hx-target={ fmt.Sprintf("#%s-head", chip.Chip) }
+            hx-swap="outerHTML"
+        >
+            <div class="img">
+                @common.SvgUpload(chip.Image, chip.Chip, "admin", true)
+                <label data-for={ chip.Chip + "-svg-input" } onclick="$('#' + this.dataset.for).click()">
+                    <button class="btn action upload glass" type="button">
+                        @common.SvgIcon("dazzle", "upload")
+                    </button>
+                </label>
+                <span class="token">
+                    { chip.Chip }
+                </span>
+                <div class="svg-cache">
+                    @common.SvgIcon("dazzle", "loader")
+                </div>
+            </div>
+            <div class="details">
+                <div class="title">
+                    <input type="text" name="title" value={ chip.Title }/>
+                    <button type="submit" class="action save" title="Save Card">
+                        @common.SvgIcon("dazzle", "floppy-disk")
+                    </button>
+                </div>
+                <div class="href">
+                    <input type="text" name="link" value={ chip.Link }/>
+                    <button hx-get={ fmt.Sprintf("/htmx/admin-chip/%s", chip.Chip) }
+                        hx-target={ fmt.Sprintf("#%s-head", chip.Chip) }
+                        hx-trigger="click"
+                        hx-swap="outerHTML"
+                        title="Discard Changes"
+                        class="action undo"
+                    >
+                        @common.SvgIcon("dazzle", "trash-undo")
+                    </button>
+                    <button hx-delete={ fmt.Sprintf("/htmx/admin-chip/%s", chip.Chip) }
+                        hx-target={ fmt.Sprintf("#%s", chip.Chip) }
+                        hx-trigger="click"
+                        hx-swap="outerHTML"
+                        title="Delete Card"
+                        hx-confirm="Are you sure you want to delete this card?"
+                        class="action delete"
+                    >
+                        @common.SvgIcon("dazzle", "trash")
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+
+templ (chip AdminChip) RenderTemplate(user common.User, reason string) {
+    <div class="chip post template" id="__template__">
+        <div class="head">
+            <form hx-put="/htmx/admin-chip/__template__" hx-target="#__template__" hx-swap="outerHTML">
+                if reason != "" {
+                    <input type="text" name="title" placeholder={ reason } required/>
+                } else {
+                    <input type="text" name="title" placeholder="New Chip" required/>
+                }
+                <button type="submit" class="action save" title="Save Card">
+                    @common.SvgIcon("dazzle", "floppy-disk")
+                </button>
+            </form>
+        </div>
+    </div>
+}
+
+templ (chip AdminChip) RenderTemplate_Adjacent(user common.User) {
+    @chip.RenderChip(user)
+    @chip.RenderTemplate(user, "")
+    <script type="text/javascript">masonry()</script>
+}

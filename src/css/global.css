@@ -52,3 +52,9 @@ span.error, p.error {
     color: var(--sakura-paint-rose);
     font-weight: bold;
 }
+
+svg[data-no-stroke="true"] {
+    & path {
+        stroke: none !important;
+    }
+}

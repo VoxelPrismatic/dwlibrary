@@ -73,7 +73,7 @@ div.card {
         padding: var(--gap);
         margin-bottom: var(--gap);
         border-radius: calc(var(--padding) / 2);
-        background-color: var(--sakura-paint-iris);
+        background-color: var(--sakura-layer-overlay);
         & h1, h3, form {
             margin: 0;
             display: flex;
@@ -116,7 +116,7 @@ div.card {
             gap: var(--gap);
         }
         &.edit {
-            background-color: var(--sakura-paint-iris);
+            background-color: var(--sakura-layer-overlay);
             border-radius: calc(var(--padding) - var(--gap));
             padding: var(--gap);
             & .behind {

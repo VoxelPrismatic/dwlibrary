@@ -1,0 +1,122 @@
+div.chip {
+    background-color: var(--sakura-layer-surface);
+    max-width: 100%;
+    padding: var(--gap);
+    border-radius: var(--padding);
+
+    &.template form {
+        display: flex;
+        gap: var(--gap);
+        margin-bottom: 0px;
+        width: 100%;
+    }
+
+    & .edit {
+        form {
+            width: 100%;
+            background-color: var(--sakura-layer-overlay);
+            padding: var(--gap);
+            border-radius: calc(var(--padding) - var(--gap));
+            & div.img {
+                margin-bottom: var(--gap);
+            }
+            & img {
+                left: 0;
+                right: 0;
+                position: relative;
+                margin: auto;
+                display: block;
+            }
+            & svg.svg-img {
+                width: 100%;
+            }
+        }
+        & .details {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap);
+            & div {
+                display: flex;
+                flex-direction: row;
+                gap: var(--gap);
+                width: 100%;
+            }
+        }
+    }
+
+    & input {
+        padding: var(--gap);
+        width: 100%;
+        border-radius: var(--gap);
+    }
+
+    & span.token {
+        font-family: "Ubuntu Mono", monospace;
+        background-color: color-mix(in oklab, var(--sakura-layer-inv) 50%, #0000 50%);
+        backdrop-filter: blur(calc(var(--padding) / 2));
+        color: var(--sakura-layer-surface);
+        border: 2px solid var(--sakura-layer-surface);
+        border-radius: calc(var(--padding) / 2);
+        padding: var(--gap);
+        font-weight: bold;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    & h1 {
+        color: var(--sakura-layer-inv);
+        & > input {
+            font-size: large;
+            font-weight: bold;
+        }
+    }
+
+    & div.head {
+        display: flex;
+        flex-direction: row;
+        gap: var(--gap);
+        position: relative;
+    }
+
+    & div.title {
+        height: min-content;
+        align-self: center;
+        & h2 {
+            margin: 0;
+            & a {
+                color: var(--sakura-layer-inv);
+            }
+        }
+    }
+
+    & div.img {
+        position: relative;
+        & svg.svg-img, img {
+            height: 96px;
+            object-fit: contain;
+            border-radius: calc(var(--padding) - var(--gap));
+            min-width: 96px;
+            width: min-content;
+        }
+        & svg.svg-img path {
+            stroke: var(--sakura-layer-inv);
+            width: min-width;
+        }
+        & button {
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+        }
+    }
+
+    & button.edit {
+        position: absolute;
+        top: var(--gap);
+        right: var(--gap);
+    }
+}
+
+div.svg-upload {
+    min-height: 24px;
+}

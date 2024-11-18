@@ -5,7 +5,6 @@ import (
 	"dwlibrary/web"
 	"dwlibrary/web/common"
 	"dwlibrary/web/home"
-	"fmt"
 	"net/http"
 	"strings"
 )
@@ -21,7 +20,6 @@ func HomeCard(w http.ResponseWriter, r *http.Request, user common.User, path []s
 	}
 
 	card := web.GetFirst(home.HomeCard{Show: path[0]})
-	fmt.Println(card)
 
 	switch r.Method {
 	case "PATCH":

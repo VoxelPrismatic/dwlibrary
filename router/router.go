@@ -11,6 +11,10 @@ func Router(w http.ResponseWriter, r *http.Request) {
 	user := common.CookieAuth(w, r)
 
 	path := strings.Split(r.URL.Path[len("/"):], "/")
+	if len(path) < 2 {
+		path = append(path, "")
+	}
+
 	switch path[0] {
 	case "src":
 		HandleSource(w, r)
@@ -23,6 +27,9 @@ func Router(w http.ResponseWriter, r *http.Request) {
 
 	case "user":
 		UserRouter(w, r, user, path[1:])
+
+	case "admin":
+		AdminRouter(w, r, user, path[1:])
 
 	default:
 		w.Header().Set("X-Redirect-Reason", "404: /"+path[0])

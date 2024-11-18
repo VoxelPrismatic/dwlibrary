@@ -1,0 +1,33 @@
+package pages
+
+import (
+    "dwlibrary/web/common"
+    "dwlibrary/web/admin"
+    "dwlibrary/web/admin-platform"
+)
+
+templ Admin(user common.User) {
+    @common.Head("DWLibrary - Admin", "DWLibrary Admin dashboard")
+    <body>
+        <div class="home masonry">
+            for _, chip := range admin.AllAdminChips() {
+                @chip.RenderChip(user)
+            }
+            @(admin.AdminChip{}).RenderTemplate(user, "")
+        </div>
+        @common.Buttons(user, common.EditBtn{})
+    </body>
+}
+
+templ AdminPlatforms(user common.User) {
+    @common.Head("DWLibrary - Platforms", "DWLibrary Platforms dashboard")
+    <body>
+        <div class="home masonry">
+            for _, p := range platform.AllPlatforms() {
+                @p.RenderChip(user)
+            }
+            @(platform.Platform{}).RenderTemplate(user, "")
+        </div>
+        @common.Buttons(user, common.EditBtn{})
+    </body>
+}

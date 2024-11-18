@@ -11,20 +11,40 @@ import (
 var svg_cache = map[string]templ.Component{}
 
 func SvgIcon(collection string, icon string) templ.Component {
-    if svg, ok := svg_cache[icon]; ok {
+    loc := fmt.Sprintf("./src/svg/icons/%s/%s.svg", collection, icon)
+    return SvgFile(loc, icon, true)
+}
+
+func SvgFile(loc string, icon string, stroke bool) templ.Component {
+    cache_loc := fmt.Sprintf("%s/%s/%t", loc, icon, stroke)
+
+    if icon == "-" {
+        delete(svg_cache, cache_loc)
+        icon = ""
+    }
+
+    if svg, ok := svg_cache[cache_loc]; ok {
         return svg
     }
 
-    loc := fmt.Sprintf("./src/svg/icons/%s/%s.svg", collection, icon)
     bytes, err := os.ReadFile(loc)
     if err != nil {
         return to_component(loc)
 
     }
 
-
     str := string(bytes)
-    str = fmt.Sprintf(`<svg data-id="%s" class="svg-cache" %s`, icon, strings.SplitN(str, "<svg", 2)[1])
+    str = strings.SplitN(str, "<svg", 2)[1]
+
+    if !stroke {
+        str = " data-no-stroke=true " + str
+    }
+
+    if icon == "" {
+        str = "<svg class=\"svg-img\" " + str
+    } else {
+        str = fmt.Sprintf(`<svg data-id="%s" class="svg-cache" %s`, icon, str)
+    }
     t, err := template.New("example").Parse(str)
     if err != nil {
         return to_component(err.Error())
@@ -32,7 +52,7 @@ func SvgIcon(collection string, icon string) templ.Component {
 
     ret := templ.FromGoHTML(t, nil)
 
-    svg_cache[icon] = ret
+    svg_cache[cache_loc] = ret
     return ret
 }
 
@@ -40,3 +60,20 @@ templ to_component(str string) {
     { str }
 }
 
+templ SvgUpload(path string, id string, target string, stroke bool) {
+    <div class="svg-upload" id={ id + "-svg" }>
+        @SvgFile(path, "-", stroke)
+        <input style="display:none" type="text" name="url" value={ path } />
+        <input type="file"
+            name="file"
+            accept="image/svg+xml"
+            style="display:none"
+            id={ id + "-svg-input" }
+            hx-encoding="multipart/form-data"
+            hx-post="/htmx/upload-svg"
+            hx-swap="outerHTML"
+            hx-target={ "#" + id + "-svg" }
+            hx-headers={ fmt.Sprintf(`{"X-Target":"%s","X-Name":"%s","X-Path":"%t"}`, target, id, stroke) }
+        />
+    </div>
+}

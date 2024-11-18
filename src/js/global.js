@@ -10,9 +10,27 @@ async function uploadImage(elem) {
     const file = elem.files[0];
     const data = new FormData();
     data.append("file", file);
-    const resp = await fetch("/htmx/upload", {
+
+    let uri = ""
+    switch(elem.accept) {
+        case "image/*":
+            uri = "/htmx/upload-img";
+            break;
+        case "image/svg+xml":
+            uri = "/htmx/upload-svg";
+            break;
+        default:
+            throw Error("Unknown accept type: " + elem.accept);
+    }
+
+    const resp = await fetch(uri, {
         method: "POST",
-        body: data
+        body: data,
+        headers: {
+            "Hx-Target": elem.dataset.for,
+            "X-Name": elem.dataset.name,
+            "X-Target": elem.dataset.target
+        }
     });
 
     const target = $(elem.dataset.for);
@@ -24,3 +42,4 @@ async function uploadImage(elem) {
     button.classList.remove("rot");
     button.innerHTML = SVG.upload;
 }
+
