@@ -63,6 +63,7 @@ button.action {
 }
 
 div#buttons {
+    z-index: 100;
     position: fixed;
     bottom: var(--padding);
     right: var(--padding);

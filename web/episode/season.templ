@@ -298,6 +298,14 @@ templ (show Show) RenderTable_Edit(user common.User, year int) {
     </table>
 }
 
+templ (show Show) RenderCode(reason string) {
+    if reason == "" {
+        <input id={ show.Code + "-id" } class="token" type="text" name="code" value={ show.Code } placeholder="Series ID"/>
+    } else {
+        <input id={ show.Code + "-id" } class="token fail" type="text" name="code" placeholder={ reason }/>
+    }
+}
+
 templ (show Show) RenderShow_Edit(user common.User) {
     <div class="episode entry edit" id={ show.Code }>
         <form hx-post={ fmt.Sprintf("/htmx/admin-series/%s", show.Code) }
@@ -305,6 +313,7 @@ templ (show Show) RenderShow_Edit(user common.User) {
             hx-swap="outerHTML"
         >
             <div class="flex-col">
+                @show.RenderCode("")
                 @common.ImgUpload(show.Banner, show.Code, "banner")
                 @common.ImgUpload(show.Poster, show.Code, "poster")
             </div>
@@ -358,7 +367,6 @@ templ (show Show) RenderTemplate(user common.User, err string) {
                 } else {
                     <p>Enter the show ID below, eg "matt" or "crain"</p>
                     <p>Title & Subtext details will be available on the next screen</p>
-                    <p>This ID <b>CANNOT</b> be changed</p>
                 }
             </div>
         </div>

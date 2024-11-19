@@ -110,13 +110,9 @@ func AdminSeasons_POST(w http.ResponseWriter, r *http.Request, user common.User,
 		return
 	}
 
-	web.Db().Delete(&szn)
-
 	gql_id := r.Form.Get("gql-id")
-	szns := web.GetSorted(episode.Season{GqlId: gql_id}, "`year` DESC")
-	for _, szn := range szns {
-		web.Db().Delete(&szn)
-	}
+	web.Db().Delete(&szn)
+	web.Db().Where(&episode.Season{GqlId: gql_id}).Delete(&episode.Season{})
 
 	szn.Show = show.Code
 	szn.Year = year

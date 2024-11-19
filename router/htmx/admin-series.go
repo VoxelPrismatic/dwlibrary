@@ -73,6 +73,32 @@ func AdminSeries_POST(w http.ResponseWriter, r *http.Request, user common.User, 
 		return
 	}
 
+	if show.Code != r.Form.Get("code") {
+		code := strings.ToLower(r.Form.Get("code"))
+		dupe_show := web.GetFirst(episode.Show{Code: code})
+		if dupe_show.Code != "" {
+			w.Header().Set("HX-Retarget", "#"+show.Code+"-id")
+			fail.Render(w, r, show.RenderCode("Duplicate ID"))
+			return
+		}
+
+		if !fail.ValidIDs.MatchString(code) {
+			w.Header().Set("HX-Retarget", "#"+show.Code+"-id")
+			fail.Render(w, r, show.RenderCode("Invalid ID (a-z, 0-9, _)"))
+			return
+		}
+
+		for _, season := range show.Seasons() {
+			web.Db().Debug().Where(&episode.Season{GqlId: season.GqlId}).Delete(&episode.Season{})
+			season.Show = code
+			web.Save(&season)
+
+			go season.Sync()
+		}
+		web.Db().Delete(&episode.Show{Code: show.Code})
+		show.Code = code
+	}
+
 	show.Title = r.Form.Get("title")
 	show.Desc = r.Form.Get("desc")
 	show.Poster = r.Form.Get("poster")

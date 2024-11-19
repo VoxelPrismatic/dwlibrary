@@ -9,6 +9,21 @@ div.masonry {
     }
 }
 
+div.token, input.token, input[name="code"], input.token[name="code"] {
+    font-family: "Ubuntu Mono", monospace;
+    background-color: var(--sakura-layer-inv);
+    border: 2px solid var(--sakura-hl-high);
+    border-radius: calc(var(--padding) / 2);
+    padding: var(--gap);
+    font-weight: bold;
+    color: var(--sakura-layer-surface);
+
+    &.blur {
+        background-color: color-mix(in oklab, var(--sakura-layer-inv) 50%, #0000 50%);
+        backdrop-filter: blur(calc(var(--padding) / 2));
+    }
+}
+
 div.card {
     background-color: var(--sakura-layer-surface);
     max-width: 100%;
@@ -22,14 +37,6 @@ div.card {
     }
 
     & div.token {
-        font-family: "Ubuntu Mono", monospace;
-        background-color: color-mix(in oklab, var(--sakura-layer-inv) 50%, #0000 50%);
-        backdrop-filter: blur(calc(var(--padding) / 2));
-        color: var(--sakura-layer-surface);
-        border: 2px solid var(--sakura-layer-surface);
-        border-radius: calc(var(--padding) / 2);
-        padding: var(--gap);
-        font-weight: bold;
         width: 100%;
     }
 
@@ -53,7 +60,7 @@ div.card {
             position: relative;
         }
 
-        & button {
+        & button:not(.upload) {
             position: absolute;
             bottom: var(--gap);
             right: var(--gap);
