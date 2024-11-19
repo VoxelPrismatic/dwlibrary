@@ -45,4 +45,21 @@ input.pass {
 
 input.fail {
     border-color: var(--sakura-paint-love);
+    color: var(--sakura-paint-love);
+}
+
+.img-upload {
+    position: relative;
+    & label {
+        position: absolute;
+        bottom: var(--gap);
+        right: var(--gap);
+        cursor: pointer;
+    }
+    & img {
+        width: 100%;
+        border-radius: var(--gap);
+        min-height: 48px;
+        min-width: 48px;
+    }
 }

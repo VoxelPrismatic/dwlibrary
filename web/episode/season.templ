@@ -2,23 +2,174 @@ package episode
 
 import (
     "fmt"
+    "math/rand"
     "dwlibrary/web/common"
 )
 
-templ (show Show) RenderShow(user common.User) {
-    <div class="episode entry">
-        @show.RenderHead_View(user)
-    </div>
+templ (season Season) RenderSync(force bool) {
+    if season.Syncing() || force {
+        <button hx-get={ fmt.Sprintf("/htmx/season-sync/%s", season.GqlId) }
+            hx-target={ fmt.Sprintf("#%s-%d", season.Show, season.Year) }
+            hx-trigger={ fmt.Sprintf("every %dms", rand.Intn(4000) + 1000) }
+            hx-swap="outerHTML"
+            title="Syncing..."
+            class="action sync disable rot"
+            id={ fmt.Sprintf("%s-%d-sync", season.Show, season.Year) }
+            type="button"
+        >
+            @common.SvgIcon("dazzle", "loader")
+        </button>
+    } else {
+        <button hx-patch={ fmt.Sprintf("/htmx/season-sync/%s", season.GqlId) }
+            hx-target={ fmt.Sprintf("#%s-%d", season.Show, season.Year) }
+            hx-trigger="click"
+            hx-swap="outerHTML"
+            title="Sync"
+            class="action sync"
+            id={ fmt.Sprintf("%s-%d-sync", season.Show, season.Year) }
+            type="button"
+        >
+            @common.SvgIcon("dazzle", "refresh-ccw-alt-1")
+        </button>
+    }
 }
 
-templ (show Show) RenderHead_View(user common.User) {
-    <div class="head" id={ show.Code + "-head" }>
+templ (season Season) RenderRow_View(user common.User, force bool) {
+    if season.Syncing() || force {
+        <tr id={ fmt.Sprintf("%s-%d", season.Show, season.Year) }>
+            <td class="btn">
+                <div class="flex-row">
+                    @season.RenderSync(true)
+                </div>
+            </td>
+            <td class="season">
+                { fmt.Sprint(season.Year) }
+            </td>
+            <td class="count" id={ fmt.Sprintf("%s-%d-count", season.Show, season.Year) }>
+                if count := len(season.Episodes()); count == 1 {
+                    { fmt.Sprint(count) } episode
+                } else {
+                    { fmt.Sprint(count) } episodes
+                }
+            </td>
+        </tr>
+    } else {
+        <tr id={ fmt.Sprintf("%s-%d", season.Show, season.Year) }>
+            <td class="btn">
+                <div class="flex-row">
+                    @season.RenderSync(false)
+                </div>
+            </td>
+            <td class="season"
+                hx-patch={ fmt.Sprintf("/htmx/admin-seasons/%s/%d", season.Show, season.Year) }
+                hx-target={ fmt.Sprintf("#%s-desc", season.Show) }
+                hx-swap="outerHTML"
+                hx-trigger="click"
+            >
+
+                { fmt.Sprint(season.Year) }
+            </td>
+            <td class="count"
+                hx-patch={ fmt.Sprintf("/htmx/admin-seasons/%s/%d", season.Show, season.Year) }
+                hx-target={ fmt.Sprintf("#%s-desc", season.Show) }
+                hx-swap="outerHTML"
+                hx-trigger="click"
+            >
+                if count := len(season.Episodes()); count == 1 {
+                    { fmt.Sprint(count) } episode
+                } else {
+                    { fmt.Sprint(count) } episodes
+                }
+            </td>
+        </tr>
+    }
+}
+
+templ (season Season) RenderRow_Sync() {
+    <tr id={ fmt.Sprintf("%s-%d", season.Show, season.Year) }>
+        <td class="btn">
+            if season.Syncing() {
+                <button title="Syncing..."
+                    class="action sync disable rot"
+                    id={ fmt.Sprintf("%s-%d-sync", season.Show, season.Year) }
+                    type="button"
+                >
+                    @common.SvgIcon("dazzle", "loader")
+                </button>
+            } else {
+                <button hx-patch={ fmt.Sprintf("/htmx/season-sync/%s", season.GqlId) }
+                    hx-target={ fmt.Sprintf("#%s-%d", season.Show, season.Year) }
+                    hx-trigger="click"
+                    hx-swap="outerHTML"
+                    title="Sync"
+                    class="action sync"
+                    id={ fmt.Sprintf("%s-%d-sync", season.Show, season.Year) }
+                    type="button"
+                >
+                    @common.SvgIcon("dazzle", "refresh-ccw-alt-1")
+                </button>
+            }
+        </td>
+        <td class="season">
+            { fmt.Sprint(season.Year) }
+        </td>
+        <td class="count" id={ fmt.Sprintf("%s-%d-count", season.Show, season.Year) }>
+            if count := len(season.Episodes()); count == 1 {
+                { fmt.Sprint(count) } episode
+            } else {
+                { fmt.Sprint(count) } episodes
+            }
+        </td>
+    </tr>
+}
+
+templ (season Season) RenderRow_Edit(user common.User, reason string) {
+    <tr id={ fmt.Sprintf("%s-%d", season.Show, season.Year) }>
+        <td class="btn">
+            <div class="flex-row">
+                <button class="action save" type="submit">
+                    @common.SvgIcon("dazzle", "floppy-disk")
+                </button>
+            </div>
+        </td>
+        <td class="season">
+            <input type="number" name="year" value={ fmt.Sprint(season.Year) } min="1" max="9999" step="1"/>
+        </td>
+        <td class="count flex-row">
+            if reason == "" {
+                <input type="text" name="gql-id" value={ season.GqlId } class="pass" placeholder="GraphQL Season ID"/>
+            } else {
+                <input type="text" name="gql-id" value={ "" } class="fail" title={ reason } placeholder={ reason }/>
+            }
+            <button class="action undo" hx-get={ fmt.Sprintf("/htmx/admin-seasons/%s", season.Show) }
+                hx-target={ fmt.Sprintf("#%s-desc", season.Show) }
+                hx-swap="outerHTML"
+                title="Discard Changes"
+            >
+                @common.SvgIcon("dazzle", "trash-undo")
+            </button>
+            <button hx-delete={ fmt.Sprintf("/htmx/admin-seasons/%s/%d", season.Show, season.Year) }
+                hx-target={ fmt.Sprintf("#%s-desc", season.Show) }
+                hx-swap="outerHTML"
+                hx-trigger="click"
+                title="Delete Season"
+                hx-confirm="Are you sure you want to delete this season?"
+                class="action delete"
+            >
+                @common.SvgIcon("dazzle", "trash")
+            </button>
+        </td>
+    </tr>
+}
+
+templ (show Show) RenderShow(user common.User) {
+    <div class="episode entry bg" id={ show.Code }>
         <img src={ show.Banner } class="banner" />
         <div class="img">
             <img src={ show.Poster }/>
             if user.Admin {
                 <button hx-patch={ fmt.Sprintf("/htmx/admin-series/%s", show.Code) }
-                    hx-target={ fmt.Sprintf("#%s-head", show.Code) }
+                    hx-target={ fmt.Sprintf("#%s", show.Code) }
                     hx-trigger="click"
                     hx-swap="outerHTML"
                     title="Edit Show"
@@ -28,14 +179,164 @@ templ (show Show) RenderHead_View(user common.User) {
                 </button>
             }
         </div>
-        <div class="title">
+        <div class="title" id={ fmt.Sprintf("%s-desc", show.Code) }>
+            <div class="flex-row">
+                <h1 class="series">
+                    { show.Title }
+                </h1>
+                <button hx-get={ fmt.Sprintf("/htmx/admin-seasons/%s", show.Code) }
+                    hx-target={ fmt.Sprintf("#%s-desc", show.Code) }
+                    hx-trigger="click"
+                    hx-swap="outerHTML"
+                    title="Edit Seasons"
+                    class="action edit"
+                >
+                    @common.SvgIcon("dazzle", "film")
+                </button>
+            </div>
+            <div>
+                @common.Markdown(show.Desc)
+            </div>
+        </div>
+    </div>
+}
+
+templ (show Show) RenderTable(user common.User, year int) {
+    <div class="title" id={ fmt.Sprintf("%s-desc", show.Code) }>
+        <div class="flex-row">
             <h1 class="series">
                 { show.Title }
             </h1>
-            <p class="description">
-                { show.Desc }
-            </p>
+            <button hx-put={ fmt.Sprintf("/htmx/admin-seasons/%s", show.Code) }
+                hx-target={ fmt.Sprintf("#%s-table", show.Code) }
+                hx-trigger="click"
+                hx-swap="outerHTML"
+                title="View Description"
+                class="action sync"
+            >
+                @common.SvgIcon("dazzle", "refresh-ccw-alt-1")
+            </button>
+            <button hx-get={ fmt.Sprintf("/htmx/admin-series/%s", show.Code) }
+                hx-target={ fmt.Sprintf("#%s", show.Code) }
+                hx-trigger="click"
+                hx-swap="outerHTML"
+                title="View Description"
+                class="action undo"
+            >
+                @common.SvgIcon("dazzle", "text")
+            </button>
         </div>
+        <div>
+            <form hx-post={ fmt.Sprintf("/htmx/admin-seasons/%s/%d", show.Code, year) }
+                hx-swap="outerHTML"
+                hx-target={ fmt.Sprintf("#%s-desc", show.Code) }
+            >
+                if show.NumSyncing() < SYNC_MAX {
+                    @show.RenderTable_Edit(user, year)
+                } else {
+                    @show.RenderTable_Sync()
+                }
+            </form>
+        </div>
+    </div>
+}
+
+templ (show Show) RenderTable_Sync() {
+    <table id={ fmt.Sprintf("%s-table", show.Code) }
+        hx-post={ fmt.Sprintf("/htmx/admin-seasons/%s", show.Code) }
+        hx-swap="outerHTML"
+        hx-target={ fmt.Sprintf("#%s-table", show.Code) }
+        hx-trigger="load delay:1s"
+    >
+        for _, season := range show.Seasons() {
+            @season.RenderRow_Sync()
+        }
+    </table>
+}
+
+templ (show Show) RenderTable_Edit(user common.User, year int) {
+    <table id={ fmt.Sprintf("%s-table", show.Code) }>
+        for _, season := range show.Seasons() {
+            if year == season.Year {
+                @season.RenderRow_Edit(user, "")
+            } else {
+                @season.RenderRow_View(user, false)
+            }
+        }
+        if year < 1 {
+            <tr>
+                <td class="btn">
+                    <button type="button" hx-patch={ fmt.Sprintf("/htmx/admin-seasons/%s", show.Code) }
+                        hx-target={ fmt.Sprintf("#%s-desc", show.Code) }
+                        hx-swap="outerHTML"
+                        hx-trigger="click"
+                        title="Add Season"
+                        class="action new"
+                    >
+                        @common.SvgIcon("dazzle", "plus")
+                    </button>
+                </td>
+                <td class="season">
+                    <input type="number"
+                        name="new_year"
+                        value={ fmt.Sprint(show.NewSeason().Year) }
+                        min="1"
+                        max="9999"
+                        step="1"
+                    />
+                </td>
+                <td class="count">
+                    <input type="text"
+                        name="new_gql-id"
+                        value=""
+                        class="pass"
+                        placeholder="GraphQL Season ID"
+                    />
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+templ (show Show) RenderShow_Edit(user common.User) {
+    <div class="episode entry edit" id={ show.Code }>
+        <form hx-post={ fmt.Sprintf("/htmx/admin-series/%s", show.Code) }
+            hx-target={ fmt.Sprintf("#%s", show.Code) }
+            hx-swap="outerHTML"
+        >
+            <div class="flex-col">
+                @common.ImgUpload(show.Banner, show.Code, "banner")
+                @common.ImgUpload(show.Poster, show.Code, "poster")
+            </div>
+            <div class="flex-col">
+                <div class="flex-row inputs">
+                    <input type="text" name="title" value={ show.Title } placeholder="Title"/>
+                    <button hx-get={ fmt.Sprintf("/htmx/admin-series/%s", show.Code) }
+                        hx-target={ fmt.Sprintf("#%s", show.Code) }
+                        hx-trigger="click"
+                        hx-swap="outerHTML"
+                        title="Discard Changes"
+                        class="action undo"
+                    >
+                        @common.SvgIcon("dazzle", "trash-undo")
+                    </button>
+                    <button hx-delete={ fmt.Sprintf("/htmx/admin-series/%s", show.Code) }
+                        hx-target={ fmt.Sprintf("#%s", show.Code) }
+                        hx-trigger="click"
+                        hx-swap="outerHTML"
+                        title="Delete Card"
+                        hx-confirm="Are you sure you want to delete this series?"
+                        class="action delete"
+                    >
+                        @common.SvgIcon("dazzle", "trash")
+                    </button>
+                    <button type="submit" class="action save" title="Save Show">
+                        @common.SvgIcon("dazzle", "floppy-disk")
+                    </button>
+                </div>
+                <textarea name="desc" placeholder="Description">{ show.Desc }</textarea>
+            </div>
+        </form>
     </div>
 }
 
@@ -62,4 +363,9 @@ templ (show Show) RenderTemplate(user common.User, err string) {
             </div>
         </div>
     </div>
+}
+
+templ (show Show) RenderTemplate_Adjacent(user common.User) {
+    @show.RenderShow(user)
+    @show.RenderTemplate(user, "")
 }

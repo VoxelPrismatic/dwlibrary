@@ -47,18 +47,21 @@ func HtmxRouter_Authed(w http.ResponseWriter, r *http.Request, user common.User,
 	case "admin-platform-regex":
 		htmx.PlatformRegex(w, r, user, path[1:])
 
+	case "admin-seasons":
+		htmx.AdminSeasons(w, r, user, path[1:])
+
+	case "season-sync":
+		htmx.SeasonSync(w, r, user, path[1:])
+
+	case "admin-series":
+		htmx.AdminSeries(w, r, user, path[1:])
+
 	case "upload-img":
 		UploadImage(w, r, user, path[1:])
 
 	case "upload-svg":
 		UploadSVG(w, r, user, path[1:])
 
-	// case "series-card":
-	// 	htmx.HtmxSeriesCardRouter(w, r, user, path[1:])
-	// case "series-link":
-	// 	htmx.HtmxSeriesLinkRouter(w, r, user, path[1:])
-	// case "series-sync":
-	// 	htmx.HtmxSeriesSyncRouter(w, r, user, path[1:])
 	default:
 		w.Header().Set("X-Redirect-Reason", "404: /htmx/"+path[0])
 		http.Redirect(w, r, "/", http.StatusPermanentRedirect)

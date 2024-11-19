@@ -1,10 +1,15 @@
 div.listing div.episode {
-    display: grid;
-    grid-template-columns: 35% 65%;
-    grid-gap: var(--gap);
+    &:not(.edit), &.edit > form {
+        display: grid;
+        grid-template-columns: 35% calc(65% - var(--gap));
+        grid-gap: var(--gap);
+    }
+
+    position: relative;
     background-color: var(--sakura-layer-surface);
     padding: var(--gap);
     border-radius: var(--padding);
+
     &.template form {
         display: flex;
         flex-direction: row;
@@ -16,24 +21,51 @@ div.listing div.episode {
             padding: var(--gap);
         }
     }
+
     & div.img {
         display: flex;
         flex-direction: column;
         gap: var(--gap);
-        & > a > img {
+        position: relative;
+        z-index: 2;
+        & > a > img, & > img {
             width: 100%;
             border-radius: calc(var(--padding) - var(--gap));
         }
+        & button {
+            position: absolute;
+            bottom: var(--gap);
+            right: var(--gap);
+        }
     }
+
+    & div.title {
+        z-index: 2;
+        & h1 {
+            width: 100%;
+        }
+    }
+
+    & img.banner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(var(--padding));
+        opacity: 0.1;
+    }
+
     & h1 {
         color: var(--sakura-layer-inv);
         margin: 0;
     }
+
     & h4 {
         color: var(--sakura-text-muted);
         margin-bottom: 0;
         margin-top: 16px;
     }
+
     div.links {
         display: flex;
         flex-direction: row;
@@ -48,6 +80,7 @@ div.listing div.episode {
             width: 32px;
         }
     }
+
     & div.link {
         background-color: var(--sakura-layer-base);
         border-radius: calc(var(--padding) - var(--gap));
@@ -64,11 +97,78 @@ div.listing div.episode {
             padding: var(--gap);
         }
     }
+
     & div.details {
         display: flex;
         flex-direction: column;
         & div.meta {
             flex-grow: 1;
+        }
+    }
+
+    & textarea {
+        width: calc(100% - var(--gap) * 2 - 4px);
+        height: 100%;
+        background: var(--sakura-layer-base);
+        font-family: Ubuntu;
+        line-height: 1.5;
+        border: 2px solid var(--sakura-hl-high);
+        border-radius: var(--gap);
+        margin-right: var(--gap);
+        margin: 0;
+        padding: var(--gap);
+        resize: none;
+    }
+
+    & .inputs {
+        & input {
+            padding: 0 var(--gap);
+            border-radius: var(--gap);
+            width: 100%;
+            font-size: x-large;
+            font-weight: bold;
+        }
+    }
+
+    &.bg {
+        border: 2px solid var(--sakura-hl-high);
+    }
+
+    & .title div:nth-child(2) {
+        padding-top: var(--gap);
+    }
+
+    & table {
+        width: 100%;
+        border-collapse: collapse;
+
+        & td.btn {
+            width: 0;
+        }
+
+        & td.season {
+            border-right: 1px solid var(--sakura-hl-high);
+            padding: 0px var(--gap);
+        }
+
+        & td.count {
+            border-left: 1px solid var(--sakura-hl-high);
+            padding: 0px var(--gap);
+        }
+
+        & tr:not(:last-child) td:not(.btn) {
+            border-bottom: 1px solid var(--sakura-hl-high);
+        }
+
+        & tr:not(:first-child) td:not(.btn) {
+            border-top: 1px solid var(--sakura-hl-high);
+        }
+
+        & input {
+            height: 38px;
+            border-radius: var(--gap);
+            padding: 0px var(--gap);
+            width: calc(100% - 4px - var(--gap) * 2);
         }
     }
 }

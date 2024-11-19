@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	fmt.Println("Starting server")
 	http.HandleFunc("/", router.Router)
 
 	fmt.Println("Listening on :3000")

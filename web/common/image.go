@@ -30,8 +30,11 @@ type ImageUpload struct {
 var UPLOAD_PATH = "/src/img/upload/"
 
 func (i *ImageUpload) Exists() bool {
-	if i.Location != "" {
-		web.Db().Where(i).Find(i)
+	if i.Location == "" {
+		img := web.GetFirst(ImageUpload{Link: i.Link})
+		i.Location = img.Location
+		i.Width = img.Width
+		i.Height = img.Height
 	}
 
 	if i.Location == "" {
@@ -77,9 +80,11 @@ func (i *ImageUpload) to_image(file_data []byte) (image.Image, error) {
 		return png.Decode(bytes.NewReader(file_data))
 	case "image/webp":
 		return webp.Decode(bytes.NewReader(file_data), nil)
+	case "application/octet-stream":
+
 	}
 
-	return nil, fmt.Errorf("unsupported format")
+	return nil, fmt.Errorf("unsupported format: %s", mime)
 }
 
 func (i *ImageUpload) SaveBytes(file_data []byte) error {

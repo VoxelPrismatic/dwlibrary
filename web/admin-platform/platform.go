@@ -2,6 +2,7 @@ package platform
 
 import (
 	"dwlibrary/web"
+	"regexp"
 )
 
 var _ = web.Migrate(Platform{})
@@ -11,6 +12,10 @@ type Platform struct {
 	Name  string
 	Image string
 	Regex string
+}
+
+func (p Platform) Match(url string) bool {
+	return regexp.MustCompile(p.Regex).MatchString(url)
 }
 
 func AllPlatforms() []Platform {
