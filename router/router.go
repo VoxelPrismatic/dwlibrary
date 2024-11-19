@@ -31,6 +31,9 @@ func Router(w http.ResponseWriter, r *http.Request) {
 	case "admin":
 		AdminRouter(w, r, user, path[1:])
 
+	case "episodes":
+		EpisodeRouter(w, r, user, path[1:])
+
 	default:
 		w.Header().Set("X-Redirect-Reason", "404: /"+path[0])
 		http.Redirect(w, r, "/", http.StatusPermanentRedirect)

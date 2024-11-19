@@ -1,0 +1,18 @@
+package pages
+
+import (
+    "dwlibrary/web/episode"
+    "dwlibrary/web/common"
+)
+
+templ Episodes(user common.User, filter episode.EpisodeFilter) {
+    @common.Head("DWLibrary - Series", "DWLibrary Series dashboard")
+    <body>
+        <div class="home listing">
+            for _, ep := range filter.Search() {
+                @ep.RenderEpisode(user)
+            }
+        </div>
+        @common.Buttons(user, common.EditBtn{})
+    </body>
+}
